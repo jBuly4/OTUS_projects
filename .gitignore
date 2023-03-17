@@ -127,5 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# some other files and dirs
 /month_1/1_advanced_basics/lecture.ipynb
 /.idea
+/month_1/1_advanced_basics/hw_logs_analyzer/.idea
+/month_1/1_advanced_basics/hw_logs_analyzer/nginx-access-ui.log-20170630
+/month_1/1_advanced_basics/hw_logs_analyzer/nginx-access-ui.log-20170630.gz
