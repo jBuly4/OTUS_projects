@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import json
+import logging
 
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
@@ -27,17 +28,20 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
     config = default_config.copy()
 
     if not path_to_config:
+        logging.info('Used default config')
         return config
 
     try:
         with open(path_to_config) as conf_handler:
-            new_config = json.load(conf_handler.read())
+            new_config = json.load(conf_handler)  # no .read() needed because json.load expects fileobject
             config.update(new_config)
+
+            logging.info(f'Loaded config from file: {path_to_config}')
 
             return config
     except FileNotFoundError:
-        return  # TODO: add monitoring here and above to inform that config is updated
-
+        logging.warning(f'Config file not found: {path_to_config}')
+        raise FileNotFoundError("Config file not found")
 
 
 def main():
@@ -56,5 +60,9 @@ if __name__ == "__main__":
             help="Add a path to configuration file. Otherwise default config will be used"
     )
     args = parser.parse_args()
+    logging.basicConfig(
+            format='[%(asctime)s] %(levelname).1s %(message)s',
+            level=logging.INFO, datefmt='%Y.%m.%d %H:%M:%S'
+    )
     config = prepare_config(DEFAULT_CONFIG, args.config)
     main()
