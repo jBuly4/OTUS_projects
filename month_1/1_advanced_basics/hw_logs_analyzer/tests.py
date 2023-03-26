@@ -76,7 +76,7 @@ class TestLoggingPrepareConfig(unittest.TestCase):
             actual_config = prepare_config(default_config)
 
             # Call the function with a valid file path
-            actual_config = prepare_config(default_config, path_to_config)
+            actual_config_2 = prepare_config(default_config, path_to_config)
 
             # Check that the file was opened with the correct path
             mock_file.assert_called_once_with(path_to_config)
