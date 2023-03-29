@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
+import datetime
 import json
 import logging
 import re
@@ -49,19 +50,30 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
         raise FileNotFoundError("Config file not found")
 
 
-def find_log_last(path_to_log_dir: str, log_file_pattern: Pattern) -> namedtuple:
+def find_log_last(path_to_log_dir: str, log_file_pattern: Pattern) -> NamedTuple:
+    """
+    Find the latest log in the dir.
+    :param path_to_log_dir: path to directory with logs.
+    :param log_file_pattern: name pattern for log file to search.
+    :return: named tuple with log name and log date fields.
+    """
     path = Path(path_to_log_dir)
     if not path.is_dir():
         logging.warning("LOG_DIR is not a directory path")
         raise NotADirectoryError("Path to LOG_DIR is not pointing to a directory")
-    latest_log = namedtuple("latest_log", ["logname", "logdate"])
-    date_format = "%Y%m%d"
+    current_log = namedtuple("current_log", ["logname", "logdate"], defaults=['', ''])
+    log_files = []
+    date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
     for file in path.iterdir():
-        if log_file_pattern.match(file):
-            pass
+        match = log_file_pattern.match(file)
+        if match:
+            current_log.logname = file
+            current_log.logdate = datetime.datetime(match.group(1), date_format)
+            log_files.append(file)
+
+    sorted(log_files, lambda x: x.logdate, reverse=True)
 
     # TODO: finish that function then create tests for it
-
 
 
 def log_is_reported(log_file: NamedTuple) -> bool:
@@ -105,6 +117,7 @@ if __name__ == "__main__":
             format='[%(asctime)s] %(levelname).1s %(message)s',
             level=logging.INFO, datefmt='%Y.%m.%d %H:%M:%S'
     )
-    log_file_pattern: Pattern[str] = re.compile("^nginx-access-ui\.log-\d{8}$|\.gz")
+    log_file_pattern: Pattern[str] = re.compile("^nginx-access-ui\.log-(\d{8})(|\.gz)$")  # group 1 is date,
+    # group 2 is file extension
     config = prepare_config(DEFAULT_CONFIG, args.config)
     main(config, log_file_pattern)
