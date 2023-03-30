@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
-import datetime
 import json
 import logging
 import re
 import sys
 
 from collections import namedtuple
+from datetime import datetime
 from pathlib import Path
 from typing import NamedTuple, Pattern
 
@@ -57,23 +57,34 @@ def find_log_last(path_to_log_dir: str, log_file_pattern: Pattern) -> NamedTuple
     :param log_file_pattern: name pattern for log file to search.
     :return: named tuple with log name and log date fields.
     """
-    path = Path(path_to_log_dir)
-    if not path.is_dir():
-        logging.warning("LOG_DIR is not a directory path")
-        raise NotADirectoryError("Path to LOG_DIR is not pointing to a directory")
-    current_log = namedtuple("current_log", ["logname", "logdate"], defaults=['', ''])
-    log_files = []
-    date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
-    for file in path.iterdir():
-        match = log_file_pattern.match(file)
-        if match:
-            current_log.logname = file
-            current_log.logdate = datetime.datetime(match.group(1), date_format)
-            log_files.append(file)
+    try:
+        path = Path(path_to_log_dir)
+        if not path.is_dir():
+            logging.warning("LOG_DIR is not a directory path")
+            raise NotADirectoryError("Path to LOG_DIR is not pointing to a directory")
 
-    sorted(log_files, lambda x: x.logdate, reverse=True)
+        LastLog = namedtuple("LastLog", ["logname", "logdate"])
+        LastLog.logdate = datetime(1, 1, 1)  # start point for dates comparison
+        date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
+        for file in path.iterdir():
+            match = log_file_pattern.match(str(file))
+            if match:
+                curr_date = datetime.strptime(match.group(1), date_format)
+                if curr_date > LastLog.logdate:
+                    LastLog.logname = file
+                    LastLog.logdate = curr_date
 
-    # TODO: finish that function then create tests for it
+        if LastLog.logdate == datetime(1, 1, 1):
+            logging.warning("Latest log was not found!")
+            raise FileNotFoundError("Latest log was not found!")
+
+        return LastLog
+
+    except Exception as exc:
+        logging.warning(f"Something wrong with last log finding. Description: {exc}")
+        # raise
+
+    # TODO: create tests for it
 
 
 def log_is_reported(log_file: NamedTuple) -> bool:
