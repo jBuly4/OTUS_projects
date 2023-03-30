@@ -139,11 +139,11 @@ class TestFindLogLast(unittest.TestCase):
     def test_with_matching_logs(self):
         with open(self.log_dir / 'nginx-access-ui.log-20220320.gz', 'w') as file:
             file.write('This is a test log')
-        expected_log = ('nginx-access-ui.log-20220320.gz', datetime(2022, 3, 20))
+        expected_log = (str(self.log_dir / 'nginx-access-ui.log-20220320.gz'), datetime(2022, 3, 20))
 
         actual_log = find_log_last(str(self.log_dir), self.log_file_pattern)
 
-        self.assertEqual(actual_log.logname, expected_log[0])
+        self.assertEqual(str(actual_log.logname), expected_log[0])
         self.assertEqual(actual_log.logdate, expected_log[1])
 
     # def test_with_multiple_matching_logs(self):
