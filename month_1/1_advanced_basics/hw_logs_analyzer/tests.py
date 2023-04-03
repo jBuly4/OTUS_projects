@@ -7,7 +7,7 @@ from pathlib import Path
 from re import compile
 from unittest.mock import mock_open, patch
 
-from log_analyzer import prepare_config, find_log_last
+from log_analyzer import prepare_config, find_log_last, log_is_reported
 
 logging.basicConfig(
             format='[%(asctime)s] %(levelname).1s %(message)s',
@@ -158,6 +158,48 @@ class TestFindLogLast(unittest.TestCase):
 
         self.assertEqual(actual_log.logname, expected_log[0])
         self.assertEqual(actual_log.logdate, expected_log[1])
+
+class TestLogIsReported(unittest.TestCase):
+    def setUp(self):
+        self.log_dir = Path('test_log_dir')
+        self.log_dir.mkdir(exist_ok=True)
+        self.log_file = self.log_dir / 'nginx-access-ui.log-20220321.gz'
+        self.log_file.touch(exist_ok=True)
+        self.report_dir = Path('test_report_dir')
+        self.report_dir.mkdir(exist_ok=True)
+
+    def tearDown(self):
+        for file in self.log_dir.glob('*'):
+            file.unlink()
+        self.log_dir.rmdir()
+        for file in self.report_dir.glob('*'):
+            file.unlink()
+        self.report_dir.rmdir()
+
+    def test_log_is_reported(self):
+        report_name = f"report-2022.03.21.html"
+        report_file = self.report_dir / report_name
+        report_file.touch(exist_ok=True)
+        log_file = namedtuple('log_file', ['logname', 'logdate'])
+        log_file.logname = self.log_file
+        log_file.logdate = datetime(2022, 3, 21)
+
+        self.assertTrue(log_is_reported(log_file, str(self.report_dir)))
+
+    def test_log_is_not_reported(self):
+        log_file = namedtuple('log_file', ['logname', 'logdate'])
+        log_file.logname = self.log_file
+        log_file.logdate = datetime(2022, 3, 21)
+
+        self.assertFalse(log_is_reported(log_file, str(self.report_dir)))
+
+    def test_report_dir_not_exist(self):
+        log_file = namedtuple('log_file', ['logname', 'logdate'])
+        log_file.logname = self.log_file
+        log_file.logdate = datetime(2022, 3, 21)
+
+        with self.assertRaises(NotADirectoryError):
+            log_is_reported(log_file, "not_existing_dir")
 
 
 if __name__ == '__main__':

@@ -50,11 +50,11 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
         raise FileNotFoundError("Config file not found")
 
 
-def find_log_last(path_to_log_dir: str, log_file_pattern: Pattern) -> NamedTuple:
+def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
     """
     Find the latest log in the dir.
     :param path_to_log_dir: path to directory with logs.
-    :param log_file_pattern: name pattern for log file to search.
+    :param file_pattern: name pattern for log file to search.
     :return: named tuple with log name and log date fields.
     """
     path = Path(path_to_log_dir)
@@ -66,7 +66,7 @@ def find_log_last(path_to_log_dir: str, log_file_pattern: Pattern) -> NamedTuple
     LastLog.logdate = datetime(1, 1, 1)  # start point for dates comparison
     date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
     for file in path.iterdir():
-        match = log_file_pattern.match(str(file).split("/")[1])  # file is a path: dir_name/file
+        match = file_pattern.match(str(file).split("/")[1])  # file is a path: dir_name/file
         if match:
             curr_date = datetime.strptime(match.group(1), date_format)
             if curr_date > LastLog.logdate:
@@ -80,23 +80,33 @@ def find_log_last(path_to_log_dir: str, log_file_pattern: Pattern) -> NamedTuple
     return LastLog  # then call of this function should be inside outter try/except block
 
 
-def log_is_reported(log_file: NamedTuple) -> bool:
-    pass
+def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
+    """
+    Check that logfile had been reported or not.
+    :param log_file: path to logfile
+    :param report_dir: path to report directory
+    :return: bool
+    """
+    report_name = f"report-{log_file.logdate.strftime('%Y.%m.%d')}.html"
+    report_path = report_dir + "/" + report_name
+    if not Path(report_dir).exists():
+        raise NotADirectoryError("Something wrong with path while checking is log was reported.")
+    return Path(report_path).exists()
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
     pass
 
 
-def main(actual_config: dict, log_file_pattern: Pattern) -> None:
-    actual_log_file = find_log_last(actual_config.get("LOG_DIR"), log_file_pattern)  # recommended that
+def main(actual_config: dict, file_pattern: Pattern) -> None:
+    actual_log_file = find_log_last(actual_config.get("LOG_DIR"), file_pattern)  # recommended that
     # this function returns namedtuple
 
     if not actual_log_file:
         logging.info("No logs to report")
         return
 
-    if not log_is_reported(actual_log_file):
+    if not log_is_reported(actual_log_file, actual_config.get("REPORT_DIR")):
         generate_report(actual_log_file, actual_config)
         logging.info("Report generated!")
         return
