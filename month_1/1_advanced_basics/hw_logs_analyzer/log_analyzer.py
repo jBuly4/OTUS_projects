@@ -46,7 +46,7 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
 
             return actual_config
     except FileNotFoundError:
-        logging.warning(f'Config file not found: {path_to_config}')
+        logging.exception(f'Config file not found: {path_to_config}')
         raise FileNotFoundError("Config file not found")
 
 
@@ -59,7 +59,7 @@ def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
     """
     path = Path(path_to_log_dir)
     if not path.is_dir():
-        logging.warning("LOG_DIR is not a directory path")
+        logging.error("LOG_DIR is not a directory path")
         raise NotADirectoryError("Path to LOG_DIR is not pointing to a directory")
 
     LastLog = namedtuple("LastLog", ["logname", "logdate"])
@@ -74,7 +74,7 @@ def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
                 LastLog.logdate = curr_date
 
     if LastLog.logdate == datetime(1, 1, 1):
-        logging.warning("Warning! Latest log was not found!")
+        logging.error("ERROR! Latest log was not found!")
         raise FileNotFoundError("Latest log was not found!")
 
     return LastLog  # then call of this function should be inside outter try/except block
@@ -89,8 +89,12 @@ def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
     """
     report_name = f"report-{log_file.logdate.strftime('%Y.%m.%d')}.html"
     report_path = report_dir + "/" + report_name
+
     if not Path(report_dir).exists():
+        logging.exception("Exception raised while checking log was reported or not!")
         raise NotADirectoryError("Something wrong with path while checking is log was reported.")
+
+    logging.info("Log was not reported!")
     return Path(report_path).exists()
 
 

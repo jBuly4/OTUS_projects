@@ -53,22 +53,22 @@ class TestPrepareConfig(unittest.TestCase):
 
 
 class TestLoggingPrepareConfig(unittest.TestCase):
-    def test_warning_logging(self):
+    def test_ERROR_logging(self):
         default_config = {'key1': 'value1', 'key2': 'value2'}
         path_to_config = 'nonexistent_file.json'
 
         with self.assertRaises(FileNotFoundError):
-            with self.assertLogs(level='WARNING') as logs:
+            with self.assertLogs(level='ERROR') as logs:
                 # Call the function with a nonexistent file path
                 prepare_config(default_config, path_to_config)
 
-                # Check that a warning message was logged with the expected content
-                expected_log = f'WARNING:root:Config file not found: {path_to_config}'
+                # Check that a ERROR message was logged with the expected content
+                expected_log = f'ERROR:root:Config file not found: {path_to_config}'
                 self.assertIn(expected_log, logs.output)
 
-        # Check that the logs contained a warning message
+        # Check that the logs contained a ERROR message
         if len(logs.output) == 0:
-            raise AssertionError('No warning message logged')
+            raise AssertionError('No ERROR message logged')
 
     def test_info_logging(self):
         default_config = {'key1': 'value1', 'key2': 'value2'}
@@ -125,13 +125,18 @@ class TestFindLogLast(unittest.TestCase):
             find_log_last(str(self.log_dir), self.log_file_pattern)
 
     def test_latest_log_not_found_logs(self):
-        with self.assertLogs(level='WARNING') as logs:
+        with self.assertLogs(level='ERROR') as logs:
             with self.assertRaises(FileNotFoundError):  # to catch exceptions and then check logs outside of that
                 # 'with' block
                 result = find_log_last(str(self.log_dir), self.log_file_pattern)
 
+                # The \nNoneType: None part in the error message is likely being appended by the logging.exception
+                # call in the find_log_last function. The logging.exception call logs an error message along with the
+                # traceback of the exception that was raised, which can result in the extra information being added
+                # to the log message.
+
             expected_logs = [
-                'WARNING:root:Warning! Latest log was not found!',
+                'ERROR:root:ERROR! Latest log was not found!',
             ]
 
             for log in expected_logs:
