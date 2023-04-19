@@ -1,13 +1,15 @@
 import logging
+import tempfile
 import unittest
 
 from collections import namedtuple
 from datetime import datetime
+from gzip import GzipFile
 from pathlib import Path
 from re import compile
 from unittest.mock import mock_open, patch
 
-from log_analyzer import prepare_config, find_log_last, log_is_reported
+from log_analyzer import prepare_config, find_log_last, log_is_reported, read_log
 
 logging.basicConfig(
             format='[%(asctime)s] %(levelname).1s %(message)s',
@@ -206,6 +208,32 @@ class TestLogIsReported(unittest.TestCase):
 
         with self.assertRaises(NotADirectoryError):
             log_is_reported(log_file, "not_existing_dir")
+
+class TestReadLog(unittest.TestCase):
+    def setUp(self) -> None:
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            f.write(b'line1\nline2\nline3')
+            self.temp_file = Path(f.name)
+        self.expected_output = [b'line1\n', b'line2\n', b'line3']  # because we don't decode in read_log
+
+        with open(self.temp_file, 'rb') as f:
+            contents = f.read()
+            with GzipFile(mode='wb', filename=str(self.temp_file) + '.gz') as gz:
+                gz.write(contents)
+
+        self.temp_file_gz = Path(str(self.temp_file) + '.gz')
+
+    def tearDown(self) -> None:
+        self.temp_file.unlink()
+        self.temp_file_gz.unlink()
+
+    def test_read_log_uncompressed(self):
+        output = [line for line in read_log(self.temp_file_gz)]
+        self.assertEqual(output, self.expected_output)
+
+    def test_read_log_compressed(self):
+        output = [line for line in read_log(self.temp_file_gz)]
+        self.assertEqual(output, self.expected_output)
 
 
 if __name__ == '__main__':
