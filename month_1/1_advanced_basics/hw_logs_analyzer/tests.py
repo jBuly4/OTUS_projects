@@ -164,6 +164,7 @@ class TestFindLogLast(unittest.TestCase):
         self.assertEqual(actual_log.logname, expected_log[0])
         self.assertEqual(actual_log.logdate, expected_log[1])
 
+
 class TestLogIsReported(unittest.TestCase):
     def setUp(self):
         self.log_dir = Path('test_log_dir')

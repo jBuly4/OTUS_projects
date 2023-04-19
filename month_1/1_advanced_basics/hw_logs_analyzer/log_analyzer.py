@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
+import gzip
 import json
 import logging
 import re
@@ -98,7 +99,26 @@ def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
     return Path(report_path).exists()
 
 
+def read_log(log_file: Path) -> str:
+    with gzip.open(log_file) if log_file.suffix == '.gz' else open(log_file) as lf_handler:
+        for line in lf_handler:
+            yield line
+
+
+def parse_line():
+    pass
+
+
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
+    # read_log line by line.
+    # parse line and return metrics needed: url, request time, count=1
+    # save metrics at memory in the dictionary:
+    # memory[url] = {request_time: float, count: int}.
+    # memory[url][request_time] += request_time;
+    # memory[url][count] += count
+    # sort memory by request_time in descending order
+    # calculate statistics
+    # create_report: take read_log, create file, add lines from memory using, up to report_size limit
     pass
 
 
