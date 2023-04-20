@@ -10,7 +10,7 @@ import sys
 from collections import namedtuple
 from datetime import datetime
 from pathlib import Path
-from typing import NamedTuple, Pattern
+from typing import NamedTuple, Pattern, Union
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
 #                     '$status $body_bytes_sent "$http_referer" '
@@ -51,7 +51,7 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
         raise FileNotFoundError("Config file not found")
 
 
-def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
+def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:  # TODO: correct mistake
     """
     Find the latest log in the dir.
     :param path_to_log_dir: path to directory with logs.
@@ -64,21 +64,24 @@ def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
         raise NotADirectoryError("Path to LOG_DIR is not pointing to a directory")
 
     LastLog = namedtuple("LastLog", ["logname", "logdate"])
-    LastLog.logdate = datetime(1, 1, 1)  # start point for dates comparison
+    lastlog = LastLog(
+            logname="",
+            logdate=datetime(1, 1, 1)  # start point for dates comparison
+    )
     date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
     for file in path.iterdir():
         match = file_pattern.match(str(file).split("/")[1])  # file is a path: dir_name/file
         if match:
             curr_date = datetime.strptime(match.group(1), date_format)
-            if curr_date > LastLog.logdate:
-                LastLog.logname = file
-                LastLog.logdate = curr_date
+            if curr_date > lastlog.logdate:
+                lastlog.logname = file
+                lastlog.logdate = curr_date
 
-    if LastLog.logdate == datetime(1, 1, 1):
+    if lastlog.logdate == datetime(1, 1, 1):
         logging.error("ERROR! Latest log was not found!")
         raise FileNotFoundError("Latest log was not found!")
 
-    return LastLog  # then call of this function should be inside outter try/except block
+    return lastlog  # then call of this function should be inside outter try/except block
 
 
 def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
@@ -99,14 +102,39 @@ def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
     return Path(report_path).exists()
 
 
-def read_log(log_file: Path) -> str:
+def read_log(log_file: Path) -> Union[str, bytes]:
     with gzip.open(log_file) if log_file.suffix == '.gz' else open(log_file) as lf_handler:
         for line in lf_handler:
             yield line
 
 
-def parse_line():
-    pass
+def parse_line(line: Union[str, bytes]) -> NamedTuple:
+    # 1.196.116.32 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/25019354 HTTP/1.1" 200 927 "-"
+    # "Lynx/2.8.8dev.9 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.10.5" "-" "1498697422-2190034393-4708-9752759"
+    # "dc7161be3" 0.390
+    url_pattern = re.compile(r'\"\w+\s([^\s]+)\s+HTTP')
+    request_time_pattern = re.compile(r'\d+\.\d+$')
+    URLandReqtime = namedtuple("URLandReqtime", ["url", "request_time"])
+
+    if isinstance(line, bytes):
+        line = line.decode("UTF-8")
+
+    url = url_pattern.search(line)  # https://docs.python.org/3/library/re.html?highlight=re%20match#search-vs-match
+    request_time = request_time_pattern.search(line)
+
+    if not url or not request_time:
+        logging.exception(f"Something wrong with URL ({url}) or request time ({request_time}).")
+        raise ValueError(
+                f"There is exception when finding matches for URL and request time."
+                f"\nURL = {url};\nrequest time = {request_time}."
+        )
+
+    url_and_reqtime = URLandReqtime(
+            url=url.group(1),
+            request_time=float(request_time.group())
+    )  # remember that you are creating an instance of namedtuple.
+
+    return url_and_reqtime
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:

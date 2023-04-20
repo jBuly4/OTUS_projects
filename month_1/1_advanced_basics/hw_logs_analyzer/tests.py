@@ -9,7 +9,7 @@ from pathlib import Path
 from re import compile
 from unittest.mock import mock_open, patch
 
-from log_analyzer import prepare_config, find_log_last, log_is_reported, read_log
+from log_analyzer import prepare_config, find_log_last, log_is_reported, read_log, parse_line
 
 logging.basicConfig(
             format='[%(asctime)s] %(levelname).1s %(message)s',
@@ -234,6 +234,30 @@ class TestReadLog(unittest.TestCase):
     def test_read_log_compressed(self):
         output = [line for line in read_log(self.temp_file_gz)]
         self.assertEqual(output, self.expected_output)
+
+
+class TestParseLine(unittest.TestCase):
+    def test_parse_line(self):
+        test_cases = [
+            ('1.196.116.32 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/25019354 HTTP/1.1" 200 927 "-" '
+             '"Lynx/2.8.8dev.9 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.10.5" "-" "1498697422-2190034393-4708-9752759" '
+             '"dc7161be3" 0.390\n', ('/api/v2/banner/25019354', 0.39)
+            ),
+            (b'1.99.174.176 3b81f63526fa8  - [29/Jun/2017:03:50:22 +0300] "GET '
+             b'/api/1/photogenic_banners/list/?server_name=WIN7RB4 HTTP/1.1" 200 12 "-" "Python-urllib/2.7" "-" '
+             b'"1498697422-32900793-4708-9752770" "-" 0.133\n',
+             ('/api/1/photogenic_banners/list/?server_name=WIN7RB4', 0.133)
+            ),
+            ('1.169.137.128 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/16852664 HTTP/1.1" 200 19415 "-" '
+             '"Slotovod" "-" "1498697422-2118016444-4708-9752769" "712e90144abee9" 0.199\n',
+             ('/api/v2/banner/16852664', 0.199)
+            )
+        ]
+
+        for line, expected_result in test_cases:
+            with self.subTest(line=line, expected_result=expected_result):
+                result = parse_line(line)
+                self.assertEqual(tuple(result), expected_result)
 
 
 if __name__ == '__main__':
