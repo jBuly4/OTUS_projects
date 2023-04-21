@@ -51,7 +51,7 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
         raise FileNotFoundError("Config file not found")
 
 
-def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:  # TODO: correct mistake
+def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
     """
     Find the latest log in the dir.
     :param path_to_log_dir: path to directory with logs.
