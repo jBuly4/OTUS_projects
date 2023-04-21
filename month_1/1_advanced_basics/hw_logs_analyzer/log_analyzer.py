@@ -63,25 +63,29 @@ def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:  #
         logging.error("LOG_DIR is not a directory path")
         raise NotADirectoryError("Path to LOG_DIR is not pointing to a directory")
 
-    LastLog = namedtuple("LastLog", ["logname", "logdate"])
-    lastlog = LastLog(
-            logname="",
-            logdate=datetime(1, 1, 1)  # start point for dates comparison
-    )
+    LastLog = namedtuple("LastLog", ["log_name", "log_date"])
+    latest_log_date = datetime(1, 1, 1)  # start point for dates comparison
+    file_latest = None
+
     date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
     for file in path.iterdir():
         match = file_pattern.match(str(file).split("/")[1])  # file is a path: dir_name/file
         if match:
             curr_date = datetime.strptime(match.group(1), date_format)
-            if curr_date > lastlog.logdate:
-                lastlog.logname = file
-                lastlog.logdate = curr_date
+            if curr_date > latest_log_date:
+                latest_log_date = curr_date
+                file_latest = file
 
-    if lastlog.logdate == datetime(1, 1, 1):
+    last_log = LastLog(
+            log_name=file_latest,
+            log_date=latest_log_date
+    )
+
+    if last_log.log_date == datetime(1, 1, 1):
         logging.error("ERROR! Latest log was not found!")
         raise FileNotFoundError("Latest log was not found!")
 
-    return lastlog  # then call of this function should be inside outter try/except block
+    return last_log  # then call of this function should be inside outter try/except block
 
 
 def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:

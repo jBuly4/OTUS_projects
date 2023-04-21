@@ -151,8 +151,8 @@ class TestFindLogLast(unittest.TestCase):
 
         actual_log = find_log_last(str(self.log_dir), self.log_file_pattern)
 
-        self.assertEqual(str(actual_log.logname), expected_log[0])
-        self.assertEqual(actual_log.logdate, expected_log[1])
+        self.assertEqual(str(actual_log.log_name), expected_log[0])
+        self.assertEqual(actual_log.log_date, expected_log[1])
 
     def test_with_multiple_matching_logs(self):
         with open(self.log_dir / 'nginx-access-ui.log-20220320.gz', 'w') as file:
@@ -163,8 +163,8 @@ class TestFindLogLast(unittest.TestCase):
 
         actual_log = find_log_last(str(self.log_dir), self.log_file_pattern)
 
-        self.assertEqual(actual_log.logname, expected_log[0])
-        self.assertEqual(actual_log.logdate, expected_log[1])
+        self.assertEqual(actual_log.log_name, expected_log[0])
+        self.assertEqual(actual_log.log_date, expected_log[1])
 
 
 class TestLogIsReported(unittest.TestCase):
@@ -209,6 +209,7 @@ class TestLogIsReported(unittest.TestCase):
         with self.assertRaises(NotADirectoryError):
             log_is_reported(log_file, "not_existing_dir")
 
+
 class TestReadLog(unittest.TestCase):
     def setUp(self) -> None:
         with tempfile.NamedTemporaryFile(delete=False) as f:
@@ -239,19 +240,23 @@ class TestReadLog(unittest.TestCase):
 class TestParseLine(unittest.TestCase):
     def test_parse_line(self):
         test_cases = [
-            ('1.196.116.32 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/25019354 HTTP/1.1" 200 927 "-" '
-             '"Lynx/2.8.8dev.9 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.10.5" "-" "1498697422-2190034393-4708-9752759" '
-             '"dc7161be3" 0.390\n', ('/api/v2/banner/25019354', 0.39)
+            (
+                '1.196.116.32 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/25019354 HTTP/1.1" 200 927 "-" '
+                '"Lynx/2.8.8dev.9 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.10.5" "-" "1498697422-2190034393-4708-9752759" '
+                '"dc7161be3" 0.390\n',
+                ('/api/v2/banner/25019354', 0.39),
             ),
-            (b'1.99.174.176 3b81f63526fa8  - [29/Jun/2017:03:50:22 +0300] "GET '
-             b'/api/1/photogenic_banners/list/?server_name=WIN7RB4 HTTP/1.1" 200 12 "-" "Python-urllib/2.7" "-" '
-             b'"1498697422-32900793-4708-9752770" "-" 0.133\n',
-             ('/api/1/photogenic_banners/list/?server_name=WIN7RB4', 0.133)
+            (
+                b'1.99.174.176 3b81f63526fa8  - [29/Jun/2017:03:50:22 +0300] "GET '
+                b'/api/1/photogenic_banners/list/?server_name=WIN7RB4 HTTP/1.1" 200 12 "-" "Python-urllib/2.7" "-" '
+                b'"1498697422-32900793-4708-9752770" "-" 0.133\n',
+                ('/api/1/photogenic_banners/list/?server_name=WIN7RB4', 0.133),
             ),
-            ('1.169.137.128 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/16852664 HTTP/1.1" 200 19415 "-" '
-             '"Slotovod" "-" "1498697422-2118016444-4708-9752769" "712e90144abee9" 0.199\n',
-             ('/api/v2/banner/16852664', 0.199)
-            )
+            (
+                '1.169.137.128 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/16852664 HTTP/1.1" 200 19415 "-" '
+                '"Slotovod" "-" "1498697422-2118016444-4708-9752769" "712e90144abee9" 0.199\n',
+                ('/api/v2/banner/16852664', 0.199),
+            ),
         ]
 
         for line, expected_result in test_cases:
