@@ -7,10 +7,10 @@ import logging
 import re
 import sys
 
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 from datetime import datetime
 from pathlib import Path
-from typing import NamedTuple, Pattern, Union
+from typing import Generator, NamedTuple, Pattern, Union
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
 #                     '$status $body_bytes_sent "$http_referer" '
@@ -106,17 +106,14 @@ def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
     return Path(report_path).exists()
 
 
-def read_log(log_file: Path) -> Union[str, bytes]:
+def read_log(log_file: Path) -> Generator[Union[str, bytes], None, None]:
     with gzip.open(log_file) if log_file.suffix == '.gz' else open(log_file) as lf_handler:
         for line in lf_handler:
             yield line
 
 
 def parse_line(line: Union[str, bytes]) -> NamedTuple:
-    # 1.196.116.32 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/25019354 HTTP/1.1" 200 927 "-"
-    # "Lynx/2.8.8dev.9 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.10.5" "-" "1498697422-2190034393-4708-9752759"
-    # "dc7161be3" 0.390
-    url_pattern = re.compile(r'\"\w+\s([^\s]+)\s+HTTP')
+    url_pattern = re.compile(r'\"\w+\s(\S+)\s+HTTP')
     request_time_pattern = re.compile(r'\d+\.\d+$')
     URLandReqtime = namedtuple("URLandReqtime", ["url", "request_time"])
 
@@ -136,9 +133,25 @@ def parse_line(line: Union[str, bytes]) -> NamedTuple:
     url_and_reqtime = URLandReqtime(
             url=url.group(1),
             request_time=float(request_time.group())
-    )  # remember that you are creating an instance of namedtuple.
+    )  # remember that you have to create an instance of namedtuple.
 
     return url_and_reqtime
+
+
+def collect_info(collector: dict, url: str, url_req_time: float, url_num: int = 1, total_num: int = 1) -> dict:
+    """
+    Function to collect all data from parsed log for future stat calculations
+    :param collector: initialized dictionary from caller function
+    :param url: URL
+    :param url_req_time: request time for URL
+    :param url_num: appearance number of URL
+    :param total_num: to calculate total number of parsed URLs
+    :return: updated collector
+    """
+    pass
+
+
+
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
