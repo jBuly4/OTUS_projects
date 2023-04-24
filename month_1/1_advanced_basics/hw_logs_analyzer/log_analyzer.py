@@ -149,12 +149,20 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
     :return: updated collector
     """
     url_rt = 'url_rt'
+    url_rt_max = 'url_rt_max'
     num_of_url = 'num_of_url'
+
     if url_rt not in collector[url].keys():
         collector[url][url_rt] = 0.0
 
     if num_of_url not in collector[url].keys():
         collector[url][num_of_url] = 0
+
+    if url_rt_max not in collector.keys():
+        collector[url][url_rt_max] = 0.0
+
+    if url_req_time > collector[url][url_rt_max]:
+        collector[url][url_rt_max] = url_req_time
 
     collector[url][url_rt] += url_req_time
     collector[url][num_of_url] += url_num
