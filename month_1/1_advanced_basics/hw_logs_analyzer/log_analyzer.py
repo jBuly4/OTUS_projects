@@ -10,7 +10,7 @@ import sys
 from collections import defaultdict, namedtuple
 from datetime import datetime
 from pathlib import Path
-from typing import Generator, NamedTuple, Pattern, Union
+from typing import DefaultDict, Generator, NamedTuple, Pattern, Union
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
 #                     '$status $body_bytes_sent "$http_referer" '
@@ -115,7 +115,7 @@ def read_log(log_file: Path) -> Generator[Union[str, bytes], None, None]:
 def parse_line(line: Union[str, bytes]) -> NamedTuple:
     url_pattern = re.compile(r'\"\w+\s(\S+)\s+HTTP')
     request_time_pattern = re.compile(r'\d+\.\d+$')
-    URLandReqtime = namedtuple("URLandReqtime", ["url", "request_time"])
+    URLandReq_time = namedtuple("URLandReq_time", ["url", "request_time"])
 
     if isinstance(line, bytes):
         line = line.decode("UTF-8")
@@ -130,28 +130,36 @@ def parse_line(line: Union[str, bytes]) -> NamedTuple:
                 f"\nURL = {url};\nrequest time = {request_time}."
         )
 
-    url_and_reqtime = URLandReqtime(
+    url_and_req_time = URLandReq_time(
             url=url.group(1),
             request_time=float(request_time.group())
     )  # remember that you have to create an instance of namedtuple.
 
-    return url_and_reqtime
+    return url_and_req_time
 
 
-def collect_info(collector: dict, url: str, url_req_time: float, url_num: int = 1, total_num: int = 1) -> dict:
+def collect_info(collector: DefaultDict[str, dict], url: str,
+                 url_req_time: float, url_num: int = 1) -> DefaultDict[str, dict]:
     """
     Function to collect all data from parsed log for future stat calculations
     :param collector: initialized dictionary from caller function
     :param url: URL
     :param url_req_time: request time for URL
     :param url_num: appearance number of URL
-    :param total_num: to calculate total number of parsed URLs
     :return: updated collector
     """
-    pass
+    url_rt = 'url_rt'
+    num_of_url = 'num_of_url'
+    if url_rt not in collector[url].keys():
+        collector[url][url_rt] = 0.0
 
+    if num_of_url not in collector[url].keys():
+        collector[url][num_of_url] = 0
 
+    collector[url][url_rt] += url_req_time
+    collector[url][num_of_url] += url_num
 
+    return collector
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
