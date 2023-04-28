@@ -11,6 +11,7 @@ from collections import defaultdict, namedtuple
 from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
+from statistics import median
 from typing import DefaultDict, Generator, NamedTuple, Pattern, Union
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
@@ -153,9 +154,24 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
     :param url: URL
     :param url_req_time: request time for URL
     :param url_num: appearance number of URL
-    :return: updated collector
+    :return: updated collector of format
+    {
+        url:
+        {
+            'url_rt': float,
+            'url_rt_lst': list,
+            'url_rt_max': float,
+            'num_of_url': int,
+        },
+        'total':
+        {
+            'total_url_rt': float,
+        }
+    }
+
     """
     url_rt = 'url_rt'
+    url_rt_lst = 'url_rt_lst'
     url_rt_max = 'url_rt_max'
     num_of_url = 'num_of_url'
     total = 'total'
@@ -164,6 +180,9 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
     if url_rt not in collector[url].keys():
         collector[url][url_rt] = round(0.00, 2)
 
+    if url_rt_lst not in collector[url].keys():
+        collector[url][url_rt_lst] = []
+
     if num_of_url not in collector[url].keys():
         collector[url][num_of_url] = 0
 
@@ -171,21 +190,41 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
         collector[url][url_rt_max] = round(0.00, 2)
 
     if url_req_time > collector[url][url_rt_max]:
-        collector[url][url_rt_max] = round(url_req_time, 2)
+        collector[url][url_rt_max] = round(url_req_time, 3)
 
     if total_url_rt not in collector[total].keys():
         collector[total][total_url_rt] = round(0.00, 2)
 
     # if we use += round(url_req_time, 3) then on next iterations result would be 1,789999999 etc
     collector[url][url_rt] = round(collector[url][url_rt] + url_req_time, 3)
-    collector[url][num_of_url] = round(collector[url][num_of_url] + url_num, 3)
+    collector[url][url_rt_lst].append(url_req_time)  # for median calculating
+    collector[url][num_of_url] += url_num
     collector[total][total_url_rt] = round(collector[total][total_url_rt] + url_req_time, 3)
 
     return collector
 
 
-def calculate_stats():
-    pass
+def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> json:
+    stats = defaultdict(dict)
+    total_request_time = collector.pop('total')
+    count = 'count'
+    count_perc = 'count_perc'
+    time_sum = 'time_sum'
+    time_perc = 'time_perc'
+    time_avg = 'time_avg'
+    time_max = 'time_max'
+    time_med = 'time_med'
+
+    for url in collector.keys():
+        stats[url][count] = collector[url]['num_of_url']
+        stats[url][count_perc] = round(100 * collector[url]['num_of_url'] / total_line_num, 2)
+        stats[url][time_sum] = collector[url]['url_rt']
+        stats[url][time_perc] = round(100 * collector[url]['url_rt'] / total_request_time, 2)
+        stats[url][time_avg] = round(collector[url]['url_rt'] / collector[url]['num_of_url'], 2)
+        stats[url][time_max] = collector[url]['url_rt_max']
+        stats[url][time_med] = median(collector[url]['url_rt_lst'])
+
+    return json.dumps(stats)
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:

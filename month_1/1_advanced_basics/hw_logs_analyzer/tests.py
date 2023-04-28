@@ -276,9 +276,11 @@ class TestCollector(unittest.TestCase):
         expected_values = defaultdict(dict)
         expected_values['url1']['url_rt'] = round(3.0, 3)
         expected_values['url1']['num_of_url'] = 5
+        expected_values['url1']['url_rt_lst'] = [0.6, 0.6, 0.6, 0.6, 0.6]
         expected_values['url1']['url_rt_max'] = round(0.6, 3)
         expected_values['url2']['url_rt'] = round(1.4, 3)
         expected_values['url2']['num_of_url'] = 2
+        expected_values['url2']['url_rt_lst'] = [0.7, 0.7]
         expected_values['url2']['url_rt_max'] = round(0.7, 3)
         expected_values['total']['total_url_rt'] = Decimal(4.4)
 
