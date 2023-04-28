@@ -9,6 +9,7 @@ import sys
 
 from collections import defaultdict, namedtuple
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import DefaultDict, Generator, NamedTuple, Pattern, Union
 
@@ -115,7 +116,8 @@ def read_log(log_file: Path) -> Generator[Union[str, bytes], None, None]:
 def parse_line(line: Union[str, bytes]) -> NamedTuple:
     url_pattern = re.compile(r'\"\w+\s(\S+)\s+HTTP')
     request_time_pattern = re.compile(r'\d+\.\d+$')
-    URLandReq_time = namedtuple("URLandReq_time", ["url", "request_time"])
+    URLandReq_time = namedtuple("URLandReq_time", ["url", "request_time", "fail"])
+    fail = False
 
     if isinstance(line, bytes):
         line = line.decode("UTF-8")
@@ -124,16 +126,21 @@ def parse_line(line: Union[str, bytes]) -> NamedTuple:
     request_time = request_time_pattern.search(line)
 
     if not url or not request_time:
-        logging.exception(f"Something wrong with URL ({url}) or request time ({request_time}).")
-        raise ValueError(
-                f"There is exception when finding matches for URL and request time."
-                f"\nURL = {url};\nrequest time = {request_time}."
-        )
+        fail = True
+
+        url_and_req_time = URLandReq_time(
+                url=None,
+                request_time=None,
+                fail=fail
+        )  # remember that you have to create an instance of namedtuple.
+
+        return url_and_req_time
 
     url_and_req_time = URLandReq_time(
             url=url.group(1),
-            request_time=float(request_time.group())
-    )  # remember that you have to create an instance of namedtuple.
+            request_time=round(float(request_time.group()), 3),
+            fail=fail
+    )
 
     return url_and_req_time
 
@@ -151,23 +158,34 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
     url_rt = 'url_rt'
     url_rt_max = 'url_rt_max'
     num_of_url = 'num_of_url'
+    total = 'total'
+    total_url_rt = 'total_url_rt'
 
     if url_rt not in collector[url].keys():
-        collector[url][url_rt] = 0.0
+        collector[url][url_rt] = round(0.00, 2)
 
     if num_of_url not in collector[url].keys():
         collector[url][num_of_url] = 0
 
     if url_rt_max not in collector.keys():
-        collector[url][url_rt_max] = 0.0
+        collector[url][url_rt_max] = round(0.00, 2)
 
     if url_req_time > collector[url][url_rt_max]:
-        collector[url][url_rt_max] = url_req_time
+        collector[url][url_rt_max] = round(url_req_time, 2)
 
-    collector[url][url_rt] += url_req_time
-    collector[url][num_of_url] += url_num
+    if total_url_rt not in collector[total].keys():
+        collector[total][total_url_rt] = round(0.00, 2)
+
+    # if we use += round(url_req_time, 3) then on next iterations result would be 1,789999999 etc
+    collector[url][url_rt] = round(collector[url][url_rt] + url_req_time, 3)
+    collector[url][num_of_url] = round(collector[url][num_of_url] + url_num, 3)
+    collector[total][total_url_rt] = round(collector[total][total_url_rt] + url_req_time, 3)
 
     return collector
+
+
+def calculate_stats():
+    pass
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:

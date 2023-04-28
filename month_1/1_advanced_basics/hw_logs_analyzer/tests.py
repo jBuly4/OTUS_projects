@@ -4,6 +4,7 @@ import unittest
 
 from collections import defaultdict, namedtuple
 from datetime import datetime
+from decimal import Decimal
 from gzip import GzipFile
 from pathlib import Path
 from re import compile
@@ -244,18 +245,23 @@ class TestParseLine(unittest.TestCase):
                 '1.196.116.32 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/25019354 HTTP/1.1" 200 927 "-" '
                 '"Lynx/2.8.8dev.9 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.10.5" "-" "1498697422-2190034393-4708-9752759" '
                 '"dc7161be3" 0.390\n',
-                ('/api/v2/banner/25019354', 0.39),
+                ('/api/v2/banner/25019354', 0.39, False),
             ),
             (
                 b'1.99.174.176 3b81f63526fa8  - [29/Jun/2017:03:50:22 +0300] "GET '
                 b'/api/1/photogenic_banners/list/?server_name=WIN7RB4 HTTP/1.1" 200 12 "-" "Python-urllib/2.7" "-" '
                 b'"1498697422-32900793-4708-9752770" "-" 0.133\n',
-                ('/api/1/photogenic_banners/list/?server_name=WIN7RB4', 0.133),
+                ('/api/1/photogenic_banners/list/?server_name=WIN7RB4', 0.133, False),
             ),
             (
                 '1.169.137.128 -  - [29/Jun/2017:03:50:22 +0300] "GET /api/v2/banner/16852664 HTTP/1.1" 200 19415 "-" '
                 '"Slotovod" "-" "1498697422-2118016444-4708-9752769" "712e90144abee9" 0.199\n',
-                ('/api/v2/banner/16852664', 0.199),
+                ('/api/v2/banner/16852664', 0.199, False),
+            ),
+            (
+                '1.169.137.128 -  - [29/Jun/2017:03:50:22 +0300] "" 200 19415 "-" '
+                '"Slotovod" "-" "1498697422-2118016444-4708-9752769" "712e90144abee9" 0.199\n',
+                (None, None, True),
             ),
         ]
 
@@ -268,12 +274,13 @@ class TestCollector(unittest.TestCase):
     def test_collector(self):
         test_collector = defaultdict(dict)
         expected_values = defaultdict(dict)
-        expected_values['url1']['url_rt'] = 3.0
+        expected_values['url1']['url_rt'] = round(3.0, 3)
         expected_values['url1']['num_of_url'] = 5
-        expected_values['url1']['url_rt_max'] = 0.6
-        expected_values['url2']['url_rt'] = 1.4
+        expected_values['url1']['url_rt_max'] = round(0.6, 3)
+        expected_values['url2']['url_rt'] = round(1.4, 3)
         expected_values['url2']['num_of_url'] = 2
-        expected_values['url2']['url_rt_max'] = 0.7
+        expected_values['url2']['url_rt_max'] = round(0.7, 3)
+        expected_values['total']['total_url_rt'] = Decimal(4.4)
 
         test_data = {
             'url1': {
