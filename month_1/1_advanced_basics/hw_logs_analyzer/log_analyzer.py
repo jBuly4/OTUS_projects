@@ -206,7 +206,8 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
 
 def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> json:
     stats = defaultdict(dict)
-    total_request_time = collector.pop('total')
+    total_rt = collector.pop('total')
+    total_request_time = total_rt['total_url_rt']
     count = 'count'
     count_perc = 'count_perc'
     time_sum = 'time_sum'

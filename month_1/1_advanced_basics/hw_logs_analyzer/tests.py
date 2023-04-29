@@ -1,3 +1,4 @@
+import json
 import logging
 import tempfile
 import unittest
@@ -10,7 +11,8 @@ from pathlib import Path
 from re import compile
 from unittest.mock import mock_open, patch
 
-from log_analyzer import prepare_config, find_log_last, log_is_reported, read_log, parse_line, collect_info
+from log_analyzer import prepare_config, find_log_last, log_is_reported, read_log, parse_line, collect_info, \
+    calculate_stats
 
 logging.basicConfig(
             format='[%(asctime)s] %(levelname).1s %(message)s',
@@ -301,6 +303,49 @@ class TestCollector(unittest.TestCase):
             x -= 1
 
         self.assertEqual(test_collector, expected_values)
+
+
+class TestCalculateStats(unittest.TestCase):
+    def setUp(self):
+        expected_dict = dict(
+                url1={
+                    'count': 5,
+                    'count_perc': 71.43,
+                    'time_sum': 3.000,
+                    'time_perc': 68.18,
+                    'time_avg': 0.6,
+                    'time_max': 0.600,
+                    'time_med': 0.600,
+                }, url2={
+                    'count': 2,
+                    'count_perc': 28.57,
+                    'time_sum': 1.400,
+                    'time_perc': 31.82,
+                    'time_avg': 0.7,
+                    'time_max': 0.700,
+                    'time_med': 0.700,
+                }
+        )
+        self.expected_json = json.dumps(expected_dict)
+
+        self.test_values = defaultdict(dict)
+        self.test_values['url1']['url_rt'] = round(3.0, 3)
+        self.test_values['url1']['num_of_url'] = 5
+        self.test_values['url1']['url_rt_lst'] = [0.6, 0.6, 0.6, 0.6, 0.6]
+        self.test_values['url1']['url_rt_max'] = round(0.6, 3)
+        self.test_values['url2']['url_rt'] = round(1.4, 3)
+        self.test_values['url2']['num_of_url'] = 2
+        self.test_values['url2']['url_rt_lst'] = [0.7, 0.7]
+        self.test_values['url2']['url_rt_max'] = round(0.7, 3)
+        self.test_values['total']['total_url_rt'] = round(4.4, 3)
+
+        self.total_line_num = 7
+
+    def test_stats(self):
+        test_stats = calculate_stats(self.test_values, self.total_line_num)
+        self.assertEqual(test_stats, self.expected_json)
+
+
 
 
 if __name__ == '__main__':
