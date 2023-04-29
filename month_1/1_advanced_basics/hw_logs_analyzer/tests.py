@@ -326,7 +326,8 @@ class TestCalculateStats(unittest.TestCase):
                     'time_med': 0.700,
                 }
         )
-        self.expected_json = json.dumps(expected_dict)
+        sorted_expected_dict = sorted(expected_dict.items(), key=lambda tup: tup[1]['time_sum'], reverse=True)
+        self.expected_json = json.dumps(sorted_expected_dict)
 
         self.test_values = defaultdict(dict)
         self.test_values['url1']['url_rt'] = round(3.0, 3)

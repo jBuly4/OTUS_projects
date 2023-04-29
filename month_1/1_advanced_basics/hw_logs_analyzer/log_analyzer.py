@@ -204,7 +204,13 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
     return collector
 
 
-def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> json:
+def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> str:
+    """
+    Calculate stats from collected info, sort them and return in json format.
+    :param collector: collected info after parsing log file
+    :param total_line_num: total number of lines
+    :return: sorted stats which is string with list of tuples
+    """
     stats = defaultdict(dict)
     total_rt = collector.pop('total')
     total_request_time = total_rt['total_url_rt']
@@ -225,7 +231,9 @@ def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> j
         stats[url][time_max] = collector[url]['url_rt_max']
         stats[url][time_med] = median(collector[url]['url_rt_lst'])
 
-    return json.dumps(stats)
+    sorted_stats = sorted(stats.items(), key=lambda tup: tup[1][time_sum], reverse=True)
+
+    return json.dumps(sorted_stats)
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
