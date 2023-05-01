@@ -132,5 +132,5 @@ dmypy.json
 /month_1/1_advanced_basics/lecture.ipynb
 /.idea
 /month_1/1_advanced_basics/hw_logs_analyzer/.idea
-/month_1/1_advanced_basics/hw_logs_analyzer/nginx-access-ui.log-20170630
-/month_1/1_advanced_basics/hw_logs_analyzer/nginx-access-ui.log-20170630.gz
+/month_1/1_advanced_basics/hw_logs_analyzer/log/nginx-access-ui.log-20170630
+/month_1/1_advanced_basics/hw_logs_analyzer/log/nginx-access-ui.log-20170630.gz

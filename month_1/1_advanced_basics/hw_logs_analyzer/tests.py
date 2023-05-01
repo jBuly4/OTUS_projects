@@ -328,6 +328,8 @@ class TestCalculateStats(unittest.TestCase):
         )
         sorted_expected_dict = sorted(expected_dict.items(), key=lambda tup: tup[1]['time_sum'], reverse=True)
         self.expected_json = json.dumps(sorted_expected_dict)
+        sorted_expected_dict2 = sorted(expected_dict.items(), key=lambda tup: tup[1]['time_sum'], reverse=True)[:1]
+        self.expected_json2 = json.dumps(sorted_expected_dict2)
 
         self.test_values = defaultdict(dict)
         self.test_values['url1']['url_rt'] = round(3.0, 3)
@@ -341,12 +343,15 @@ class TestCalculateStats(unittest.TestCase):
         self.test_values['total']['total_url_rt'] = round(4.4, 3)
 
         self.total_line_num = 7
+        self.report_size = 2
 
     def test_stats(self):
-        test_stats = calculate_stats(self.test_values, self.total_line_num)
+        test_stats = calculate_stats(self.test_values, self.total_line_num, self.report_size)
         self.assertEqual(test_stats, self.expected_json)
 
-
+    def test_stats_reduced_size(self):
+        test_stats2 = calculate_stats(self.test_values, self.total_line_num, self.report_size - 1)
+        self.assertEqual(test_stats2, self.expected_json2)
 
 
 if __name__ == '__main__':

@@ -12,7 +12,8 @@ from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 from statistics import median
-from typing import DefaultDict, Generator, NamedTuple, Pattern, Union
+from string import Template
+from typing import DefaultDict, List, Generator, NamedTuple, Pattern, Union
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
 #                     '$status $body_bytes_sent "$http_referer" '
@@ -24,6 +25,7 @@ DEFAULT_CONFIG = {
     "REPORT_DIR": "./reports",
     "LOG_DIR": "./log",
     "LOG_FILE": None,
+    "MISTAKES_BIAS": 0.05,
 }
 
 
@@ -97,7 +99,7 @@ def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
     :param report_dir: path to report directory
     :return: bool
     """
-    report_name = f"report-{log_file.logdate.strftime('%Y.%m.%d')}.html"
+    report_name = f"report-{log_file.log_date.strftime('%Y.%m.%d')}.html"
     report_path = report_dir + "/" + report_name
 
     if not Path(report_dir).exists():
@@ -204,12 +206,30 @@ def collect_info(collector: DefaultDict[str, dict], url: str,
     return collector
 
 
-def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> str:
+def format_stats(stats_sorted: List) -> List:
     """
-    Calculate stats from collected info, sort them and return in json format.
+    Reorganize sorted stats to list of dicts for min.js.
+    :param stats_sorted: sorted statistic data
+    :return: list of dictionaries for min.js
+    """
+    table_lst = []
+
+    for tup in stats_sorted:
+        tmp_dict = tup[1]
+        tmp_dict.update({'url': tup[0]})
+        table_lst.append(tmp_dict)
+        del tmp_dict
+
+    return table_lst
+
+
+def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int, report_size: int) -> str:
+    """
+    Calculate stats from collected info, sort them and return sliced by report size in json format.
+    :param report_size: size of data for report
     :param collector: collected info after parsing log file
     :param total_line_num: total number of lines
-    :return: sorted stats which is string with list of tuples
+    :return: json string with list of dictionaries of report_size
     """
     stats = defaultdict(dict)
     total_rt = collector.pop('total')
@@ -229,24 +249,69 @@ def calculate_stats(collector: DefaultDict[str, dict], total_line_num: int) -> s
         stats[url][time_perc] = round(100 * collector[url]['url_rt'] / total_request_time, 2)
         stats[url][time_avg] = round(collector[url]['url_rt'] / collector[url]['num_of_url'], 2)
         stats[url][time_max] = collector[url]['url_rt_max']
-        stats[url][time_med] = median(collector[url]['url_rt_lst'])
+        stats[url][time_med] = round(median(collector[url]['url_rt_lst']), 2)
 
-    sorted_stats = sorted(stats.items(), key=lambda tup: tup[1][time_sum], reverse=True)
+    sorted_stats = sorted(stats.items(), key=lambda tup: tup[1][time_sum], reverse=True)[:report_size]
+    table_lst = format_stats(sorted_stats)
+    logging.info("Stats are calculated.")
 
-    return json.dumps(sorted_stats)
+    return json.dumps(table_lst)
+
+
+def write_stats_to_report(statistics: str, path_to_report: str) -> None:
+    """
+    Write statistics to report.
+    :param statistics: calculated statistics in json string
+    :param path_to_report: path to report file
+    """
+    with open("./report.html") as report_html_template:
+        logging.info("Loading template for report.")
+        template = Template(report_html_template.read())
+
+    report_template = template.safe_substitute(table_json=statistics)
+
+    with open(path_to_report, 'w') as report:
+        report.write(report_template)
 
 
 def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
-    # read_log line by line.
-    # parse line and return metrics needed: url, request time, count=1
-    # save metrics at memory in the dictionary:
-    # memory[url] = {request_time: float, count: int}.
-    # memory[url][request_time] += request_time;
-    # memory[url][count] += count
-    # sort memory by request_time in descending order
-    # calculate statistics
-    # create_report: take read_log, create file, add lines from memory using, up to report_size limit
-    pass
+    """
+    Generating report in few steps:
+        1. Get report name, path and size;
+        2. Read log line by line, parse lines, count fails and collect data;
+        3. If fails < mistake bias then calculate stats, write it to report. Otherwise - raise Exception.
+    :param log_file: log file to be read
+    :param actual_config: actual configuration
+    """
+    report_name = f"report-{log_file.log_date.strftime('%Y.%m.%d')}.html"
+    report_path = actual_config.get("REPORT_DIR") + "/" + report_name
+    report_size = actual_config.get("REPORT_SIZE")
+    bias = actual_config.get("MISTAKES_BIAS")
+
+    memory = defaultdict(dict)
+    fails_count = 0
+    num_of_lines = 0
+
+    for line in read_log(log_file.log_name):
+        parsed_line = parse_line(line)
+        if not parsed_line.fail:
+            memory = collect_info(memory, parsed_line.url, parsed_line.request_time)
+        else:
+            fails_count += 1
+        num_of_lines += 1
+        if num_of_lines > 100000:
+            break
+
+    logging.info(f"Log is read and parsed. Fails count {fails_count}, number of lines {num_of_lines}.\nStarting to "
+                 f"calculate stats.")
+
+    mistake_percent = round(fails_count / num_of_lines, 2)
+    if mistake_percent < bias:
+        stats = calculate_stats(memory, num_of_lines, report_size)
+        write_stats_to_report(stats, report_path)
+        logging.info(f"Report generated. Fails percent is {mistake_percent}.")
+    else:
+        raise ValueError(f"Fails percent bigger than bias ({mistake_percent} > {bias}).")
 
 
 def main(actual_config: dict, file_pattern: Pattern) -> None:
@@ -258,9 +323,13 @@ def main(actual_config: dict, file_pattern: Pattern) -> None:
         return
 
     if not log_is_reported(actual_log_file, actual_config.get("REPORT_DIR")):
-        generate_report(actual_log_file, actual_config)
-        logging.info("Report generated!")
-        return
+        try:
+            generate_report(actual_log_file, actual_config)
+            logging.info("Complete!")
+            return
+        except ValueError:
+            logging.exception("Generate_report raised exception!")
+            sys.exit(1)
     else:
         logging.info("Logs had already been reported!")
         return
