@@ -102,7 +102,6 @@ def log_is_reported(log_file: NamedTuple, report_dir: str) -> bool:
         logging.exception("Exception raised while checking log was reported or not!")
         raise NotADirectoryError("Something wrong with path while checking is log was reported.")
 
-    logging.info("Log was not reported!")
     return Path(report_path).exists()
 
 
@@ -327,6 +326,7 @@ def main(actual_config: dict, file_pattern: Pattern) -> None:
 
     try:
         if not log_is_reported(actual_log_file, actual_config.get("REPORT_DIR")):
+            logging.info("Log was not reported! Starting to generate report.")
             generate_report(actual_log_file, actual_config)
             logging.info("Complete!")
             return
@@ -342,11 +342,12 @@ def main(actual_config: dict, file_pattern: Pattern) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-            description="####----##########----####\n"
-                        "####----LOGS_PARSER----####\n"
-                        "####----##########----####"
+    print(
+            "####----##########----####\n"
+            "####----LOGS_PARSER----####\n"
+            "####----##########----####"
     )
+    parser = argparse.ArgumentParser()
     parser.add_argument(
             "--config",
             dest="config",
