@@ -9,7 +9,6 @@ import sys
 
 from collections import defaultdict, namedtuple
 from datetime import datetime
-from decimal import Decimal
 from pathlib import Path
 from statistics import median
 from string import Template
@@ -41,14 +40,11 @@ def prepare_config(default_config: dict, path_to_config: str = None) -> dict:
     if not path_to_config:
         logging.info('Used default config')
         return actual_config
-
     try:
         with open(path_to_config) as conf_handler:
             new_config = json.load(conf_handler)  # no .read() needed because json.load expects fileobject
             actual_config.update(new_config)
-
             logging.info(f'Loaded config from file: {path_to_config}')
-
             return actual_config
     except FileNotFoundError:
         logging.exception(f'Config file not found: {path_to_config}')
@@ -70,8 +66,8 @@ def find_log_last(path_to_log_dir: str, file_pattern: Pattern) -> NamedTuple:
     LastLog = namedtuple("LastLog", ["log_name", "log_date"])
     latest_log_date = datetime(1, 1, 1)  # start point for dates comparison
     file_latest = None
-
     date_format = "%Y%m%d"  # classmethod datetime.strptime(date_string, format)
+
     for file in path.iterdir():
         match = file_pattern.match(str(file).split("/")[1])  # file is a path: dir_name/file
         if match:
@@ -315,24 +311,34 @@ def generate_report(log_file: NamedTuple, actual_config: dict) -> None:
 
 
 def main(actual_config: dict, file_pattern: Pattern) -> None:
-    actual_log_file = find_log_last(actual_config.get("LOG_DIR"), file_pattern)  # recommended that
+    try:
+        actual_log_file = find_log_last(actual_config.get("LOG_DIR"), file_pattern)  # recommended that
     # this function returns namedtuple
+    except NotADirectoryError:
+        logging.info("Not a directory exception when finding last log!")
+        sys.exit(1)
+    except FileNotFoundError:
+        logging.info("Last log is not found!")
+        sys.exit(1)
 
     if not actual_log_file:
         logging.info("No logs to report")
         return
 
-    if not log_is_reported(actual_log_file, actual_config.get("REPORT_DIR")):
-        try:
+    try:
+        if not log_is_reported(actual_log_file, actual_config.get("REPORT_DIR")):
             generate_report(actual_log_file, actual_config)
             logging.info("Complete!")
             return
-        except ValueError:
-            logging.exception("Generate_report raised exception!")
-            sys.exit(1)
-    else:
-        logging.info("Logs had already been reported!")
-        return
+        else:
+            logging.info("Logs had already been reported!")
+            return
+    except NotADirectoryError:
+        logging.info("log_is_reported raised exception!")
+        sys.exit(1)
+    except ValueError:
+        logging.info("Generate_report raised exception!")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
