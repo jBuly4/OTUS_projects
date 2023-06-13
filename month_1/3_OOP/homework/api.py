@@ -34,13 +34,15 @@ GENDERS = {
     MALE: "male",
     FEMALE: "female",
 }
+MAX_AGE = 70
 
 
 class Field(ABC):
     """Basic field class"""
+
     def __init__(self, required=False, empty=False):
         self.required = required
-        self.epmty = empty
+        self.empty = empty
 
     @abstractmethod
     def parse_field(self, input_value):
@@ -48,49 +50,77 @@ class Field(ABC):
 
 
 class CharField(Field):
+
     def parse_field(self, input_value):
         if isinstance(input_value, str):
             return input_value
-        raise ValueError("Expected string type on input")
+        raise ValueError("Expected string type on input!")
 
 
 class ArgumentsField(Field):
+
     def parse_field(self, input_value):
         if isinstance(input_value, dict):
             return input_value
-        raise ValueError("Expected dict type on input")
+        raise ValueError("Expected dict type on input!")
 
 
 class EmailField(CharField):
+
     def parse_field(self, input_value):
         email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         if re.match(email_pattern, str(input_value)):
             return input_value
-        raise ValueError("Email validation failed")
+        raise ValueError("Email validation failed!")
 
 
 class PhoneField(Field):
+
     def parse_field(self, input_value):
         phone_pattern = r"^7[\d]{10}$"
         if re.match(phone_pattern, str(input_value)):
             return input_value
-        raise ValueError("Phone validation failed")
+        raise ValueError("Phone validation failed!")
 
 
-class DateField(object):
-    pass
+class DateField(Field):
+
+    def parse_field(self, input_value):
+        try:
+            date = datetime.datetime.strptime(input_value, "%d.%m.%Y")
+        except Exception:
+            raise ValueError("Wrong date format!")
+        return date
 
 
-class BirthDayField(object):
-    pass
+class BirthDayField(DateField):
+
+    def parse_field(self, input_value):
+        b_date = super().parse_field(input_value)
+        now = datetime.datetime.now()
+        if now.year - b_date.year <= MAX_AGE:
+            return b_date
+        raise ValueError(f"Maximum age of {MAX_AGE} is reached.")
 
 
-class GenderField(object):
-    pass
+class GenderField(Field):
+
+    def parse_field(self, input_value):
+        gender_enums = [UNKNOWN, MALE, FEMALE]
+        if input_value in gender_enums:
+            return input_value
+        raise ValueError(f"Gender validation failed! Use numbers: unknown is {UNKNOWN}, male is {MALE}, female is "
+                         f"{FEMALE}")
 
 
-class ClientIDsField(object):
-    pass
+class ClientIDsField(Field):
+
+    def parse_field(self, input_value):
+        if not isinstance(input_value, list):
+            raise ValueError("Input value must be a list!")
+        if not all(isinstance(number, int) for number in input_value):
+            raise ValueError("Input value must be list of numbers!")
+        return input_value
 
 
 class ClientsInterestsRequest(object):
