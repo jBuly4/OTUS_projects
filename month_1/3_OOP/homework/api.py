@@ -45,13 +45,13 @@ class Field(ABC):
         self.empty = empty
 
     @abstractmethod
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         pass
 
 
 class CharField(Field):
 
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         if isinstance(input_value, str):
             return input_value
         raise ValueError("Expected string type on input!")
@@ -59,7 +59,7 @@ class CharField(Field):
 
 class ArgumentsField(Field):
 
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         if isinstance(input_value, dict):
             return input_value
         raise ValueError("Expected dict type on input!")
@@ -67,7 +67,7 @@ class ArgumentsField(Field):
 
 class EmailField(CharField):
 
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
         if re.match(email_pattern, str(input_value)):
             return input_value
@@ -76,7 +76,7 @@ class EmailField(CharField):
 
 class PhoneField(Field):
 
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         phone_pattern = r"^7[\d]{10}$"
         if re.match(phone_pattern, str(input_value)):
             return input_value
@@ -85,7 +85,7 @@ class PhoneField(Field):
 
 class DateField(Field):
 
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         try:
             date = datetime.datetime.strptime(input_value, "%d.%m.%Y")
         except Exception:
@@ -95,8 +95,8 @@ class DateField(Field):
 
 class BirthDayField(DateField):
 
-    def parse_field(self, input_value):
-        b_date = super().parse_field(input_value)
+    def validate_field(self, input_value):
+        b_date = super().validate_field(input_value)
         now = datetime.datetime.now()
         if now.year - b_date.year <= MAX_AGE:
             return b_date
@@ -105,9 +105,9 @@ class BirthDayField(DateField):
 
 class GenderField(Field):
 
-    def parse_field(self, input_value):
-        gender_enums = [UNKNOWN, MALE, FEMALE]
-        if input_value in gender_enums:
+    def validate_field(self, input_value):
+        gender_enum = [UNKNOWN, MALE, FEMALE]
+        if input_value in gender_enum:
             return input_value
         raise ValueError(f"Gender validation failed! Use numbers: unknown is {UNKNOWN}, male is {MALE}, female is "
                          f"{FEMALE}")
@@ -115,12 +115,54 @@ class GenderField(Field):
 
 class ClientIDsField(Field):
 
-    def parse_field(self, input_value):
+    def validate_field(self, input_value):
         if not isinstance(input_value, list):
             raise ValueError("Input value must be a list!")
         if not all(isinstance(number, int) for number in input_value):
             raise ValueError("Input value must be list of numbers!")
         return input_value
+
+
+class RequestMetaClass(type):
+    """Metaclass for all requests"""
+    def __new__(mcs, name, bases, attrs):
+        fields = []
+        for key, attribute in attrs.items():
+            if isinstance(attribute, Field):
+                attribute.name = key
+                fields.append(attribute)
+        attrs.update({'fields': fields})
+        return type.__new__(mcs, name, bases, attrs)
+
+
+class Request(metaclass=RequestMetaClass):
+    """Base request class"""
+    def __int__(self, request):
+        self._empty = (None, '', [], {}, ())
+        self._errors = []
+        self._has_errors = True
+        self.request = request
+
+    def update_fields(self):
+        for field in self.fields:
+            try:
+                value = self.request[field.name]
+            except (TypeError, KeyError):
+                if field.required:
+                    self._errors.append(f'Field "{field}" is required!')
+                    continue
+
+            if value in self._empty and not field.nullable:
+                self._errors.append(f'Field "{field}" should not be empty!')
+
+            try:
+                if value not in self._empty:
+                    value = field.validate_field(value)
+                    setattr(self, field.name, value)
+            except ValueError as exc:
+                self._errors.append(f'Field "{field}" raised exception: {exc}')
+
+        return self._errors
 
 
 class ClientsInterestsRequest(object):
