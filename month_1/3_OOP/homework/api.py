@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import random
 import re
 from abc import ABC, abstractmethod
 import json
@@ -9,6 +10,8 @@ import hashlib
 import uuid
 from optparse import OptionParser
 from http.server import BaseHTTPRequestHandler, HTTPServer
+
+import scoring
 
 SALT = "Otus"
 ADMIN_LOGIN = "admin"
@@ -40,9 +43,9 @@ MAX_AGE = 70
 class Field(ABC):
     """Basic field class"""
 
-    def __init__(self, required=False, empty=False):
+    def __init__(self, required=False, nullable=False):
         self.required = required
-        self.empty = empty
+        self.empty = nullable
 
     @abstractmethod
     def validate_field(self, input_value):
@@ -109,8 +112,10 @@ class GenderField(Field):
         gender_enum = [UNKNOWN, MALE, FEMALE]
         if input_value in gender_enum:
             return input_value
-        raise ValueError(f"Gender validation failed! Use numbers: unknown is {UNKNOWN}, male is {MALE}, female is "
-                         f"{FEMALE}")
+        raise ValueError(
+                f"Gender validation failed! Use numbers: unknown is {UNKNOWN}, male is {MALE}, female is "
+                f"{FEMALE}"
+        )
 
 
 class ClientIDsField(Field):
@@ -125,6 +130,7 @@ class ClientIDsField(Field):
 
 class RequestMetaClass(type):
     """Metaclass for all requests"""
+
     def __new__(mcs, name, bases, attrs):
         fields = []
         for key, attribute in attrs.items():
@@ -137,13 +143,14 @@ class RequestMetaClass(type):
 
 class Request(metaclass=RequestMetaClass):
     """Base request class"""
+
     def __int__(self, request):
         self._empty = (None, '', [], {}, ())
         self._errors = []
-        self._has_errors = True
+        self._has_errors = False
         self.request = request
 
-    def update_fields(self):
+    def validate_and_save_fields(self):
         for field in self.fields:
             try:
                 value = self.request[field.name]
@@ -164,13 +171,37 @@ class Request(metaclass=RequestMetaClass):
 
         return self._errors
 
+    def is_valid(self):
+        if self._errors:
+            self._has_errors = True
 
-class ClientsInterestsRequest(object):
+        return self._has_errors
+
+    def get_fields(self):
+        fields_to_return = []
+
+        for field in self.fields:
+            if field.name in self.request and field.name not in self._empty:
+                fields_to_return.append(field.name)
+
+        return fields_to_return
+
+    def create_error_msg(self):
+        return ', '.join(self._errors)
+
+
+class ClientsInterestsRequest(Request):
     client_ids = ClientIDsField(required=True)
     date = DateField(required=False, nullable=True)
 
 
-class OnlineScoreRequest(object):
+class OnlineScoreRequest(Request):
+    _pairs = (
+        ('phone', 'email'),
+        ('first_name', 'last_name'),
+        ('birthday', 'gender')
+    )
+
     first_name = CharField(required=False, nullable=True)
     last_name = CharField(required=False, nullable=True)
     email = EmailField(required=False, nullable=True)
@@ -178,8 +209,24 @@ class OnlineScoreRequest(object):
     birthday = BirthDayField(required=False, nullable=True)
     gender = GenderField(required=False, nullable=True)
 
+    def __init__(self):
+        self._errors = super().validate_and_save_fields()
 
-class MethodRequest(object):
+    def validate_and_save_fields(self):
+        _fields = set(self.get_fields())
+        validated_pairs = any(
+                [
+                    _fields.issuperset(pair) for pair in self._pairs
+                ]
+        )
+        if not validated_pairs:
+            error_msg = ' or '.join(str(pair) for pair in self._pairs)
+            self._errors.append(f'Pairs {error_msg} shouldn\'t be empty')
+
+        return self._errors
+
+
+class MethodRequest(Request):
     account = CharField(required=False, nullable=True)
     login = CharField(required=True, nullable=True)
     token = CharField(required=True, nullable=True)
@@ -189,6 +236,84 @@ class MethodRequest(object):
     @property
     def is_admin(self):
         return self.login == ADMIN_LOGIN
+
+
+class RequestHandler(ABC):
+    """Request handler abstract class"""
+
+    def __init__(self, request, context):
+        self.request = request
+        self.context = context
+
+    @abstractmethod
+    def create_request(self, data):
+        """Create request"""
+        pass
+
+    @abstractmethod
+    def request_handler(self, request_type):
+        """Logic of handler"""
+        pass
+
+    def start_processing(self, data):
+        request_type = self.create_request(data)
+
+        if not request_type.is_valid():
+            return request_type.create_error_msg(), INVALID_REQUEST
+
+        return self.request_handler(request_type)
+
+
+class OnlineScoreRequestHandler(RequestHandler):
+
+    def create_request(self, data):
+        return OnlineScoreRequest(data)
+
+    def request_handler(self, request_type):
+        self.context['has'] = request_type.get_fields()
+
+        if self.request.is_admin:
+            return {'score': 42}, OK
+
+        phone, email, birthday, gender, first_name, last_name = self.create_request()
+        response = dict(
+                score=scoring.get_score(
+                        None,
+                        phone,
+                        email,
+                        birthday,
+                        gender,
+                        first_name,
+                        last_name
+                )
+        )
+
+        return response, OK
+
+    @staticmethod
+    def build_params_for_scoring(request_type):
+        phone = getattr(request_type, 'phone', None)
+        email = getattr(request_type, 'email', None)
+        birthday = getattr(request_type, 'birthday', None)
+        gender = getattr(request_type, 'gender', None)
+        first_name = getattr(request_type, 'first_name', None)
+        last_name = getattr(request_type, 'last_name', None)
+
+        return phone, email, birthday, gender, first_name, last_name
+
+
+class ClientsInterestsRequestHandler(RequestHandler):
+
+    def create_request(self, data):
+        return ClientsInterestsRequest(data)
+
+    def request_handler(self, request_type):
+        response = {
+            client_id: scoring.get_interests(None, client_id) for client_id in request_type.client_ids
+        }
+        self.context['nclients'] = len(request_type.client_ids)
+
+        return response, OK
 
 
 def check_auth(request):
@@ -202,8 +327,26 @@ def check_auth(request):
 
 
 def method_handler(request, ctx, store):
-    response, code = None, None
-    return response, code
+    handlers = {
+        'online_score': OnlineScoreRequestHandler,
+        'clinets_interests': ClientsInterestsRequestHandler
+    }
+
+    request = MethodRequest(request['body'])
+
+    if not request.is_valid():
+        return request.create_error_msg(), INVALID_REQUEST
+
+    if not check_auth(request):
+        return None, FORBIDDEN
+
+    if not isinstance(request.arguments, dict):
+        return 'Method arguments should be a dictionary', INVALID_REQUEST
+
+    if request.method not in handlers:
+        return None, NOT_FOUND
+
+    return handlers[request.method](request, ctx).start_processing(request.arguments)
 
 
 class MainHTTPHandler(BaseHTTPRequestHandler):
@@ -255,8 +398,10 @@ if __name__ == "__main__":
     op.add_option("-p", "--port", action="store", type=int, default=8080)
     op.add_option("-l", "--log", action="store", default=None)
     (opts, args) = op.parse_args()
-    logging.basicConfig(filename=opts.log, level=logging.INFO,
-                        format='[%(asctime)s] %(levelname).1s %(message)s', datefmt='%Y.%m.%d %H:%M:%S')
+    logging.basicConfig(
+            filename=opts.log, level=logging.INFO,
+            format='[%(asctime)s] %(levelname).1s %(message)s', datefmt='%Y.%m.%d %H:%M:%S'
+    )
     server = HTTPServer(("localhost", opts.port), MainHTTPHandler)
     logging.info("Starting server at %s" % opts.port)
     try:
