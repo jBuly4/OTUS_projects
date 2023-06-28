@@ -144,10 +144,10 @@ class RequestMetaClass(type):
 class Request(metaclass=RequestMetaClass):
     """Base request class"""
 
-    def __int__(self, request):
+    def __init__(self, request):
         self._empty = (None, '', [], {}, ())
         self._errors = []
-        self._has_errors = False
+        self._has_errors = True
         self.request = request
 
     def validate_and_save_fields(self):
@@ -159,7 +159,7 @@ class Request(metaclass=RequestMetaClass):
                     self._errors.append(f'Field "{field}" is required!')
                     continue
 
-            if value in self._empty and not field.nullable:
+            if value in self._empty and not field.empty:
                 self._errors.append(f'Field "{field}" should not be empty!')
 
             try:
@@ -209,7 +209,7 @@ class OnlineScoreRequest(Request):
     birthday = BirthDayField(required=False, nullable=True)
     gender = GenderField(required=False, nullable=True)
 
-    def __init__(self):
+    def __init__(self, request):
         self._errors = super().validate_and_save_fields()
 
     def validate_and_save_fields(self):
@@ -318,9 +318,9 @@ class ClientsInterestsRequestHandler(RequestHandler):
 
 def check_auth(request):
     if request.is_admin:
-        digest = hashlib.sha512(datetime.datetime.now().strftime("%Y%m%d%H") + ADMIN_SALT).hexdigest()
+        digest = hashlib.sha512((datetime.datetime.now().strftime("%Y%m%d%H") + ADMIN_SALT).encode()).hexdigest()
     else:
-        digest = hashlib.sha512(request.account + request.login + SALT).hexdigest()
+        digest = hashlib.sha512((request.account + request.login + SALT).encode()).hexdigest()
     if digest == request.token:
         return True
     return False
@@ -329,24 +329,33 @@ def check_auth(request):
 def method_handler(request, ctx, store):
     handlers = {
         'online_score': OnlineScoreRequestHandler,
-        'clinets_interests': ClientsInterestsRequestHandler
+        'clients_interests': ClientsInterestsRequestHandler
     }
+    return_code = INVALID_REQUEST
+    request_body = request.get('body')
 
-    request = MethodRequest(request['body'])
+    if request_body:
+        logging.info('Got request body!')
+        request_new = MethodRequest(request_body)
+        request_new.validate_and_save_fields()
 
-    if not request.is_valid():
-        return request.create_error_msg(), INVALID_REQUEST
+        if request_new.is_valid():
+            logging.info('Request is valid!')
+            auth = check_auth(request_new)
+            return_code = FORBIDDEN
 
-    if not check_auth(request):
-        return None, FORBIDDEN
+            if auth:
+                if request_new.method in handlers:
+                    return handlers[request.method](request, ctx).start_processing(request.arguments)
+                else:
+                    return_code = NOT_FOUND
+                    return None, return_code
 
-    if not isinstance(request.arguments, dict):
-        return 'Method arguments should be a dictionary', INVALID_REQUEST
+            return None, return_code
+        else:
+            return request_new.create_error_msg(), return_code
 
-    if request.method not in handlers:
-        return None, NOT_FOUND
-
-    return handlers[request.method](request, ctx).start_processing(request.arguments)
+    return None, return_code
 
 
 class MainHTTPHandler(BaseHTTPRequestHandler):
