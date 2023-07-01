@@ -147,7 +147,7 @@ class Request(metaclass=RequestMetaClass):
     def __init__(self, request):
         self._empty = (None, '', [], {}, ())
         self._errors = []
-        self._has_errors = True
+        self._has_errors = True  # i think this is not needed
         self.request = request
 
     def validate_and_save_fields(self):
@@ -161,13 +161,14 @@ class Request(metaclass=RequestMetaClass):
 
             if value in self._empty and not field.empty:
                 self._errors.append(f'Field "{field}" should not be empty!')
-
-            try:
-                if value not in self._empty:
+                continue
+            else:
+                try:
+                    # if value not in self._empty:  # check this condition. if arguments are empty then it won't be set
                     value = field.validate_field(value)
                     setattr(self, field.name, value)
-            except ValueError as exc:
-                self._errors.append(f'Field "{field}" raised exception: {exc}')
+                except ValueError as exc:
+                    self._errors.append(f'Field "{field.name}" raised exception: {exc}')
 
         return self._errors
 
@@ -209,8 +210,9 @@ class OnlineScoreRequest(Request):
     birthday = BirthDayField(required=False, nullable=True)
     gender = GenderField(required=False, nullable=True)
 
-    def __init__(self, request):
-        self._errors = super().validate_and_save_fields()
+    # def __init__(self, request):
+    #     self._errors = super().validate_and_save_fields()
+
 
     def validate_and_save_fields(self):
         _fields = set(self.get_fields())
@@ -272,10 +274,10 @@ class OnlineScoreRequestHandler(RequestHandler):
     def request_handler(self, request_type):
         self.context['has'] = request_type.get_fields()
 
-        if self.request.is_admin:
+        if self.request_type.is_admin:
             return {'score': 42}, OK
 
-        phone, email, birthday, gender, first_name, last_name = self.create_request()
+        phone, email, birthday, gender, first_name, last_name = self.build_params_for_scoring(request_type)
         response = dict(
                 score=scoring.get_score(
                         None,
@@ -308,10 +310,11 @@ class ClientsInterestsRequestHandler(RequestHandler):
         return ClientsInterestsRequest(data)
 
     def request_handler(self, request_type):
+        # print(request_type, type(request_type), request_type.__dict__)
         response = {
-            client_id: scoring.get_interests(None, client_id) for client_id in request_type.client_ids
+            client_id: scoring.get_interests(None, client_id) for client_id in request_type.clients_ids
         }
-        self.context['nclients'] = len(request_type.client_ids)
+        self.context['nclients'] = len(request_type.request.get('arguments'))
 
         return response, OK
 
@@ -333,11 +336,15 @@ def method_handler(request, ctx, store):
     }
     return_code = INVALID_REQUEST
     request_body = request.get('body')
+    # print(request_body)
 
     if request_body:
         logging.info('Got request body!')
         request_new = MethodRequest(request_body)
+        # print(request_new.__dict__)
         request_new.validate_and_save_fields()
+        # print(request_new.__dict__)
+        # print(request_new.arguments.__dict__)
 
         if request_new.is_valid():
             logging.info('Request is valid!')
@@ -346,7 +353,7 @@ def method_handler(request, ctx, store):
 
             if auth:
                 if request_new.method in handlers:
-                    return handlers[request.method](request, ctx).start_processing(request.arguments)
+                    return handlers[request_new.method](request_new, ctx).start_processing(request_new.arguments)
                 else:
                     return_code = NOT_FOUND
                     return None, return_code
