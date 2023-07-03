@@ -65,7 +65,7 @@ class Field:
         if not isinstance(self.value, field_type):
             type_of_field = " or ".join([field_t.__name__ for field_t in field_type]) \
                 if isinstance(field_type, tuple) else field_type.__name__
-            raise TypeError(f"Field must be {type_of_field.__name__} type!")
+            raise TypeError(f"Field must be {type_of_field} type!")
 
         return True
 
@@ -95,7 +95,7 @@ class CharField(Field):
 
 class ArgumentsField(Field):
 
-    def validate_field(self, input_value):
+    def validate_field(self):
         return super().validate_field(dict)
 
 
@@ -130,7 +130,7 @@ class PhoneField(Field):
 class DateField(Field):
 
     def validate_field(self):
-        super().field_is_valid(str)
+        super().validate_field(str)
 
         if self.field_is_valid is None:
             try:
@@ -145,16 +145,22 @@ class DateField(Field):
 class BirthDayField(DateField):
 
     def validate_field(self):
-        super().field_is_valid()
-        b_date = datetime.datetime.strptime(self.value, "%d.%m.%Y")
-        now = datetime.datetime.now()
+        super().validate_field()
 
-        if now.year - b_date.year <= MAX_AGE:
-            return True
-        else:
-            raise ValueError(f"Maximum age of {MAX_AGE} is reached.")
+        if self.field_is_valid is None:
+            if self.max_age <= MAX_AGE:
+                return True
+            else:
+                raise ValueError(f"Maximum age of {MAX_AGE} is reached.")
 
         return self.field_is_valid
+
+    @property
+    def max_age(self):
+        b_date = datetime.datetime.strptime(str(self.value), "%d.%m.%Y")
+        now = datetime.datetime.now()
+
+        return now.year - b_date.year
 
 
 class GenderField(Field):
@@ -218,10 +224,11 @@ class Request(metaclass=RequestMetaClass):
             getattr(self, field).value = self.request.get(field, None)
 
     def validate_fields(self):
+        # self._errors = []
         for field in self.fields:
             try:
-                getattr(self, field).validate_field(field)
-            except (TypeError, KeyError) as error:
+                getattr(self, field).validate_field()
+            except (TypeError, ValueError) as error:
                 self._errors.append(f'Field "{field}" failed validation with error {error}!')
 
         return not self._errors
@@ -230,8 +237,8 @@ class Request(metaclass=RequestMetaClass):
         fields_to_return = []
 
         for field in self.fields:
-            if field.name in self.request and not field.check_field_is_empty():
-                fields_to_return.append(field.name)
+            if field in self.request and not getattr(self, field).check_field_is_empty():
+                fields_to_return.append(field)
 
         return fields_to_return
 
@@ -284,7 +291,7 @@ class MethodRequest(Request):
 
     @property
     def is_admin(self):
-        return self.login == ADMIN_LOGIN
+        return self.login.value == ADMIN_LOGIN
 
 
 class RequestHandler(ABC):
