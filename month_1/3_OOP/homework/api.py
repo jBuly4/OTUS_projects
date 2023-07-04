@@ -41,7 +41,7 @@ MAX_AGE = 70
 
 
 class Field:
-    """Basic field class"""
+    """Basic field class with basic validation logic."""
 
     def __init__(self, required=False, nullable=False):
         self.required = required
@@ -52,7 +52,6 @@ class Field:
     def validate_field(self, field_type):
         """
         Method to validate value of field from input.
-
         :param field_type: type of field
         :return: True | False | raise ValueError
         """
@@ -189,14 +188,14 @@ class ClientIDsField(Field):
         super().validate_field(list)
         if self.field_is_valid is None:
             if not all(isinstance(number, int) for number in self.value):
-                raise TypeError("Input value must be list of numbers!")
+                raise TypeError("Client IDs field must be list of numbers!")
             return True
 
         return self.field_is_valid
 
 
 class RequestMetaClass(type):
-    """Metaclass for all requests. Creates attribute fields - list of Field type attributes"""
+    """Metaclass for all requests. Creates attribute fields - list of Field type attributes."""
 
     def __new__(mcs, name, bases, attrs):
         fields = []
@@ -208,7 +207,7 @@ class RequestMetaClass(type):
 
 
 class Request(metaclass=RequestMetaClass):
-    """Base request class"""
+    """Base request class with basic validation logic."""
 
     def __init__(self, request, context=None, store=None):
         self._errors = []
@@ -220,11 +219,9 @@ class Request(metaclass=RequestMetaClass):
 
     def save_values(self):
         for field in self.fields:
-            # attribute = getattr(self, field)
             getattr(self, field).value = self.request.get(field, None)
 
     def validate_fields(self):
-        # self._errors = []
         for field in self.fields:
             try:
                 getattr(self, field).validate_field()
@@ -295,7 +292,7 @@ class MethodRequest(Request):
 
 
 class RequestHandler(ABC):
-    """Request handler abstract class"""
+    """Request handler abstract class."""
 
     def __init__(self, request, is_admin=False, context=None, store=None):
         self.request = request
@@ -304,23 +301,24 @@ class RequestHandler(ABC):
         self.store = store
 
     @abstractmethod
-    def create_request_instance(self):
-        """Create request"""
+    def create_request_object(self):
+        """Instantiate request classes with request data."""
         pass
 
     @abstractmethod
     def handle_request(self):
-        """Logic of handler"""
+        """Logic of request handler."""
         pass
 
 
 class OnlineScoreRequestHandler(RequestHandler):
+    """Class to handle requests for online scoring."""
 
-    def create_request_instance(self):
+    def create_request_object(self):
         return OnlineScoreRequest(self.request)
 
     def handle_request(self):
-        request_obj = self.create_request_instance()
+        request_obj = self.create_request_object()
 
         logging.info("Starting fields validation.")
         if not request_obj.validate_fields():
@@ -362,12 +360,13 @@ class OnlineScoreRequestHandler(RequestHandler):
 
 
 class ClientsInterestsRequestHandler(RequestHandler):
+    """Class to handle requests about clients interests."""
 
-    def create_request_instance(self):
+    def create_request_object(self):
         return ClientsInterestsRequest(self.request)
 
     def handle_request(self):
-        request_obj = self.create_request_instance()
+        request_obj = self.create_request_object()
 
         logging.info("Starting fields validation.")
         if not request_obj.validate_fields():
@@ -396,6 +395,7 @@ def check_auth(request):
 
 
 def method_handler(request, ctx, store):
+    """Main function to handle requests, validate fields and route request to appropriate handler."""
     handlers = {
         'online_score': OnlineScoreRequestHandler,
         'clients_interests': ClientsInterestsRequestHandler
