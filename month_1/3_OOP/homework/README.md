@@ -1,4 +1,4 @@
-# User guide for log files parser.
+# Scoring API script.
 
 ## Usage: 
 ```bash
