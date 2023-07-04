@@ -57,21 +57,21 @@ class TestSuite(unittest.TestCase):
         response, code = self.get_response(request)
         self.assertEqual(api.INVALID_REQUEST, code)
         self.assertTrue(len(response))
-    #
+
     @cases([
-        # {},
-        # {"phone": "79175002040"},
-        # {"phone": "89175002040", "email": "stupnikov@otus.ru"},
-        # {"phone": "79175002040", "email": "stupnikovotus.ru"},
-        # {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": -1},
-        # {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": "1"},
-        # {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "01.01.1890"},
-        # {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "XXX"},
-        # {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "01.01.2000", "first_name": 1},
-        # {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "01.01.2000", "first_name":
-        #     "s", "last_name": 2},
+        {},
+        {"phone": "79175002040"},
+        {"phone": "89175002040", "email": "stupnikov@otus.ru"},
+        {"phone": "79175002040", "email": "stupnikovotus.ru"},
+        {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": -1},
+        {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": "1"},
+        {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "01.01.1890"},
+        {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "XXX"},
+        {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "01.01.2000", "first_name": 1},
+        {"phone": "79175002040", "email": "stupnikov@otus.ru", "gender": 1, "birthday": "01.01.2000", "first_name":
+            "s", "last_name": 2},
         {"phone": "79175002040", "birthday": "01.01.2000", "first_name": "s"},
-        # {"email": "stupnikov@otus.ru", "gender": 1, "last_name": 2},
+        {"email": "stupnikov@otus.ru", "gender": 1, "last_name": 2},
     ])
     def test_invalid_score_request(self, arguments):
         request = {"account": "horns&hoofs", "login": "h&f", "method": "online_score", "arguments": arguments}
@@ -98,7 +98,7 @@ class TestSuite(unittest.TestCase):
         score = response.get("score")
         self.assertTrue(isinstance(score, (int, float)) and score >= 0, arguments)
         self.assertEqual(sorted(self.context["has"]), sorted(arguments.keys()))
-    #
+
     def test_ok_score_admin_request(self):
         arguments = {"phone": "79175002040", "email": "stupnikov@otus.ru"}
         request = {"account": "horns&hoofs", "login": "admin", "method": "online_score", "arguments": arguments}
@@ -109,11 +109,11 @@ class TestSuite(unittest.TestCase):
         self.assertEqual(score, 42)
 
     @cases([
-    #     {},
-    #     {"date": "20.07.2017"},
-    #     {"client_ids": [], "date": "20.07.2017"},
-    #     {"client_ids": {1: 2}, "date": "20.07.2017"},
-    #     {"client_ids": ["1", "2"], "date": "20.07.2017"},
+        {},
+        {"date": "20.07.2017"},
+        {"client_ids": [], "date": "20.07.2017"},
+        {"client_ids": {1: 2}, "date": "20.07.2017"},
+        {"client_ids": ["1", "2"], "date": "20.07.2017"},
         {"client_ids": [1, 2], "date": "XXX"},
     ])
     def test_invalid_interests_request(self, arguments):

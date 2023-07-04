@@ -55,6 +55,8 @@ class Field:
         :param field_type: type of field
         :return: True | False | raise ValueError
         """
+        self.field_is_valid = None
+
         if self.value is None:
             return self.check_field_is_required()
 
