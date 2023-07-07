@@ -1,6 +1,6 @@
 import unittest
 
-import api
+from apiscoring import api
 
 
 class TestSuite(unittest.TestCase):

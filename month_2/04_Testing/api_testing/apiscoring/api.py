@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import random
 import re
 from abc import ABC, abstractmethod
 import json
