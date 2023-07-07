@@ -12,16 +12,6 @@ RECONNECT_DELAY = 20
 TIMEOUT = 180
 
 
-class ConfigTarantool:
-    """
-    Class to configure tarantool.
-    After installing docker of Tarantool you need to prepare db:
-    create space, create index for this space.
-    After that you can use this space to save data.
-    """
-    @classmethod
-
-
 class Store:
     def __init__(
             self,
@@ -50,6 +40,11 @@ class Store:
         self._run_config()
 
     def _run_config(self):
+        """
+            After installing docker of Tarantool you need to prepare db:
+            create space, create index for this space.
+            After that you can use this space to save data.
+            """
         self.connect.eval(f"box.schema.space.create('{self.space_name}')")
         self.connect.eval(f"box.space.{self.space_name}:create_index('primary', {{type = 'hash', parts = {{1, "
                         f"'unsigned'}}}})")

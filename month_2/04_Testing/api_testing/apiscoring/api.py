@@ -10,7 +10,7 @@ import uuid
 from optparse import OptionParser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-import scoring
+from apiscoring import scoring
 
 SALT = "Otus"
 ADMIN_LOGIN = "admin"
@@ -60,7 +60,9 @@ class Field:
             return self.check_field_is_required()
 
         if self.check_field_is_empty():
-            return self.check_field_is_nullable()
+            # return self.check_field_is_nullable()
+            self.check_field_is_nullable()  # found that ArgumentField with value = [] did not raise TypeError
+            # Need to be tested with functional. But old tests from Otus with that are passed
 
         if not isinstance(self.value, field_type):
             type_of_field = " or ".join([field_t.__name__ for field_t in field_type]) \
@@ -148,7 +150,7 @@ class BirthDayField(DateField):
         super().validate_field()
 
         if self.field_is_valid is None:
-            if self.max_age <= MAX_AGE:
+            if MAX_AGE >= self.max_age >= 0:  # corrected after tests. didn't catch dates from future
                 return True
             else:
                 raise ValueError(f"Maximum age of {MAX_AGE} is reached.")
