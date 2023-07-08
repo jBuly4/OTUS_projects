@@ -3,6 +3,8 @@
 #  connection.eval("box.space.examples:create_index('primary', {type = 'hash', parts = {1, 'unsigned'}})")
 # Check if a space named 'myspace' exists
 # result = conn.eval('return box.space.myspace ~= nil')
+# Delete a space named 'myspace'
+# conn.eval('box.space.myspace:drop()')
 
 import time
 
@@ -48,7 +50,7 @@ class Store:
             create space, create index for this space.
             After that you can use this space to save data.
             """
-        check_space_exists = self.connect.eval(f"return box.space.{self.space_name} ~= nil")
+        check_space_exists = self.connect.eval(f"return box.space.{self.space_name} ~= nil")[0]
         if not check_space_exists:
             self.connect.eval(f"box.schema.space.create('{self.space_name}')")
             self.connect.eval(

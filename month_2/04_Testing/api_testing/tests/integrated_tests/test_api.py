@@ -3,7 +3,7 @@ import hashlib
 import json
 import random
 
-import pytest
+import pytest, tarantool
 
 from apiscoring import api
 from apiscoring.store import Store
@@ -177,3 +177,66 @@ class TestInterestsRequest:
                 for v in response.values()
         )
         assert pytest.context.get("nclients"), len(arguments["client_ids"])
+
+
+class TestDBSpaceCreation:
+    HOST = "127.0.0.1"
+    HOST_PORT = 3301
+
+    def setup(self):
+        self.store = {}
+        self.spaces = []
+        self.connection = tarantool.Connection(self.HOST, self.HOST_PORT)
+
+    @pytest.mark.parametrize(
+            'space',
+            [
+                'test_space_1',
+                'test_space_2',
+                'test_space_3',
+            ]
+    )
+    def test_space_creating(self, space):
+        self.spaces.append(space)
+        self.store[space] = Store(space)
+        check_space_exists = self.connection.eval(f"return box.space.{space} ~= nil")[0]
+        assert check_space_exists, True
+
+    def teardown(self):
+        for space in self.spaces:
+            check_space_exists = self.connection.eval(f"return box.space.{space} ~= nil")[0]
+            if check_space_exists:
+                self.connection.eval(f"box.space.{space}:drop()")
+
+
+class TestDBSetGet:
+    HOST = "127.0.0.1"
+    HOST_PORT = 3301
+
+    def setup(self):
+        self.store = None
+        self.spaces = []
+        self.connection = tarantool.Connection(self.HOST, self.HOST_PORT)
+
+    @pytest.mark.parametrize(
+            'space, key_value',
+            [
+                ('test_space_1', (1, 'one')),
+                ('test_space_2', (2, 'two')),
+                ('test_space_3', (1, 'three')),
+            ]
+    )
+    def test_set_get_from_db(self, space, key_value):
+        key, value = key_value
+        self.spaces.append(space)
+        self.store = Store(space)
+        self.store.set(key, value)
+        db_value = self.store.get(key)
+
+        assert db_value, key_value[1]
+
+    def teardown(self):
+        for space in self.spaces:
+            check_space_exists = self.connection.eval(f"return box.space.{space} ~= nil")[0]
+            if check_space_exists:
+                self.connection.eval(f"box.space.{space}:drop()")
