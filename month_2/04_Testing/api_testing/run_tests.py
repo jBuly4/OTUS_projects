@@ -2,4 +2,4 @@ import pytest
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main(["-vv", "tests/unit_tests", "tests/integrated_tests"])

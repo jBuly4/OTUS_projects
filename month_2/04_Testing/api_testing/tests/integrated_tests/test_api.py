@@ -122,7 +122,7 @@ class TestScoreRequest:
         assert api.OK, code
         score = response.get("score")
         assert isinstance(score, (int, float)) and score >= 0, arguments
-        assert (sorted(pytest.context["has"]), sorted(arguments.keys()))
+        assert sorted(pytest.context["has"]), sorted(arguments.keys())
 
     def test_ok_score_admin_request(self):
         arguments = {"phone": "79175002040", "email": "stupnikov@otus.ru"}
