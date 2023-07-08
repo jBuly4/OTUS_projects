@@ -13,7 +13,7 @@ Prepare tarantool using this [link](https://www.tarantool.io/en/doc/1.6/book/get
 
 
 ## Testing
-To run tests type **_pytest_** in command line:
+To run tests type:
 ```bash
-pytest
+python run_tests.py
 ```

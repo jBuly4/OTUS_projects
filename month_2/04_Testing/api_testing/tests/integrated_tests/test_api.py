@@ -183,7 +183,7 @@ class TestDBSpaceCreation:
     HOST = "127.0.0.1"
     HOST_PORT = 3301
 
-    def setup(self):
+    def setup_method(self):
         self.store = {}
         self.spaces = []
         self.connection = tarantool.Connection(self.HOST, self.HOST_PORT)
@@ -202,7 +202,7 @@ class TestDBSpaceCreation:
         check_space_exists = self.connection.eval(f"return box.space.{space} ~= nil")[0]
         assert check_space_exists, True
 
-    def teardown(self):
+    def teardown_method(self):
         for space in self.spaces:
             check_space_exists = self.connection.eval(f"return box.space.{space} ~= nil")[0]
             if check_space_exists:
@@ -213,7 +213,7 @@ class TestDBSetGet:
     HOST = "127.0.0.1"
     HOST_PORT = 3301
 
-    def setup(self):
+    def setup_method(self):
         self.store = None
         self.spaces = []
         self.connection = tarantool.Connection(self.HOST, self.HOST_PORT)
@@ -235,7 +235,7 @@ class TestDBSetGet:
 
         assert db_value, key_value[1]
 
-    def teardown(self):
+    def teardown_method(self):
         for space in self.spaces:
             check_space_exists = self.connection.eval(f"return box.space.{space} ~= nil")[0]
             if check_space_exists:
