@@ -11,6 +11,7 @@ from optparse import OptionParser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from apiscoring import scoring
+from apiscoring.store import Store
 
 SALT = "Otus"
 ADMIN_LOGIN = "admin"
@@ -338,13 +339,13 @@ class OnlineScoreRequestHandler(RequestHandler):
         phone, email, birthday, gender, first_name, last_name = self.build_params_for_scoring(request_obj)
         response = dict(
                 score=scoring.get_score(
-                        None,
-                        phone,
-                        email,
-                        birthday,
-                        gender,
-                        first_name,
-                        last_name
+                        self.store,
+                        phone.value,
+                        email.value,
+                        birthday.value,
+                        gender.value,
+                        first_name.value,
+                        last_name.value
                 )
         )
 
@@ -380,7 +381,7 @@ class ClientsInterestsRequestHandler(RequestHandler):
         logging.info("Context is updated.")
 
         response = {
-            str(client_id): scoring.get_interests(None, client_id) for client_id in request_obj.client_ids.value
+            str(client_id): scoring.get_interests(self.store, client_id) for client_id in request_obj.client_ids.value
         }
         logging.info("Response is ready.")
 
@@ -430,7 +431,7 @@ class MainHTTPHandler(BaseHTTPRequestHandler):
     router = {
         "method": method_handler
     }
-    store = None
+    store = Store('api')
 
     def get_request_id(self, headers):
         return headers.get('HTTP_X_REQUEST_ID', uuid.uuid4().hex)

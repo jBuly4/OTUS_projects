@@ -1,6 +1,9 @@
 #  Prepare tarantool
 #  connection.eval('box.schema.space.create("new_space")')
 #  connection.eval("box.space.examples:create_index('primary', {type = 'hash', parts = {1, 'unsigned'}})")
+# Check if a space named 'myspace' exists
+# result = conn.eval('return box.space.myspace ~= nil')
+
 import time
 
 import tarantool
@@ -45,9 +48,12 @@ class Store:
             create space, create index for this space.
             After that you can use this space to save data.
             """
-        self.connect.eval(f"box.schema.space.create('{self.space_name}')")
-        self.connect.eval(f"box.space.{self.space_name}:create_index('primary', {{type = 'hash', parts = {{1, "
-                        f"'unsigned'}}}})")
+        check_space_exists = self.connect.eval(f"return box.space.{self.space_name} ~= nil")
+        if not check_space_exists:
+            self.connect.eval(f"box.schema.space.create('{self.space_name}')")
+            self.connect.eval(
+                    f"box.space.{self.space_name}:create_index('primary', {{type = 'hash', parts = {{1, 'unsigned'}}}})"
+            )
 
     def cache_set(self, key, value, time_to_be_stored):
         self.cache[key] = (value, time.time() + time_to_be_stored)
@@ -64,4 +70,9 @@ class Store:
 
     def get(self, key):
         response = self.connect.select(self.space_name, key)
-        return response.data[0][1]
+        return response
+
+
+# store = Store('test5')
+# print(store.connect.space('test2').__dict__)
+
