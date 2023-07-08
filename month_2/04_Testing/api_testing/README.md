@@ -1,4 +1,4 @@
-# Scoring API script.
+# Scoring API testing script.
 
 ## Usage: 
 Clone this repo:
