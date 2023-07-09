@@ -1,0 +1,3 @@
+[submodule "month_2/05_automatization/otuserver/tests"]
+	path = month_2/05_automatization/otuserver/tests
+	url = https://github.com/s-stupnikov/http-test-suite.git
