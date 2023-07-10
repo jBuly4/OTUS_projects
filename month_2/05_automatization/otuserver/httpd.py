@@ -2,12 +2,12 @@ import logging
 from concurrent.futures import ThreadPoolExecutor
 
 from console_parser import add_argument_parser
-from http_response import SimpleHTTPResponse
-from http_requests import SimpleHTTPRequest
+from services import request_processor
 from simple_server import SimpleHTTPServer
 
 
 def submit_to_executor(workers, request_bytes):
+    """Submit future task"""
     executor = ThreadPoolExecutor(max_workers=workers)
     return executor.submit(request_processor, request_bytes)
 
@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     try:
         otuserver = SimpleHTTPServer(
+                server_opts.doc_root,
                 server_opts.address,
                 server_opts.port,
                 server_opts.workers,
@@ -33,3 +34,4 @@ if __name__ == '__main__':
         otuserver.close_server_socket()
     except KeyboardInterrupt:
         logging.exception("Stopping OTUServer, good bye!")
+        otuserver.close_server_socket()
