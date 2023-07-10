@@ -57,4 +57,4 @@ class SimpleHTTPRequest:
         SetAttributesFromBytes.set_attributes(self, request_byte_array)
 
         for key, value in self.__dict__.items():
-            logging.info(f"Attribute {key} been set to value {value}")
+            logging.info(f"Attribute {key} has been set to value:\n{value}\n")

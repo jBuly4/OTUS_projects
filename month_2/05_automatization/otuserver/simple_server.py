@@ -11,9 +11,9 @@ class SimpleHTTPServer:
     def __init__(
             self,
             doc_root: str,
-            host: str = "127.0.0.1",
-            port: int = 80,
-            workers_num: int = 20
+            host: str,
+            port: int,
+            workers_num: int = 5
     ):
         self.doc_root = doc_root
         self.host = host
@@ -42,7 +42,7 @@ class SimpleHTTPServer:
             if not buffer_data:
                 raise ConnectionError
 
-        self.start_new_request_parsing(data)
+        self.start_new_request_parsing(self.workers_num, data)
 
     def response(self, response_data, need_to_close_connection=False):
         if response_data:

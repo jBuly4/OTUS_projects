@@ -27,6 +27,9 @@ class SimpleHTTPResponse:
             "Connection": "close"
         }
 
+        for key, value in self.__dict__.items():
+            logging.info(f"Attribute {key} has been set to value:\n{value}\n")
+
     @staticmethod
     def get_date_now():
         return datetime.datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
@@ -35,7 +38,7 @@ class SimpleHTTPResponse:
     def prepare_response_bytes(instance):
         result = ""
         result += instance.protocol + " " + str(instance.status_code) + " " + instance.status + "\r\n"
-        result +=SimpleHTTPResponse.collect_headers(instance.headers)
+        result += SimpleHTTPResponse.collect_headers(instance.headers)
         result += "\r\n"
 
         result.encode()
