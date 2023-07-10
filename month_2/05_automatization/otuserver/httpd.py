@@ -24,7 +24,7 @@ if __name__ == '__main__':
         otuserver = SimpleHTTPServer(
                 server_opts.doc_root,
                 server_opts.address,
-                server_opts.port,
+                int(server_opts.port),
                 server_opts.workers,
         )
         otuserver.start_new_request_parsing = submit_to_executor

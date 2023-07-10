@@ -30,12 +30,27 @@ pip install -r requirements.txt
 
 Commands:
 ```bash
-add description
+python httpd.py -h
+<---------------------> <----- OTUServer -----> <--------------------->
+
+options:
+  -h, --help   show this help message and exit
+  -a ADDRESS   Set server address
+  -p PORT      Set server port
+  -w WORKERS   Set number of workers for Server
+  -r DOC_ROOT  Set document root directory
+
 ```
 
 Run:
 ```bash
-add description
+docker build -t otuserver .
+docker run -p 80:80 otuserver
+```
+
+Run test [suite](https://github.com/s-stupnikov/http-test-suite) 
+```bash
+python -m unittest tests/httptest.py -v
 ```
 
 ## Testing results

@@ -15,7 +15,7 @@ def add_argument_parser():
     parser.add_argument(
             "-p",
             dest='port',
-            default=8080,
+            default=80,
             help="Set server port"
     )
 

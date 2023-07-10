@@ -66,8 +66,8 @@ class SimpleHTTPServer:
                 self.connection.settimeout(self.timeout)
                 try:
                     self.collect_data()
-                except Exception as clinet_error:
-                    logging.exception(f"Error occurred while working with client! Error: {clinet_error}")
+                except Exception as client_error:
+                    logging.exception(f"Error occurred while working with client! Error: {client_error}")
         except socket.error as socket_error:
             logging.exception(f"Received error in socket! Error: {socket_error}")
             raise socket_error
