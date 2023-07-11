@@ -41,7 +41,7 @@ class SimpleHTTPResponse:
         result += SimpleHTTPResponse.collect_headers(instance.headers)
         result += "\r\n"
 
-        result.encode()
+        result = result.encode()
 
         if len(instance.body) > 0:
             result += instance.body

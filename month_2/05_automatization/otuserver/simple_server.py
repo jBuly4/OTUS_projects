@@ -34,17 +34,23 @@ class SimpleHTTPServer:
     def collect_data(self):
         data = b""
         CRLF = b"\r\n\r\n"
+        logging.info("Started collecting data.")
+        logging.info(f"Got connection instance:\n{self.connection}")
 
         while CRLF not in data:
             buffer_data = self.connection.recv(1024)
+            logging.info(f"Receiving data:\n{buffer_data.decode()}")
             data += buffer_data
 
             if not buffer_data:
                 raise ConnectionError
 
+        logging.info(f"Data collected:\n{data.decode()}")
         self.start_new_request_parsing(self.workers_num, data)
 
     def response(self, response_data, need_to_close_connection=False):
+        logging.info("Starting response!")
+        logging.info(f"Got {response_data.decode()}")
         if response_data:
             self.connection.sendall(response_data)
             if need_to_close_connection:
@@ -62,7 +68,8 @@ class SimpleHTTPServer:
 
             while True:
                 self.connection, address_from = self._socket.accept()
-                logging.info(f"Received connection from {address_from}")
+                logging.info(f"Received connection from {address_from}, started new connection:\n"
+                             f"{self.connection}")
                 self.connection.settimeout(self.timeout)
                 try:
                     self.collect_data()

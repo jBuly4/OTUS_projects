@@ -5,11 +5,17 @@ from console_parser import add_argument_parser
 from services import request_processor
 from simple_server import SimpleHTTPServer
 
+logging.basicConfig(
+        format='[%(asctime)s] %(levelname).1s %(message)s',
+        level=logging.INFO, datefmt='%Y.%m.%d %H:%M:%S'
+)
+
 
 def submit_to_executor(workers, request_bytes):
     """Submit future task"""
+    logging.info("Started submitting task to executor.")
     executor = ThreadPoolExecutor(max_workers=workers)
-    return executor.submit(request_processor, request_bytes)
+    executor.submit(request_processor, request_bytes)
 
 
 if __name__ == '__main__':
@@ -24,10 +30,12 @@ if __name__ == '__main__':
         otuserver = SimpleHTTPServer(
                 server_opts.doc_root,
                 server_opts.address,
-                int(server_opts.port),
+                server_opts.port,
                 server_opts.workers,
         )
         otuserver.start_new_request_parsing = submit_to_executor
+        # executor = ThreadPoolExecutor(max_workers=otuserver.workers_num)
+        # otuserver.start_new_request_parsing = lambda request_bytes: executor.submit(request_processor, request_bytes)
         otuserver.serve_forever()
     except Exception:
         logging.exception("Huston, we got a problem!")
