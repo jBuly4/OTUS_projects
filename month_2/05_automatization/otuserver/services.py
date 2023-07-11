@@ -32,18 +32,21 @@ def parse_request(request: SimpleHTTPRequest, server: SimpleHTTPServer) -> None:
     :param server: server class instance
     :param request: initially processed request
     """
+    logging.info(f"Started parsing.")
     requested_path = path.abspath(server.doc_root + request.URL)
     _head = False
 
-    body = ""
     response = SimpleHTTPResponse()
 
     if request.method == "HEAD":
         _head = True
 
     if path.exists(requested_path) and "../" not in request.URL:
+        logging.info(f"Escaping directory passed.")
         if path.isfile(requested_path) and not request.URL.endswith("/"):
+            logging.info(f"No / at the end and request file.")
             file_name, file_extension = path.splitext(requested_path)
+            logging.info(f"Checking file extension {file_extension}.")
             content_type = mimetypes.types_map[file_extension]
             if not _head:
                 with open(requested_path, "rb") as file:
@@ -52,6 +55,7 @@ def parse_request(request: SimpleHTTPRequest, server: SimpleHTTPServer) -> None:
             response.headers["Content-Type"] = content_type
             response.headers["Content-Length"] = len(response.body)
         elif index(requested_path):
+            logging.info(f"Index file request.")
             if not _head:
                 body = b"<html>Directory index file</html>"
                 response.body = body

@@ -46,7 +46,7 @@ class SimpleHTTPServer:
                 raise ConnectionError
 
         logging.info(f"Data collected:\n{data.decode()}")
-        self.start_new_request_parsing(self.workers_num, data)
+        self.start_new_request_parsing(self.workers_num, data, self)
 
     def response(self, response_data, need_to_close_connection=False):
         logging.info("Starting response!")

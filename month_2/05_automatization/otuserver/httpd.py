@@ -11,11 +11,11 @@ logging.basicConfig(
 )
 
 
-def submit_to_executor(workers, request_bytes):
+def submit_to_executor(workers, request_bytes, server):
     """Submit future task"""
     logging.info("Started submitting task to executor.")
     executor = ThreadPoolExecutor(max_workers=workers)
-    executor.submit(request_processor, request_bytes)
+    executor.submit(request_processor, request_bytes, server)
 
 
 if __name__ == '__main__':
