@@ -50,11 +50,13 @@ class SimpleHTTPServer:
 
     def response(self, response_data, need_to_close_connection=False):
         logging.info("Starting response!")
-        logging.info(f"Got {response_data.decode()}")
+        # logging.info(f"Got {response_data.decode()}") # That line broke the code... %)
         if response_data:
             self.connection.sendall(response_data)
+            logging.info("Sent response!")
             if need_to_close_connection:
                 self.connection.close()
+                logging.info("Closed connection!")
 
     def serve_forever(self):
         """Main server method"""
