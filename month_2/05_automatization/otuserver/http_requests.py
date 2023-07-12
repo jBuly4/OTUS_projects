@@ -1,10 +1,4 @@
-import logging
 from urllib import parse
-
-logging.basicConfig(
-        format='[%(asctime)s] %(levelname).1s %(message)s',
-        level=logging.INFO, datefmt='%Y.%m.%d %H:%M:%S'
-)
 
 
 class HeaderCollector:
@@ -55,6 +49,3 @@ class SetAttributesFromBytes:
 class SimpleHTTPRequest:
     def __init__(self, request_byte_array):
         SetAttributesFromBytes.set_attributes(self, request_byte_array)
-
-        for key, value in self.__dict__.items():
-            logging.info(f"Attribute {key} has been set to value:\n{value}\n")

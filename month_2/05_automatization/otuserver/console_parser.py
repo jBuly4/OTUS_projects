@@ -2,6 +2,7 @@ import argparse
 
 
 def add_argument_parser():
+    """Get arguments from command line using argparse."""
     parser = argparse.ArgumentParser(description="<--------------------->\n"
                                                  "<----- OTUServer ----->\n"
                                                  "<--------------------->")

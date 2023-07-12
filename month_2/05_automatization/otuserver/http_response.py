@@ -27,9 +27,6 @@ class SimpleHTTPResponse:
             "Connection": "close"
         }
 
-        # for key, value in self.__dict__.items():
-        #     logging.info(f"Attribute {key} has been set to value:\n{value}\n")
-
     @staticmethod
     def get_date_now():
         return datetime.datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")

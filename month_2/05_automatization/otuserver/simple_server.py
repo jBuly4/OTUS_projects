@@ -1,5 +1,5 @@
-import socket
 import logging
+import socket
 
 logging.basicConfig(
         format='[%(asctime)s] %(levelname).1s %(message)s',
@@ -24,18 +24,18 @@ class SimpleHTTPServer:
         self.reconnect_max_count: int = 3
         self._socket: socket.socket = None
         self.connection: socket.socket = None
-        self.start_new_request_parsing = None
+        self.start_new_request_parsing = None  # attribute for calling future tasks
 
     def close_server_socket(self):
         if self._socket:
             self._socket.close()
         self._socket = None
 
-    def collect_data(self):
+    def collect_data(self) -> None:
+        """Get data from the stream."""
         data = b""
         CRLF = b"\r\n\r\n"
-        logging.info("Started collecting data.")
-        logging.info(f"Got connection instance:\n{self.connection}")
+        logging.info("Starting collecting data.")
 
         while CRLF not in data:
             buffer_data = self.connection.recv(1024)
@@ -48,7 +48,12 @@ class SimpleHTTPServer:
         logging.info(f"Data collected:\n{data.decode()}")
         self.start_new_request_parsing(self.workers_num, data, self)
 
-    def response(self, response_data, need_to_close_connection=False):
+    def response(self, response_data: bytes, need_to_close_connection: bool = False) -> None:
+        """
+        Send response.
+        :param response_data: data to be sent
+        :param need_to_close_connection: flag to close socket.
+        """
         logging.info("Starting response!")
         # logging.info(f"Got {response_data.decode()}") # That line broke the code... %)
         if response_data:
@@ -58,8 +63,11 @@ class SimpleHTTPServer:
                 self.connection.close()
                 logging.info("Closed connection!")
 
-    def serve_forever(self):
-        """Main server method"""
+    def serve_forever(self) -> None:
+        """
+        Main server method.
+        Creates new socket connection, then gather data from the stream.
+        """
         try:
             if self._socket:
                 self._socket.close()
@@ -70,7 +78,7 @@ class SimpleHTTPServer:
 
             while True:
                 self.connection, address_from = self._socket.accept()
-                logging.info(f"Received connection from {address_from}, started new connection:\n"
+                logging.info(f"Received connection from {address_from[0]}, started new connection:\n"
                              f"{self.connection}")
                 self.connection.settimeout(self.timeout)
                 try:

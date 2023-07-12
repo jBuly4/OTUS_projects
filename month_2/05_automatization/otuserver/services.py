@@ -44,31 +44,36 @@ def parse_request(request: SimpleHTTPRequest, server: SimpleHTTPServer) -> None:
     if path.exists(requested_path) and "../" not in request.URL:
         logging.info(f"Escaping directory passed.")
         if path.isfile(requested_path) and not request.URL.endswith("/"):
-            logging.info(f"No / at the end and request file.")
+            logging.info(f"No '/' at the end and request file.")
             file_name, file_extension = path.splitext(requested_path)
-            logging.info(f"Checking file extension {file_extension}.")
             content_type = mimetypes.types_map[file_extension]
-            logging.info(f"Content-type {content_type}.")
+
             with open(requested_path, "rb") as file:
                 body = file.read()
             if not _head:
                 response.body = body
+
             response.headers["Content-Type"] = content_type
             response.headers["Content-Length"] = len(body)
+
         elif index(requested_path):
             logging.info(f"Index file request.")
             body = b"<html>Directory index file</html>\n"
+
             if not _head:
                 response.body = body
+
             response.headers["Content-Type"] = "txt/html"
             response.headers["Content-Length"] = len(body)
+
         else:
             response.status = "NOT FOUND"
             response.status_code = 404
     else:
         response.status = "NOT FOUND"
         response.status_code = 404
-    logging.info(f"Response is ready. Response:\n{response.protocol} {response.status_code} {response.status}\n"
+    logging.info(f"Response is ready to be sent. "
+                 f"Response:\n{response.protocol} {response.status_code} {response.status}\n"
                  f"Headers:\n{response.headers}\nBody:\n{response.body}")
     server.response(SimpleHTTPResponse.prepare_response_bytes(instance=response), _head)
 
@@ -83,7 +88,7 @@ def request_processor(request_bytes: bytes, server_instance: SimpleHTTPServer) -
     request = SimpleHTTPRequest(request_byte_array=request_bytes)
 
     if request.method == "HEAD" or request.method == "GET":
-        logging.info(f"Request method {request.method}")
+        logging.info(f"Request method is {request.method}")
         parse_request(request, server_instance)
     else:
         logging.info("Unknown method!")
