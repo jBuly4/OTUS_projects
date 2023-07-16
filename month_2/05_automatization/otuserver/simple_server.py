@@ -21,7 +21,7 @@ class SimpleHTTPServer:
         self.workers_num = workers_num
         self.timeout: int = 1
         self.reconnect_delay: int = 1
-        self.reconnect_max_count: int = 3
+        self.reconnect_max_count: int = 5
         self._socket: socket.socket = None
         self.connection: socket.socket = None
         self.start_new_request_parsing = None  # attribute for calling future tasks

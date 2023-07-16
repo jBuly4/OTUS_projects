@@ -63,13 +63,13 @@ Ran 23 tests in 2.606s
 OK
 ```
 
-Script used:
+Apache Bench script used:
 ```bash
 $ ab -n 50000 -c 100 -r http://localhost:80/
 ```
-
 Results for 20 workers
 ```bash
+Tab -n 50000 -s 60 -c 100 -r http://localhost:80/httptest/space+in+name.txt 
 This is ApacheBench, Version 2.3 <$Revision: 1903618 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -86,5 +86,35 @@ Completed 40000 requests
 Completed 45000 requests
 apr_pollset_poll: The timeout specified has expired (70007)
 Total of 49999 requests completed
+```
+WRK bench is used (20 workers):
+```bash
+wrk -t20 -d60 -c100 http://localhost:80/httptest/space+in+name.txt 
+```
+```bash
+Running 1m test @ http://localhost:80/httptest/space+in+name.txt
+  20 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    10.92ms   95.40ms   1.23s    99.16%
+    Req/Sec   168.17    142.20   767.00     52.16%
+  6100 requests in 1.00m, 0.91MB read
+  Socket errors: connect 0, read 2968, write 0, timeout 50
+Requests/sec:    101.55
+Transfer/sec:     15.48KB
+```
+WRK bench is used (40 workers):
+```bash
+wrk -t20 -d60 -c100 http://localhost:80/httptest/space+in+name.txt 
+```
+```bash
+Running 1m test @ http://localhost:80/httptest/space+in+name.txt
+  20 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    15.59ms  122.64ms   1.88s    98.76%
+    Req/Sec   156.89    162.84   797.00     90.91%
+  6253 requests in 1.00m, 0.93MB read
+  Socket errors: connect 0, read 2761, write 0, timeout 42
+Requests/sec:    104.04
+Transfer/sec:     15.86KB
 
 ```
