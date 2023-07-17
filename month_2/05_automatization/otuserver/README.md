@@ -47,6 +47,10 @@ Run (need docker installed):
 docker build -t otuserver .
 docker run -p 80:80 otuserver
 ```
+Security:
+- Don't use image with root user
+- Use public image alpine at your own risk
+- Don't use option --privileged it might cause acces to your host filesystem
 
 Run test [suite](https://github.com/s-stupnikov/http-test-suite) with command:
 ```bash
