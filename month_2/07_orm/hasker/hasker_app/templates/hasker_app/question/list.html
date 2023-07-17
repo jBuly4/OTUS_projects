@@ -1,0 +1,18 @@
+{% extends 'hasker_app/base.html' %}
+
+{% block title %} Hasker {% endblock %}
+
+{% block content %}
+	<h1>Hasker</h1>
+	{% for question in questions %}
+		<h2>
+			<a href="{% url 'hasker_app:question_detail' question.id %}">
+				{{ question.title }}
+			</a>
+		</h2>
+		<p class="date">
+			Published by {{ question.author }} at {{ question.publish }}
+		</p>
+		{{ question.body | truncatewords:30|linebreaks }}
+	{% endfor %}
+{% endblock %}
