@@ -5,5 +5,8 @@ app_name = 'hasker_app'
 
 urlpatterns = [
     path('', views.questions_list, name='questions_list'),
-    path('<int:id>/', views.question_detail, name='question_detail'),
+    path(
+            '<int:year>/<int:month>/<int:day>/<slug:question_slug>',
+            views.question_detail, name='question_detail'
+    ),
 ]

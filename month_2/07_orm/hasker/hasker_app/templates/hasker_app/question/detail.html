@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-</head>
-<body>
+{% extends 'hasker_app/base.html' %}
 
-</body>
-</html>
+{% block title %} {{ question.title }} {% endblock %}
+
+{% block content %}
+	<h1>{{ question.title }}</h1>
+	<p class="date">
+		Published by {{ question.author }} at {{ question.publish }}
+	</p>
+	{{ question.body|linebreaks }}
+{% endblock %}

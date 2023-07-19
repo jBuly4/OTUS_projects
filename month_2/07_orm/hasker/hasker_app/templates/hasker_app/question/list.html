@@ -6,7 +6,7 @@
 	<h1>Hasker</h1>
 	{% for question in questions %}
 		<h2>
-			<a href="{% url 'hasker_app:question_detail' question.id %}">
+			<a href="{{ question.get_absolute_url }}">
 				{{ question.title }}
 			</a>
 		</h2>
@@ -15,4 +15,5 @@
 		</p>
 		{{ question.body | truncatewords:30|linebreaks }}
 	{% endfor %}
+	{% include "pagination.html" with page=questions %}
 {% endblock %}
