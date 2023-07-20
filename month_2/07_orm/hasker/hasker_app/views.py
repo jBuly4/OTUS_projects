@@ -36,7 +36,7 @@ def question_detail(request, year, month, day, question_slug):
     )
 
     answers = question.post_answer.filter(status=PostAnswer.Status.PUBLISHED)
-    question_form = QuestionForm()
+    # question_form = QuestionForm()
     answer_form = AnswerForm()
     return render(
             request,
@@ -44,28 +44,30 @@ def question_detail(request, year, month, day, question_slug):
             {
                 'question': question,
                 'answers': answers,
-                'question_form': question_form,
+                # 'question_form': question_form,
                 'answer_form': answer_form,
             }
     )
 
 
-@require_POST
 def add_question(request):
     question = None
 
-    form = QuestionForm(data=request.POST)
-    if form.is_valid():
-        question = form.save(commit=False)
-        question.generate_slug()
-        question.save()
+    if request.POST:
+        question_form = QuestionForm(data=request.POST)
+        if question_form.is_valid():
+            question = question_form.save(commit=False)
+            question.generate_slug()
+            question.save()
+    else:
+        question_form = QuestionForm()
 
     return render(
             request,
             'hasker_app/question/add_question.html',
             {
                 'question': question,
-                'form': form,
+                'question_form': question_form,
             }
     )
 

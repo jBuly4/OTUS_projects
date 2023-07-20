@@ -7,22 +7,42 @@
 	<link href="{% static 'css/hasker.css' %}" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <a href="{% url 'hasker_app:questions_list' %}">Logo</a>
+        <nav>
+            <ul>
+			    <li><a href="{% url 'hasker_app:questions_list' %}">Home</a></li>
+			    <li><a href="/tags">Tags</a></li>
+			    <li><a href="/users">Users</a></li>
+			    <li><a href="{% url 'hasker_app:add_question' %}">Ask Question</a></li>
+            </ul>
+        </nav>
+        <div>
+            <img src="/path/to/avatar" alt="User avatar">
+            <a href="/user/profile">Profile</a>
+            <a href="/user/logout">Log Out</a>
+        </div>
+    </header>
+{#	left menu #}
+{#    <aside>#}
+{#	    <ul>#}
+{#		    <li><a href="{% url 'hasker_app:questions_list' %}">Home</a></li>#}
+{#		    <li><a href="/tags">Tags</a></li>#}
+{#		    <li><a href="/users">Users</a></li>#}
+{#		    <li><a href="{% url 'hasker_app:add_question' %}">Ask Question</a></li>#}
+{#	    </ul>#}
+{#    </aside>#}
 
-	<div id="content">
-		{% block content %}
-		{% endblock %}
+	<div class="main">
+		<div id="content">
+			{% block content %}
+			{% endblock %}
+		</div>
+		<div id="sidebar">
+			<h2>Hasker</h2>
+			<p>This is Hasker</p>
+		</div>
 	</div>
-	<div id="sidebar">
-		<h2>Hasker</h2>
-		<p>This is Hasker</p>
-{#		<aside>#}
-{#	        <ul>#}
-{#	            <li><a href="/">Home</a></li>#}
-{#	            <li><a href="/tags">Tags</a></li>#}
-{#	            <li><a href="/users">Users</a></li>#}
-{#	            <li><a href="/ask">Ask Question</a></li>#}
-{#	        </ul>#}
-{#        </aside>#}
-	</div>
+
 </body>
 </html>
