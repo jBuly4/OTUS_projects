@@ -1,0 +1,6 @@
+<h2>Add a new answer</h2>
+<form action="{% url 'hasker_app:add_answer' question.id %}" method="post">
+	{{ answer_form.as_p }}
+	{% csrf_token %}
+	<p><input type="submit" value="Add answer"></p>
+</form>

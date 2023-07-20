@@ -1,0 +1,12 @@
+{% extends 'hasker_app/base.html' %}
+
+{% block title %}Add question{% endblock %}
+
+{% block content %}
+	{% if question %}
+		<h2>Your question has been added</h2>
+		<p><a href="{{ question.get_absolute_url }}">Back to the question</a></p>
+	{% else %}
+		{% include 'hasker_app/question/includes/add_question_form.html' %}
+	{% endif %}
+{% endblock %}

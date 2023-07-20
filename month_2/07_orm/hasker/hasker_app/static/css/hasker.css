@@ -9,13 +9,14 @@ a {
     text-decoration:none; 
 }
 
-h1 { 
+h1 {
     font-weight:normal;
     border-bottom:1px solid #bbb;
     padding:0 0 10px 0;
 }
 
 h2 {
+    clear:both;
     font-weight:normal;
     margin:30px 0 0;
 }
@@ -63,6 +64,16 @@ input, textarea {
     padding:6px 10px;
     font-size:12px;
 }
+/* Select is temporary addition*/
+input, select {
+    clear:both;
+    float:left;
+    margin:0 0 10px;
+    background:#ededed;
+    border:0;
+    padding:6px 10px;
+    font-size:12px;
+}
 input[type=submit] {
     font-weight:bold;
     background:#00abff;
@@ -78,14 +89,14 @@ input[type=submit] {
     padding-left:10px; 
 }
 
-/* comments */
-.comment {
+/* answers */
+.answer {
     padding:10px;
 }
-.comment:nth-child(even) {
+.answer:nth-child(even) {
     background:#efefef;
 }
-.comment .info {
+.answer .info {
     font-weight:bold;
     font-size:12px;
     color:#666;

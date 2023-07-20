@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 
 from .managers import PublishedManager
 
@@ -17,6 +18,7 @@ class PostQuestion(models.Model):
     publish = models.DateField(default=timezone.now())
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
+    rating = models.IntegerField(default=0)
     status = models.CharField(
             max_length=2,
             choices=Status.choices,
@@ -28,11 +30,13 @@ class PostQuestion(models.Model):
             related_name='post_question'
     )
 
+
     objects = models.Manager()
     published = PublishedManager()
+    # TODO: add rating field and ordering by it. Rating is a model.
 
     class Meta:
-        ordering = ['-publish']
+        ordering = ['rating', '-publish']
         indexes = [
             models.Index(fields=['-publish'])
         ]
@@ -47,6 +51,9 @@ class PostQuestion(models.Model):
                     self.slug
                 ]
         )
+
+    def generate_slug(self):
+        self.slug = slugify(self.title)
 
     def __str__(self):
         return self.title
@@ -66,6 +73,7 @@ class PostAnswer(models.Model):
     publish = models.DateField(default=timezone.now())
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
+    rating = models.IntegerField(default=0)
     status = models.CharField(
             max_length=2,
             choices=Status.choices,
@@ -79,8 +87,10 @@ class PostAnswer(models.Model):
     objects = models.Manager()
     published = PublishedManager()
 
+    # TODO: add rating field and ordering by it. Rating is a model.
+
     class Meta:
-        ordering = ['-publish']
+        ordering = ['rating', '-publish']
         indexes = [
             models.Index(fields=['-publish'])
         ]
@@ -89,4 +99,4 @@ class PostAnswer(models.Model):
         return self.question_post.title
 
     def __str__(self):
-        return f'answer for {self.get_question_title()}'
+        return f'Answer for {self.get_question_title()} by {self.author.username}'

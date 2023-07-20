@@ -15,8 +15,8 @@ class PostQuestionAdmin(admin.ModelAdmin):
 
 @admin.register(PostAnswer)
 class PostAnswerAdmin(admin.ModelAdmin):
-    list_display = ['question_post', 'author', 'publish', 'status']
-    list_filter = ['status', 'created', 'publish', 'author']
+    list_display = ['question_post', 'author', 'publish', 'status', 'rating']
+    list_filter = ['status', 'created', 'publish', 'author', 'rating']
     search_fields = ['question_post', 'body']
     raw_id_fields = ['author']
     date_hierarchy = 'publish'

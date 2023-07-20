@@ -9,4 +9,6 @@ urlpatterns = [
             '<int:year>/<int:month>/<int:day>/<slug:question_slug>',
             views.question_detail, name='question_detail'
     ),
+    path('question/add/', views.add_question, name='add_question'),
+    path('<int:question_id>/answer/', views.add_answer, name='add_answer'),
 ]

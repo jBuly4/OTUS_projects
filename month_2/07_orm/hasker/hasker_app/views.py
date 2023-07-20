@@ -1,6 +1,8 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404
 
+from .forms import QuestionForm, AnswerForm
 from .models import PostAnswer, PostQuestion
 from .services import get_all_published
 
@@ -33,10 +35,64 @@ def question_detail(request, year, month, day, question_slug):
             publish__day=day,
     )
 
+    answers = question.post_answer.filter(status=PostAnswer.Status.PUBLISHED)
+    question_form = QuestionForm()
+    answer_form = AnswerForm()
     return render(
             request,
             'hasker_app/question/detail.html',
-            {'question': question}
+            {
+                'question': question,
+                'answers': answers,
+                'question_form': question_form,
+                'answer_form': answer_form,
+            }
+    )
+
+
+@require_POST
+def add_question(request):
+    question = None
+
+    form = QuestionForm(data=request.POST)
+    if form.is_valid():
+        question = form.save(commit=False)
+        question.generate_slug()
+        question.save()
+
+    return render(
+            request,
+            'hasker_app/question/add_question.html',
+            {
+                'question': question,
+                'form': form,
+            }
+    )
+
+
+@require_POST
+def add_answer(request, question_id):
+    answer = None
+    question = get_object_or_404(
+            PostQuestion,
+            id=question_id,
+            status=PostQuestion.Status.PUBLISHED,
+    )
+
+    answer_form = AnswerForm(data=request.POST)
+    if answer_form.is_valid():
+        answer = answer_form.save(commit=False)
+        answer.question_post = question
+        answer.save()
+
+    return render(
+            request,
+            'hasker_app/question/add_answer.html',
+            {
+                'question': question,
+                'answer': answer,
+                'answer_form': answer_form,
+            }
     )
 
 # TODO: add answers like comments on question detail.
