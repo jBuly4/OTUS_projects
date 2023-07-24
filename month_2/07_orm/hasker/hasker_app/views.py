@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 
 from .forms import QuestionForm, AnswerForm
 from .models import PostAnswer, PostQuestion, Tag
-from .services import get_questions_published
+from .services import get_questions_published, get_similar_published_questions
 
 
 def questions_list(request, tag_title=None):
@@ -45,8 +45,16 @@ def question_detail(request, year, month, day, question_slug):
     )
 
     answers = question.post_answer.filter(status=PostAnswer.Status.PUBLISHED)
-    # question_form = QuestionForm()
     answer_form = AnswerForm()
+
+    # similar questions
+    question_tags_ids = question.tags.values_list('id', flat=True)
+    similar_questions = get_similar_published_questions(
+            PostQuestion,
+            question_tags_ids,
+            question.id
+    )
+
     return render(
             request,
             'hasker_app/question/detail.html',
@@ -55,6 +63,7 @@ def question_detail(request, year, month, day, question_slug):
                 'answers': answers,
                 # 'question_form': question_form,
                 'answer_form': answer_form,
+                'similar_questions': similar_questions,
             }
     )
 

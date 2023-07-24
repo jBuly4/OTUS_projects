@@ -15,9 +15,18 @@
 		{% endfor %}
 	</div>
 	{{ question.body|linebreaks }}
+
+	<h2>Similar questions</h2>
+	{% for qst in similar_questions %}
+		<p>
+			<a href="{{ qst.get_absolute_url }}">{{ qst.title }}</a>
+		</p>
+	{% endfor %}
+
 	{% with answers.count as total_answer_number %}
 		<h2>{{ total_answer_number }} answer{{ total_answer_number|pluralize }}</h2>
 	{% endwith %}
+
 	{% for answer in answers %}
 		<div class="answer">
 			<p class="info">
@@ -31,5 +40,4 @@
 	{% endfor %}
 
 	{% include 'hasker_app/question/includes/add_answer_form.html' %}
-{#	{% include 'hasker_app/question/includes/add_question_form.html' %}#}
 {% endblock %}
