@@ -7,6 +7,13 @@
 	<p class="date">
 		Published by {{ question.author }} at {{ question.publish }}
 	</p>
+	<div class="tags-wrapper">
+		{% for tag in question.tags.all %}
+			<a class="post-tag flex--item mt0"
+			   href="{% url "hasker_app:questions_list_by_tag" tag.title %}"
+			   title="Get all questions with {{ tag.title }}">{{ tag.title }}</a>
+		{% endfor %}
+	</div>
 	{{ question.body|linebreaks }}
 	{% with answers.count as total_answer_number %}
 		<h2>{{ total_answer_number }} answer{{ total_answer_number|pluralize }}</h2>

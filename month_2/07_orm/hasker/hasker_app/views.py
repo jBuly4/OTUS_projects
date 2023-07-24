@@ -115,12 +115,31 @@ def add_answer(request, question_id):
             'hasker_app/question/add_answer.html',
             {
                 'question': question,
-                'answer': answer,
+                'tags': answer,
                 'answer_form': answer_form,
             }
     )
 
+
+def tags_list(request):
+    tags_lst = Tag.objects.all()
+
+    paginator = Paginator(tags_lst, 10)
+    page_number = request.GET.get('page', 1)
+    try:
+        tags = paginator.page(page_number)
+    except PageNotAnInteger:
+        tags = paginator.page(1)
+    except EmptyPage:
+        tags = paginator.page(paginator.num_pages)
+
+    return render(
+            request,
+            'hasker_app/tags/list.html',
+            {'tags': tags}
+    )
+
 # TODO: add answers like comments on question detail.
 # TODO: non-authenticated users can see all questions and answers
-# TODO: only authenticated users can answer and rate questions with answers
+# TODO: only authenticated users can tags and rate questions with answers
 

@@ -1,0 +1,16 @@
+{% extends 'hasker_app/base.html' %}
+
+{% block title %} Hasker {% endblock %}
+
+{% block content %}
+	<h1>Hasker</h1>
+	<h2>Choose a tag to filter related questions:</h2>
+	{% for tag in tags %}
+		<div class="tags-wrapper">
+			<a class="post-tag flex--item mt0"
+			   href="{% url "hasker_app:questions_list_by_tag" tag.title %}"
+			   title="Get all questions with {{ tag.title }}">{{ tag.title }}</a>
+		</div>
+	{% endfor %}
+	{% include "pagination.html" with page=tags %}
+{% endblock %}
