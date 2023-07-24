@@ -7,6 +7,16 @@ from django.utils.text import slugify
 from .managers import PublishedManager
 
 
+class Tag(models.Model):
+    title = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ['-title']
+
+    def __str__(self):
+        return self.title
+
+
 class PostQuestion(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
@@ -29,7 +39,10 @@ class PostQuestion(models.Model):
             on_delete=models.CASCADE,
             related_name='post_question'
     )
-
+    tags = models.ManyToManyField(
+            Tag,
+            related_name='question'
+    )
 
     objects = models.Manager()
     published = PublishedManager()

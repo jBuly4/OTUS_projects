@@ -4,32 +4,47 @@
 
 {% block content %}
 	<h1>Hasker</h1>
+	{% if tag %}
+	<h2>Questions tagged with "{{ tag.title }}"</h2>
+	{% endif %}
 	{% for question in questions %}
-		<div id="question-summary" class="short-post-summary" data-post-id="76732931" data-post-type-id="1">
-		    <div class="s-post-summary--stats js-post-summary-stats">
-		        <div class="s-post-summary--stats-item s-post-summary--stats-item__emphasized" title="Score of 0">
-		            <span class="s-post-summary--stats-item-number">0</span>
-		            <span class="s-post-summary--stats-item-unit">votes</span>
-		        </div>
-		        <div class="s-post-summary--stats-item  " title="0 answers">
-		            <span class="s-post-summary--stats-item-number">0</span>
-		            <span class="s-post-summary--stats-item-unit">answers</span>
-		        </div>
-		        <div class="s-post-summary--stats-item " title="2 views">
-		            <span class="s-post-summary--stats-item-number">2</span>
-		            <span class="s-post-summary--stats-item-unit">views</span>
-		        </div>
-		    </div>
-        </div>
-		<h2>
+		<div class="question-summary">
+			<div class="short-post-summary" data-post-id="76732931" data-post-type-id="1">
+			    <div class="s-post-summary--stats js-post-summary-stats">
+			        <div class="s-post-summary--stats-item s-post-summary--stats-item__emphasized" title="Score of 0">
+			            <span class="s-post-summary--stats-item-number">0</span>
+			            <span class="s-post-summary--stats-item-unit">votes</span>
+			        </div>
+			        <div class="s-post-summary--stats-item  " title="0 answers">
+			            <span class="s-post-summary--stats-item-number">0</span>
+			            <span class="s-post-summary--stats-item-unit">answers</span>
+			        </div>
+			        <div class="s-post-summary--stats-item " title="2 views">
+			            <span class="s-post-summary--stats-item-number">2</span>
+			            <span class="s-post-summary--stats-item-unit">views</span>
+			        </div>
+			    </div>
+	        </div>
+		</div>
+		<div class="question-details">
+			<h2>
 			<a href="{{ question.get_absolute_url }}">
 				{{ question.title }}
 			</a>
-		</h2>
-		<p class="date">
-			Published by {{ question.author }} at {{ question.publish }}
-		</p>
-		{{ question.body | truncatewords:30|linebreaks }}
+			</h2>
+			<p class="date">
+				Published by {{ question.author }} at {{ question.publish }}
+			</p>
+			{{ question.body | truncatewords:30|linebreaks }}
+			<div class="tags-wrapper">
+			    {% for tag in question.tags.all %}
+			        <a class="post-tag flex--item mt0"
+			           href="{% url "hasker_app:questions_list_by_tag" tag.title %}"
+			           title="Get all questions with {{ tag.title }}">{{ tag.title }}</a>
+			    {% endfor %}
+			</div>
+		</div>
+
 	{% endfor %}
 	{% include "pagination.html" with page=questions %}
 {% endblock %}

@@ -3,12 +3,18 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404
 
 from .forms import QuestionForm, AnswerForm
-from .models import PostAnswer, PostQuestion
-from .services import get_all_published
+from .models import PostAnswer, PostQuestion, Tag
+from .services import get_questions_published
 
 
-def questions_list(request):
-    question_list = get_all_published(PostQuestion)
+def questions_list(request, tag_title=None):
+    question_list = get_questions_published(PostQuestion)
+
+    tag = None
+    if tag_title:
+        tag = get_object_or_404(Tag, title=tag_title)
+        question_list = question_list.filter(tags__in=[tag])
+
     paginator = Paginator(question_list, 20)
     page_number = request.GET.get('page', 1)
     try:
@@ -21,7 +27,10 @@ def questions_list(request):
     return render(
             request,
             'hasker_app/question/list.html',
-            {'questions': questions}
+            {
+                'questions': questions,
+                'tag': tag,
+            }
     )
 
 
@@ -57,8 +66,22 @@ def add_question(request):
         question_form = QuestionForm(data=request.POST)
         if question_form.is_valid():
             question = question_form.save(commit=False)
+            tags_input = question_form.cleaned_data['tags']
+            tags = [tag.rstrip() for tag in tags_input.split(',')]
+
+            if len(tags) > 3:
+                question_form.add_error('tags', 'You can add up to 3 tags only!')
+                return render(
+                        request,
+                        'hasker_app/question/add_question.html',
+                        {'question_form': question_form}
+                )
+
             question.generate_slug()
             question.save()
+            for tag in tags:
+                tag_to_add, existed = Tag.objects.get_or_create(title=tag)
+                question.tags.add(tag_to_add)
     else:
         question_form = QuestionForm()
 

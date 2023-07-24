@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostAnswer, PostQuestion
+from .models import PostAnswer, PostQuestion, Tag
 
 
 @admin.register(PostQuestion)
@@ -21,4 +21,12 @@ class PostAnswerAdmin(admin.ModelAdmin):
     raw_id_fields = ['author']
     date_hierarchy = 'publish'
     ordering = ['status', 'publish']
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    list_filter = ['title']
+    search_fields = ['title']
+    ordering = ['title']
 
