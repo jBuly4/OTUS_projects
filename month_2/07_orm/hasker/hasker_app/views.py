@@ -1,10 +1,11 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Count
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404
 
 from .forms import QuestionForm, AnswerForm
 from .models import PostAnswer, PostQuestion, Tag
-from .services import get_questions_published, get_similar_published_questions
+from .services import get_questions_published, get_similar_published_questions, increase_views
 
 
 def questions_list(request, tag_title=None):
@@ -15,6 +16,7 @@ def questions_list(request, tag_title=None):
         tag = get_object_or_404(Tag, title=tag_title)
         question_list = question_list.filter(tags__in=[tag])
 
+    question_list = question_list.annotate(answer_count=Count('post_answer'))
     paginator = Paginator(question_list, 20)
     page_number = request.GET.get('page', 1)
     try:
@@ -43,6 +45,11 @@ def question_detail(request, year, month, day, question_slug):
             publish__month=month,
             publish__day=day,
     )
+    increase_views(
+            PostQuestion,
+            question_id=question.id
+    )
+    question.refresh_from_db()
 
     answers = question.post_answer.filter(status=PostAnswer.Status.PUBLISHED)
     answer_form = AnswerForm()
@@ -61,7 +68,6 @@ def question_detail(request, year, month, day, question_slug):
             {
                 'question': question,
                 'answers': answers,
-                # 'question_form': question_form,
                 'answer_form': answer_form,
                 'similar_questions': similar_questions,
             }

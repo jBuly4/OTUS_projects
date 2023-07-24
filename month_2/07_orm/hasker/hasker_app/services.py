@@ -28,3 +28,24 @@ def get_similar_published_questions(cls: models.Model, tags_ids: List, question_
                                          .order_by('-same_tags', '-publish')[:3]
 
     return similar_questions
+
+
+def get_most_rated(cls: models.Model) -> models.QuerySet:
+    """
+    Get most rated questions ordered by rating and by date.
+    :param cls: model object
+    :return: queryset - questions ordered by rating from newest to oldest
+    """
+    most_rated = cls.published.order_by('-rating', '-publish')
+
+    return most_rated
+
+
+def increase_views(cls: models.Model, question_id: int) -> None:
+    """
+    Increase safely views of question using models.F()
+    :param cls: model object
+    :param question_id: id of question
+    """
+    cls.published.filter(id=question_id).update(views=models.F('views') + 1)
+

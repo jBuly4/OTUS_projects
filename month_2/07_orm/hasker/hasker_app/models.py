@@ -43,13 +43,14 @@ class PostQuestion(models.Model):
             Tag,
             related_name='question'
     )
+    views = models.PositiveIntegerField(default=0)
 
     objects = models.Manager()
     published = PublishedManager()
     # TODO: add rating field and ordering by it. Rating is a model.
 
     class Meta:
-        ordering = ['rating', '-publish']
+        ordering = ['-rating', '-publish']
         indexes = [
             models.Index(fields=['-publish'])
         ]

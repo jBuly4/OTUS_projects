@@ -21,6 +21,8 @@
 		<p>
 			<a href="{{ qst.get_absolute_url }}">{{ qst.title }}</a>
 		</p>
+		{% empty %}
+		There are no similar questions yet!
 	{% endfor %}
 
 	{% with answers.count as total_answer_number %}

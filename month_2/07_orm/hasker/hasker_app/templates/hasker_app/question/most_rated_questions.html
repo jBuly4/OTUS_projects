@@ -1,0 +1,8 @@
+<div class="trends-wrapper">
+	{% for question in trending %}
+		<div class="trend-row">
+			<h3 class="trend flex--item mt0">{{ question.rating }}</h3>
+			<a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+		</div>
+	{% endfor %}
+</div>
