@@ -5,11 +5,19 @@
 
 {% block content%}
 	{% if query %}
-	<h1>Questions containing {{ query }}</h1>
+		{% if "tag:" in query %}
+			<h1>Questions tagged by {{ query|clear_search_tag }}</h1>
+		{% else %}
+			<h1>Questions containing {{ query }}</h1>
+		{% endif %}
 	<h3>
-		{% with results.count as total_results %}
-			Found {{ total_results }} result{{ total_results|pluralize }}
-		{% endwith %}
+		{% if results|length != 0 %}
+			{% with results|length as total_results %}
+				Found {{ total_results }} result{{ total_results|pluralize }}
+			{% endwith %}
+		{% else %}
+			No results found!
+		{% endif %}
 	</h3>
 	{% for question in results %}
 		<h4><a href="{{ question.get_absolute_url }}">{{ question.title }}</a> </h4>

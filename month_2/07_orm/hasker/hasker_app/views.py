@@ -164,9 +164,12 @@ def question_search(request):
         search_form = SearchForm(request.GET)
         if search_form.is_valid():
             query = search_form.cleaned_data['query']
-            results = _search(PostQuestion, query)
+            if "tag:" in query:
+                results = _search(PostQuestion, query, True)
+            else:
+                results = _search(PostQuestion, query)
 
-    paginator = Paginator(results, 3)
+    paginator = Paginator(results, 20)
     page_number = request.GET.get('page', 1)
     try:
         res = paginator.page(page_number)

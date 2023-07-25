@@ -5,6 +5,10 @@ from typing import List
 # from django import forms
 from django.db import models
 from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+
+from .models import Tag
 
 
 def get_questions_published(cls: models.Model) -> models.QuerySet:
@@ -52,18 +56,28 @@ def increase_views(cls: models.Model, question_id: int) -> None:
     cls.published.filter(id=question_id).update(views=models.F('views') + 1)
 
 
-def _search(cls: models.Model, input_query: str) -> models.QuerySet:
+def _search(cls: models.Model, input_query: str, tag_search: bool = False) -> models.QuerySet:
     """
     Search in questions with user query.
     :param cls: model object
     :param input_query: string to be searched
     :return: results in queryset
     """
-    search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
-    search_query = SearchQuery(input_query)
-    results = cls.published.annotate(
-            search=search_vector,
-            rank=SearchRank(search_vector, search_query)
-    ).filter(rank__gte=0.3).order_by('-rank')
+    if tag_search:
+        question_list = get_questions_published(cls)
+        tag_input = input_query.split(':')[1].strip()
+        try:
+            tag = get_object_or_404(Tag, title=tag_input)
+            results = question_list.filter(tags__in=[tag])
+        except Http404:
+            results = cls.objects.none()
+
+    else:
+        search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+        search_query = SearchQuery(input_query)
+        results = cls.published.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query)
+        ).filter(rank__gte=0.3).order_by('-rank')
 
     return results.order_by('-rating', '-publish')

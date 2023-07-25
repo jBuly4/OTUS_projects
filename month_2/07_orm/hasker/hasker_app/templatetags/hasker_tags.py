@@ -12,3 +12,8 @@ def show_most_rated_questions(count=20):
     most_rated = get_most_rated(PostQuestion)[:count]
 
     return {'trending': most_rated}
+
+
+@register.filter(name='clear_search_tag')
+def clear_search_tag(query):
+    return query.replace('tag:', '', 1)
