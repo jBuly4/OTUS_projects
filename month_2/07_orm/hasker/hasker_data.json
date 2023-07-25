@@ -1,0 +1,1371 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2023-07-15T10:27:26.554Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2023-07-15T10:36:56.360Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "test question 1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2023-07-15T12:14:33.046Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "answer for test question 1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2023-07-15T12:15:08.514Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "answer for What is Django?",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2023-07-15T12:15:22.343Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "answer for What is Django?",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2023-07-15T12:15:47.765Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "answer for What is Django?",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2023-07-15T12:16:22.517Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "answer for test question 1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2023-07-19T20:01:11.631Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "test question 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2023-07-19T20:01:38.895Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "TEst quest2",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2023-07-19T20:01:59.700Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Test quest3",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2023-07-19T20:02:43.218Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "8",
+    "object_repr": "TEst quest 4",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2023-07-20T15:07:08.556Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2023-07-20T15:07:13.144Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "Answer for test question 1 by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2023-07-20T15:07:19.955Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2023-07-20T15:07:25.442Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2023-07-20T15:07:31.890Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Answer for test question 1 by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2023-07-20T15:08:45.963Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "test question 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2023-07-20T15:08:49.754Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2023-07-20T15:08:54.046Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "8",
+    "object_repr": "TEst quest 4",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2023-07-20T15:08:58.963Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Test quest3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2023-07-20T15:09:02.335Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "8",
+    "object_repr": "TEst quest 4",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2023-07-20T15:09:06.459Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "TEst quest2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2023-07-20T15:09:09.545Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Test quest3",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2023-07-20T15:09:14.709Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2023-07-20T15:09:17.458Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "TEst quest2",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2023-07-20T16:56:20.947Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "9",
+    "object_repr": "Question from FORM",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Slug\", \"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2023-07-24T11:36:10.960Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "18",
+    "object_repr": "Test question with tag 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2023-07-24T11:36:16.756Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "test question 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2023-07-24T11:36:20.543Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2023-07-24T11:36:54.656Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "10",
+    "object_repr": "FORM test 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2023-07-24T11:37:10.289Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "8",
+    "object_repr": "TEst quest 4",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2023-07-24T11:37:14.692Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Test quest3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2023-07-24T11:37:18.713Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "TEst quest2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2023-07-24T11:37:46.322Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "17",
+    "object_repr": "ASK QUESTION test 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2023-07-24T11:37:49.476Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "15",
+    "object_repr": "Some question from FORM 3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2023-07-24T11:37:52.183Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "14",
+    "object_repr": "Some question from FORM 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2023-07-24T11:38:01.295Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "13",
+    "object_repr": "Some question from FORM 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2023-07-24T11:38:10.005Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "12",
+    "object_repr": "FORM test 4",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2023-07-24T11:38:13.651Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "11",
+    "object_repr": "FORM test 3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2023-07-24T11:38:17.327Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "9",
+    "object_repr": "Question from FORM",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Tags\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2023-07-24T11:38:19.937Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "19",
+    "object_repr": "Test question with tag 2",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add post question",
+    "content_type": 7,
+    "codename": "add_postquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change post question",
+    "content_type": 7,
+    "codename": "change_postquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete post question",
+    "content_type": 7,
+    "codename": "delete_postquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view post question",
+    "content_type": 7,
+    "codename": "view_postquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add post answer",
+    "content_type": 8,
+    "codename": "add_postanswer"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change post answer",
+    "content_type": 8,
+    "codename": "change_postanswer"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete post answer",
+    "content_type": 8,
+    "codename": "delete_postanswer"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view post answer",
+    "content_type": 8,
+    "codename": "view_postanswer"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add tag",
+    "content_type": 9,
+    "codename": "add_tag"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change tag",
+    "content_type": 9,
+    "codename": "change_tag"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete tag",
+    "content_type": 9,
+    "codename": "delete_tag"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view tag",
+    "content_type": 9,
+    "codename": "view_tag"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$Ba9WhPfizPAYWodRscc86O$Doswzf2oUJuachGYPJJczBOjOKzPA4m5FNKwQ5erZEQ=",
+    "last_login": "2023-07-15T09:57:22.919Z",
+    "is_superuser": true,
+    "username": "hasker_admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "hasker@hasker.test",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-07-15T09:56:53.728Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "hasker_app",
+    "model": "postquestion"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "hasker_app",
+    "model": "postanswer"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "hasker_app",
+    "model": "tag"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "l0a7n4dv7hlf2nk4xiod4f1a21a0ccyy",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlk28WdDSc8ZrN31ggPIluKkQtwdIqWA9s3Me6mE61LS2mVOU1YnZdXhdyPkh9QN5DvWW9Pc6jJPpDdF77TrS8vyPO_u30HBXr418JUCMQ0Z2A3goo8Ykaz1oxUkcYaEDEeHDiBYDxgQDZgAYyZjj-r9AftTN_M:1qKc1i:qbmrBPzM1hitdXHAm8r0zTJrHRUpfB_sJMtEN0A7bxY",
+    "expire_date": "2023-07-29T09:57:22.920Z"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 1,
+  "fields": {
+    "title": "tag1"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 2,
+  "fields": {
+    "title": " tag2"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 3,
+  "fields": {
+    "title": " tag3"
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 4,
+  "fields": {
+    "title": "What is Django?",
+    "slug": "what-is-django",
+    "body": "Never found any info in my pocket.",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-24",
+    "rating": 2,
+    "status": "PB",
+    "author": 1,
+    "views": 3,
+    "tags": [
+      3
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 5,
+  "fields": {
+    "title": "test question 1",
+    "slug": "test-question-1",
+    "body": "test question 1 body\r\ntest question 1 body\r\ntest question 1 body\r\ntest question 1 body\r\ntest question 1 body",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-24",
+    "rating": 1,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 6,
+  "fields": {
+    "title": "TEst quest2",
+    "slug": "test-quest2",
+    "body": "TEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 body",
+    "publish": "2023-07-19",
+    "created": "2023-07-19",
+    "updated": "2023-07-24",
+    "rating": 2,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 7,
+  "fields": {
+    "title": "Test quest3",
+    "slug": "test-quest3",
+    "body": "TEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 body",
+    "publish": "2023-07-19",
+    "created": "2023-07-19",
+    "updated": "2023-07-24",
+    "rating": 3,
+    "status": "PB",
+    "author": 1,
+    "views": 1,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 8,
+  "fields": {
+    "title": "TEst quest 4",
+    "slug": "test-quest-4",
+    "body": "TEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 body",
+    "publish": "2023-07-19",
+    "created": "2023-07-19",
+    "updated": "2023-07-24",
+    "rating": 4,
+    "status": "PB",
+    "author": 1,
+    "views": 1,
+    "tags": [
+      3,
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 9,
+  "fields": {
+    "title": "Question from FORM",
+    "slug": "question-from-form",
+    "body": "NEED to understand how to take users from db. Does anybody know?",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      1,
+      3,
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 10,
+  "fields": {
+    "title": "FORM test 2",
+    "slug": "form-test-2",
+    "body": "Added slug generator method. Is it workin?",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "DF",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      3
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 11,
+  "fields": {
+    "title": "FORM test 3",
+    "slug": "form-test-3",
+    "body": "Checking that reverse is working with published status. Or not?",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 12,
+  "fields": {
+    "title": "FORM test 4",
+    "slug": "form-test-4",
+    "body": "FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      3,
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 13,
+  "fields": {
+    "title": "Some question from FORM 1",
+    "slug": "some-question-from-form-1",
+    "body": "test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1test answer from form for this question number 1",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 14,
+  "fields": {
+    "title": "Some question from FORM 2",
+    "slug": "some-question-from-form-2",
+    "body": "Some question from FORM 2 Some question from FORM 1\r\n\r\nSome question from FORM 1\r\n\r\nSome question from FORM 1\r\n\r\nSome question from FORM 1\r\n\r\nSome question from FORM 1\r\n\r\nSome question from FORM 1\r\n\r\nSome question from FORM 1",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 15,
+  "fields": {
+    "title": "Some question from FORM 3",
+    "slug": "some-question-from-form-3",
+    "body": "Some question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3\r\nSome question from FORM 3",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      3
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 16,
+  "fields": {
+    "title": "SOme question from form 4",
+    "slug": "some-question-from-form-4",
+    "body": "SOme question from form 4SOme question from form 4SOme question from form 4SOme question from form 4SOme question from form 4SOme question from form 4SOme question from form 4",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-20",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": []
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 17,
+  "fields": {
+    "title": "ASK QUESTION test 1",
+    "slug": "ask-question-test-1",
+    "body": "ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 1,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 18,
+  "fields": {
+    "title": "Test question with tag 1",
+    "slug": "test-question-with-tag-1",
+    "body": "Test question with tag 1",
+    "publish": "2023-07-22",
+    "created": "2023-07-22",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      1
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 19,
+  "fields": {
+    "title": "Test question with tag 2",
+    "slug": "test-question-with-tag-2",
+    "body": "How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?How to add tags from this form?",
+    "publish": "2023-07-22",
+    "created": "2023-07-22",
+    "updated": "2023-07-24",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 0,
+    "tags": [
+      1,
+      3,
+      2
+    ]
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 1,
+  "fields": {
+    "question_post": 5,
+    "body": "test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-20",
+    "rating": 5,
+    "status": "PB",
+    "author": 1
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 2,
+  "fields": {
+    "question_post": 4,
+    "body": "Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-20",
+    "rating": 4,
+    "status": "PB",
+    "author": 1
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 3,
+  "fields": {
+    "question_post": 4,
+    "body": "Django is none!",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-20",
+    "rating": 1,
+    "status": "DF",
+    "author": 1
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 4,
+  "fields": {
+    "question_post": 4,
+    "body": "Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-20",
+    "rating": 3,
+    "status": "PB",
+    "author": 1
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 5,
+  "fields": {
+    "question_post": 5,
+    "body": "test answer for test question 1 but 2nd\r\ntest answer for test question 1 but 2nd\r\ntest answer for test question 1 but 2nd\r\ntest answer for test question 1 but 2ndtest answer for test question 1 but 2nd",
+    "publish": "2023-07-15",
+    "created": "2023-07-15",
+    "updated": "2023-07-20",
+    "rating": 2,
+    "status": "PB",
+    "author": 1
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 6,
+  "fields": {
+    "question_post": 9,
+    "body": "test answer from form for this question number 1\r\ntest answer from form for this question number 1\r\ntest answer from form for this question number 1",
+    "publish": "2023-07-20",
+    "created": "2023-07-20",
+    "updated": "2023-07-20",
+    "rating": 0,
+    "status": "PB",
+    "author": 1
+  }
+}
+]

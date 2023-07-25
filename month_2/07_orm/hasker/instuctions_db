@@ -1,0 +1,12 @@
+install PostgreSQL or use https://postgresapp.com for MacOS
+start psql server
+at cli:
+create user hasker with password '***';
+create database hasker owner hasker encoding 'UTF8';
+
+then create fixtures
+python manage.py dumpdata --indent=2 --output=hasker_data.json
+
+pip install psycopg2-binary==2.9.3
+connect psql in settings and migrate data
+./manage.py migrate
