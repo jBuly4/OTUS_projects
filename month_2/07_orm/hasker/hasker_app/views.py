@@ -3,9 +3,9 @@ from django.db.models import Count
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404
 
-from .forms import QuestionForm, AnswerForm
+from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
-from .services import get_questions_published, get_similar_published_questions, increase_views
+from .services import get_questions_published, get_similar_published_questions, increase_views, _search
 
 
 def questions_list(request, tag_title=None):
@@ -154,7 +154,29 @@ def tags_list(request):
             {'tags': tags}
     )
 
-# TODO: add answers like comments on question detail.
+
+def question_search(request):
+    search_form = SearchForm()
+    query = None
+    results = []
+
+    if 'query' in request.GET:
+        search_form = SearchForm(request.GET)
+        if search_form.is_valid():
+            query = search_form.cleaned_data['query']
+            results = _search(PostQuestion, query)
+
+    return render(
+            request,
+            'hasker_app/question/search.html',
+            {
+                'search_form': search_form,
+                'query': query,
+                'results': results
+            }
+    )
+
+
 # TODO: non-authenticated users can see all questions and answers
 # TODO: only authenticated users can tags and rate questions with answers
 

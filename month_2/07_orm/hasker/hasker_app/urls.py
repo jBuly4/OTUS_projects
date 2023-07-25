@@ -13,4 +13,5 @@ urlpatterns = [
     ),
     path('question/add/', views.add_question, name='add_question'),
     path('<int:question_id>/tags/', views.add_answer, name='add_answer'),
+    path('search/', views.question_search, name='question_search'),
 ]

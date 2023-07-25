@@ -19,3 +19,7 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = PostAnswer
         fields = ['body', 'author', 'status']
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()

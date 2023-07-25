@@ -1,8 +1,10 @@
 """This module provides functionality for database queries to avoid that logic inside views."""
 from typing import List
 
-from django import forms
+# import django.forms
+# from django import forms
 from django.db import models
+from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 
 
 def get_questions_published(cls: models.Model) -> models.QuerySet:
@@ -49,3 +51,19 @@ def increase_views(cls: models.Model, question_id: int) -> None:
     """
     cls.published.filter(id=question_id).update(views=models.F('views') + 1)
 
+
+def _search(cls: models.Model, input_query: str) -> models.QuerySet:
+    """
+    Search in questions with user query.
+    :param cls: model object
+    :param input_query: string to be searched
+    :return: results in queryset
+    """
+    search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+    search_query = SearchQuery(input_query)
+    results = cls.published.annotate(
+            search=search_vector,
+            rank=SearchRank(search_vector, search_query)
+    ).filter(rank__gte=0.3).order_by('-rank')
+
+    return results
