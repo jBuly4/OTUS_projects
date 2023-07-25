@@ -166,13 +166,22 @@ def question_search(request):
             query = search_form.cleaned_data['query']
             results = _search(PostQuestion, query)
 
+    paginator = Paginator(results, 3)
+    page_number = request.GET.get('page', 1)
+    try:
+        res = paginator.page(page_number)
+    except PageNotAnInteger:
+        res = paginator.page(1)
+    except EmptyPage:
+        res = paginator.page(paginator.num_pages)
+
     return render(
             request,
             'hasker_app/question/search.html',
             {
                 'search_form': search_form,
                 'query': query,
-                'results': results
+                'results': res
             }
     )
 

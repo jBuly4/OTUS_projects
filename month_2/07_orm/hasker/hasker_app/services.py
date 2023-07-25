@@ -66,4 +66,4 @@ def _search(cls: models.Model, input_query: str) -> models.QuerySet:
             rank=SearchRank(search_vector, search_query)
     ).filter(rank__gte=0.3).order_by('-rank')
 
-    return results
+    return results.order_by('-rating', '-publish')
