@@ -325,7 +325,7 @@ ol {
 
 #header .logo {
     font-family: 'Muli', sans-serif;
-    color:#00abff;
+    color: #05a6f5;
     font-size:14px;
     margin-right:10%;
 }
@@ -348,7 +348,12 @@ ol {
 #header a {
     color:#333;
 }
-#header a:hover {
+
+#header .logo a {
+    color:#05a6f5;
+}
+
+#header a:hover, #header ul.menu li.selected a:hover {
     color:#fff;
 }
 

@@ -14,7 +14,9 @@
             <ul>
 			    <li><a href="{% url 'hasker_app:questions_list' %}">Home</a></li>
 			    <li><a href="{% url 'hasker_app:tags_list' %}">Tags</a></li>
-			    <li><a href="{% url 'hasker_app:user_questions' %}">Your questions</a></li>
+	            {% if user.is_authenticated %}
+			        <li><a href="{% url 'hasker_app:user_questions' %}">Your questions</a></li>
+	            {% endif %}
 			    <li><a href="{% url 'hasker_app:add_question' %}">Ask Question</a></li>
             </ul>
         </nav>

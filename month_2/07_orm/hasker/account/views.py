@@ -1,36 +1,7 @@
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.shortcuts import render
-
-from .forms import LoginForm
-
-
-# def user_login(request):
-#     if request.method == 'POST':
-#         login_form = LoginForm(request.POST)
-#         if login_form.is_valid():
-#             clean_data = login_form.cleaned_data
-#             user = authenticate(
-#                     request,
-#                     username=clean_data['username'],
-#                     password=clean_data['password'],
-#             )
-#             if user is not None:
-#                 if user.is_active:
-#                     login(request, user)
-#                     return HttpResponse('Authenticated successfully!')
-#                 else:
-#                     return HttpResponse('Disabled account!')
-#             else:
-#                 return HttpResponse('Invalid login!')
-#     else:
-#         login_form = LoginForm()
-#     return render(
-#             request,
-#             'account/login.html',
-#             {'login_form': login_form}
-#     )
+from django.urls import reverse_lazy
 
 
 @login_required
@@ -46,8 +17,22 @@ def profile(request):
 def questions_of_user(request):
     return render(
             request,
-            'hasker_app/user_questions_list.html',
+            'hasker_app/question/user_questions_list.html',
             {'section': 'my_questions'}
 
     )
 
+
+# to solve problem with: django.urls.exceptions.NoReverseMatch: Reverse for 'password_change_done' not found.
+# 'password_change_done' is not a valid view function or pattern name.
+# the problem is that I added namespace, solution is to override all future ClassViews wich use success_urls
+class PassChange(PasswordChangeView):
+    success_url = reverse_lazy('account:password_change_done')
+
+
+class PassResetView(PasswordResetView):
+    success_url = reverse_lazy('account:password_reset_done')
+
+
+class PassResetConfirmView(PasswordResetConfirmView):
+    success_url = reverse_lazy('account:password_reset_complete')
