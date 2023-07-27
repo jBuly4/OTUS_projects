@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('account/', include('account.urls')),
     path('hasker/', include('hasker_app.urls', namespace='hasker_app')),
 ]
