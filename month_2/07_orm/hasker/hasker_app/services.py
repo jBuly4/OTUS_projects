@@ -4,6 +4,7 @@ from typing import List
 # import django.forms
 # from django import forms
 from django.db import models
+from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -81,3 +82,19 @@ def _search(cls: models.Model, input_query: str, tag_search: bool = False) -> mo
         ).filter(rank__gte=0.3).order_by('-rank')
 
     return results.order_by('-rating', '-publish')
+
+
+def get_user_question(cls: models.Model, username: str) -> models.QuerySet:
+    """
+    Get all users' questions.
+    :param cls: model object
+    :param username: username
+    :return: queryset with questions asked by user
+    """
+    try:
+        user_id = get_object_or_404(User, username=username)
+        user_questions = cls.published.filter(author=user_id)
+    except Http404:
+        user_questions = cls.objects.none()
+
+    return user_questions

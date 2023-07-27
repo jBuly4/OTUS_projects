@@ -8,7 +8,31 @@
 </head>
 <body>
 	<div id="header">
-		<span class="logo">Hasker</span>
+		<span class="logo"><a href="{% url 'hasker_app:questions_list' %}">HaSKER</a></span>
+		{% if request.user.is_authenticated %}
+		<ul class="menu">
+			<li {% if section == 'profile' %} class="selected"{% endif %}>
+				<a href="{% url 'account:profile' %}">My profile</a>
+			</li>
+			<li {% if section == 'questions' %} class="selected" {% endif %}>
+				<a href="{% url 'hasker_app:questions_list' %}">Questions</a>
+			</li>
+			<li {% if section == 'my_questions' %} class="selected" {% endif %}>
+				<a href="{% url 'hasker_app:user_questions' %}">My questions</a>
+			</li>
+			<li {% if section == 'tags' %} class="selected" {% endif %}>
+				<a href="{% url 'hasker_app:tags_list' %}">Tags</a>
+			</li>
+		</ul>
+		{% endif %}
+		<span class="user">
+			{% if request.user.is_authenticated %}
+				Hello {{ request.user.first_name|default:request.user.username }},
+				<a href="{% url 'account:logout' %}">Logout</a>
+			{% else %}
+				<a href="{% url 'account:login' %}">Log-in</a>
+			{% endif %}
+		</span>
 	</div>
 	<div id="content">
 		{% block content %}

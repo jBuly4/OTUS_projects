@@ -1,0 +1,53 @@
+{% extends 'hasker_app/base.html' %}
+
+{% block title %} Hasker {% endblock %}
+
+{% block content %}
+	<h1>Hasker</h1>
+	{% if user_questions|length == 0 %}
+		No questions asked by you has been found!
+	{% else %}
+			{% with user_questions|length as total_results %}
+				Found {{ total_results }} result{{ total_results|pluralize }}
+			{% endwith %}
+			{% for question in user_questions %}
+				<div class="question-summary">
+					<div class="short-post-summary" data-post-id="76732931" data-post-type-id="1">
+					    <div class="s-post-summary--stats js-post-summary-stats">
+					        <div class="s-post-summary--stats-item s-post-summary--stats-item__emphasized" title="Score of votes">
+					            <span class="s-post-summary--stats-item-number">{{ question.rating }}</span>
+					            <span class="s-post-summary--stats-item-unit">votes</span>
+					        </div>
+					        <div class="s-post-summary--stats-item  " title="Number of answers">
+					            <span class="s-post-summary--stats-item-number">{{ question.answer_count }}</span>
+					            <span class="s-post-summary--stats-item-unit">answers</span>
+					        </div>
+					        <div class="s-post-summary--stats-item " title="Number of views">
+					            <span class="s-post-summary--stats-item-number">{{ question.views }}</span>
+					            <span class="s-post-summary--stats-item-unit">views</span>
+					        </div>
+					    </div>
+			        </div>
+				</div>
+				<div class="question-details">
+					<h2>
+					<a href="{{ question.get_absolute_url }}">
+						{{ question.title }}
+					</a>
+					</h2>
+					<p class="date">
+						Published by {{ question.author }} at {{ question.publish }}
+					</p>
+					{{ question.body | truncatewords:10|linebreaks }}
+					<div class="tags-wrapper">
+					    {% for tag in question.tags.all %}
+					        <a class="post-tag flex--item mt0"
+					           href="{% url "hasker_app:questions_list_by_tag" tag.title %}"
+					           title="Get all questions with {{ tag.title }}">{{ tag.title }}</a>
+					    {% endfor %}
+					</div>
+				</div>
+			{% endfor %}
+	{% endif %}
+	{% include "pagination.html" with page=user_questions %}
+{% endblock %}

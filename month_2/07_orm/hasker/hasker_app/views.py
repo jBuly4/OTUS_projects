@@ -5,7 +5,8 @@ from django.shortcuts import render, get_object_or_404
 
 from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
-from .services import get_questions_published, get_similar_published_questions, increase_views, _search
+from .services import get_questions_published, get_similar_published_questions, increase_views, _search, \
+    get_user_question
 
 
 def questions_list(request, tag_title=None):
@@ -185,6 +186,29 @@ def question_search(request):
                 'search_form': search_form,
                 'query': query,
                 'results': res
+            }
+    )
+
+
+def user_questions(request):
+    questions = get_user_question(PostQuestion, request.user.username)
+    questions = questions.annotate(answer_count=Count('post_answer'))
+
+    paginator = Paginator(questions, 20)
+    page_number = request.GET.get('page', 1)
+    try:
+        res = paginator.page(page_number)
+    except PageNotAnInteger:
+        res = paginator.page(1)
+    except EmptyPage:
+        res = paginator.page(paginator.num_pages)
+
+
+    return render(
+            request,
+            'hasker_app/question/user_questions_list.html',
+            {
+                'user_questions': res,
             }
     )
 
