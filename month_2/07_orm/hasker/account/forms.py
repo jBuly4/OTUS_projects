@@ -25,6 +25,14 @@ class UserRegistrationForm(forms.ModelForm):
 
         return clean_data['password_repeat']
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Email already used!')
+
+        return email
+
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
@@ -36,3 +44,13 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+
+    def clean_email(self):
+        """Forbid to use email of other user."""
+        email = self.cleaned_data['email']
+        query = User.objects.exclude(id=self.instance.id).filter(email=email)
+
+        if query.exists():
+            raise forms.ValidationError('Email already used!')
+
+        return email
