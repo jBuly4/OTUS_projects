@@ -12,13 +12,13 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = PostQuestion
-        fields = ['title', 'body', 'tags', 'author', 'status']
+        fields = ['title', 'body', 'tags', 'status']
 
 
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = PostAnswer
-        fields = ['body', 'author', 'status']
+        fields = ['body', 'status']
 
 
 class SearchForm(forms.Form):

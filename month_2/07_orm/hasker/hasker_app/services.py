@@ -98,3 +98,18 @@ def get_user_question(cls: models.Model, username: str) -> models.QuerySet:
         user_questions = cls.objects.none()
 
     return user_questions
+
+
+def get_user_id(username: str, cls: models.Model = User) -> int:
+    """
+    Get user id.
+    :param cls: User model object
+    :param username: username from request
+    :return: id
+    """
+    try:
+        user_id = get_object_or_404(cls, username=username)
+    except Http404:
+        user_id = None
+
+    return user_id

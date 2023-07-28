@@ -3,10 +3,14 @@
 {% block title %}Add question{% endblock %}
 
 {% block content %}
-	{% if question %}
-		<h2>Your question has been added</h2>
-		<p><a href="{{ question.get_absolute_url }}">Back to the question</a></p>
+	{% if request.user.is_authenticated %}
+		{% if question %}
+			<h2>Your question has been added</h2>
+			<p><a href="{{ question.get_absolute_url }}">Back to the question</a></p>
+		{% else %}
+			{% include 'hasker_app/question/includes/add_question_form.html' %}
+		{% endif %}
 	{% else %}
-		{% include 'hasker_app/question/includes/add_question_form.html' %}
+		<h2>To ask a question, please <a href="{% url 'account:login' %}">log-in</a>!</h2>
 	{% endif %}
 {% endblock %}

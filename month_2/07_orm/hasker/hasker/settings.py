@@ -142,4 +142,5 @@ LOGIN_REDIRECT_URL = 'account:profile'
 LOGIN_URL = 'account:login'
 LOGOUT_URL = 'account:logout'
 
+# don't forget to add email in User model. If there is no email, then no mail going to be sent
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

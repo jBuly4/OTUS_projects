@@ -17,6 +17,9 @@
 			<li {% if section == 'questions' %} class="selected" {% endif %}>
 				<a href="{% url 'hasker_app:questions_list' %}">Questions</a>
 			</li>
+			<li {% if section == 'ask_question' %} class="selected" {% endif %}>
+				<a href="{% url 'hasker_app:add_question' %}">Ask question</a>
+			</li>
 			<li {% if section == 'my_questions' %} class="selected" {% endif %}>
 				<a href="{% url 'hasker_app:user_questions' %}">My questions</a>
 			</li>

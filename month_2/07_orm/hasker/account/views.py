@@ -22,6 +22,15 @@ def questions_of_user(request):
 
     )
 
+@login_required
+def ask_questions(request):
+    return render(
+            request,
+            'hasker_app/question/add_question.html.html',
+            {'section': 'ask_question'}
+
+    )
+
 
 # to solve problem with: django.urls.exceptions.NoReverseMatch: Reverse for 'password_change_done' not found.
 # 'password_change_done' is not a valid view function or pattern name.

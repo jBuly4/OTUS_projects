@@ -32,7 +32,7 @@
 	{% for answer in answers %}
 		<div class="answer">
 			<p class="info">
-				Answer for {{ forloop.counter }} by {{ answer.author.username }}
+				Answer №{{ forloop.counter }} by {{ answer.author.username }}
 				{{ answer.created }}
 			</p>
 			{{ answer.body|linebreaks }}
@@ -40,6 +40,7 @@
 	{% empty %}
 		<p>No answers yet!</p>
 	{% endfor %}
-
-	{% include 'hasker_app/question/includes/add_answer_form.html' %}
+	{% if request.user.is_authenticated %}
+		{% include 'hasker_app/question/includes/add_answer_form.html' %}
+	{% endif %}
 {% endblock %}

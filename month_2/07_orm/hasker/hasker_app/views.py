@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
 from .services import get_questions_published, get_similar_published_questions, increase_views, _search, \
-    get_user_question
+    get_user_question, get_user_id
 
 
 def questions_list(request, tag_title=None):
@@ -77,13 +77,20 @@ def question_detail(request, year, month, day, question_slug):
 
 def add_question(request):
     question = None
+    user_id = get_user_id(request.user.username)
+
+    if not request.user.is_authenticated and not user_id:
+        return render(
+                request,
+                'registration/login.html',
+        )
 
     if request.POST:
         question_form = QuestionForm(data=request.POST)
         if question_form.is_valid():
             question = question_form.save(commit=False)
             tags_input = question_form.cleaned_data['tags']
-            tags = [tag.rstrip() for tag in tags_input.split(',')]
+            tags = [tag.rstrip() for tag in tags_input.split(',') if tag != '']
 
             if len(tags) > 3:
                 question_form.add_error('tags', 'You can add up to 3 tags only!')
@@ -94,6 +101,7 @@ def add_question(request):
                 )
 
             question.generate_slug()
+            question.author = user_id
             question.save()
             for tag in tags:
                 tag_to_add, existed = Tag.objects.get_or_create(title=tag)
