@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -44,6 +45,16 @@ class PostQuestion(models.Model):
             related_name='question'
     )
     views = models.PositiveIntegerField(default=0)
+    users_like = models.ManyToManyField(
+            settings.AUTH_USER_MODEL,
+            related_name='questions_liked',
+            blank=True
+    )
+    users_dislike = models.ManyToManyField(
+            settings.AUTH_USER_MODEL,
+            related_name='questions_disliked',
+            blank=True
+    )
 
     objects = models.Manager()
     published = PublishedManager()
@@ -68,6 +79,12 @@ class PostQuestion(models.Model):
 
     def generate_slug(self):
         self.slug = slugify(self.title)
+
+    def increase_rating(self):
+        self.rating += 1
+
+    def decrease_rating(self):
+        self.rating -= 1
 
     def __str__(self):
         return self.title
@@ -98,19 +115,35 @@ class PostAnswer(models.Model):
             on_delete=models.CASCADE,
             related_name='post_answer'
     )
+    users_like = models.ManyToManyField(
+            settings.AUTH_USER_MODEL,
+            related_name='answers_liked',
+            blank=True
+    )
+    users_dislike = models.ManyToManyField(
+            settings.AUTH_USER_MODEL,
+            related_name='answers_disliked',
+            blank=True
+    )
     objects = models.Manager()
     published = PublishedManager()
 
     # TODO: add rating field and ordering by it. Rating is a model.
 
     class Meta:
-        ordering = ['rating', '-publish']
+        ordering = ['-rating', '-publish']
         indexes = [
             models.Index(fields=['-publish'])
         ]
 
     def get_question_title(self):
         return self.question_post.title
+
+    def increase_rating(self):
+        self.rating += 1
+
+    def decrease_rating(self):
+        self.rating -= 1
 
     def __str__(self):
         return f'Answer for {self.get_question_title()} by {self.author.username}'

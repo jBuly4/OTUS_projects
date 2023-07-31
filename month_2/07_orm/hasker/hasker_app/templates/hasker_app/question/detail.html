@@ -3,19 +3,50 @@
 {% block title %} {{ question.title }} {% endblock %}
 
 {% block content %}
-	<h1>{{ question.title }}</h1>
-	<p class="date">
-		Published by {{ question.author }} at {{ question.publish }}
-	</p>
-	<div class="tags-wrapper">
-		{% for tag in question.tags.all %}
-			<a class="post-tag flex--item mt0"
-			   href="{% url "hasker_app:questions_list_by_tag" tag.title %}"
-			   title="Get all questions with {{ tag.title }}">{{ tag.title }}</a>
-		{% endfor %}
+<div class="content-votes-wrapper">
+    <div class="votes">
+        <button class="vote-button upvote" data-id="{{ question.id }}" data-action="question_like" title="like this question">▲</button>
+        <span class="vote-count">{{ question.rating }}</span>
+        <button class="vote-button downvote" data-id="{{ question.id }}" data-action="question_dislike" title="dislike this question">▼</button>
+    </div>
+	<div class="content-section">
+		<h1>{{ question.title }}</h1>
+		<p class="date">
+			Published by {{ question.author }} at {{ question.publish }}
+		</p>
+		<div class="tags-wrapper">
+			{% for tag in question.tags.all %}
+				<a class="post-tag flex--item mt0"
+				   href="{% url "hasker_app:questions_list_by_tag" tag.title %}"
+				   title="Get all questions with {{ tag.title }}">{{ tag.title }}</a>
+			{% endfor %}
+		</div>
+		{{ question.body|linebreaks }}
 	</div>
-	{{ question.body|linebreaks }}
+</div>
 
+	{% with answers.count as total_answer_number %}
+		<h2>{{ total_answer_number }} answer{{ total_answer_number|pluralize }}</h2>
+	{% endwith %}
+
+	{% for answer in answers %}
+	    <div class="content-votes-wrapper">
+	        <div class="votes">
+	            <button class="vote-button upvote" data-id="{{ answer.id }}" data-action="answer_like" title="like this answer">▲</button>
+	            <span class="vote-count">{{ answer.rating }}</span>
+	            <button class="vote-button downvote" data-id="{{ answer.id }}" data-action="answer_dislike" title="dislike this answer">▼</button>
+	        </div>
+	        <div class="answer content-section">
+					<p class="info">
+						Answer №{{ forloop.counter }} by {{ answer.author.username }}
+						{{ answer.created }}
+					</p>
+					{{ answer.body|linebreaks }}
+	        </div>
+	    </div>
+	{% empty %}
+		<p>No answers yet!</p>
+	{% endfor %}
 	<h2>Similar questions</h2>
 	{% for qst in similar_questions %}
 		<p>
@@ -24,23 +55,56 @@
 		{% empty %}
 		There are no similar questions yet!
 	{% endfor %}
-
-	{% with answers.count as total_answer_number %}
-		<h2>{{ total_answer_number }} answer{{ total_answer_number|pluralize }}</h2>
-	{% endwith %}
-
-	{% for answer in answers %}
-		<div class="answer">
-			<p class="info">
-				Answer №{{ forloop.counter }} by {{ answer.author.username }}
-				{{ answer.created }}
-			</p>
-			{{ answer.body|linebreaks }}
-		</div>
-	{% empty %}
-		<p>No answers yet!</p>
-	{% endfor %}
 	{% if request.user.is_authenticated %}
 		{% include 'hasker_app/question/includes/add_answer_form.html' %}
 	{% endif %}
+	{% block domready %}
+		const options = {
+	    method: 'POST',
+	    headers: {'X-CSRFToken': csrftoken},
+	    mode: 'same-origin'
+	};
+
+		const buttons = document.querySelectorAll('.vote-button');
+		buttons.forEach(button => {
+		    button.addEventListener('click', function(e){
+		        e.preventDefault();
+		        var likeButton = this;
+		        var action = likeButton.dataset.action;
+		        var id = likeButton.dataset.id;
+		        var formData = new FormData();
+		        formData.append('id', id);
+		        formData.append('action', action);
+		        options['body'] = formData;
+		        var url = "";
+		        if (action === 'question_like' || action === 'question_dislike') {
+		            url = "{% url 'hasker_app:question_like' %}";
+		        } else if (action === 'answer_like' || action === 'answer_dislike') {
+		            url = "{% url 'hasker_app:answer_like' %}";
+		        }
+		        fetch(url, options)
+		        .then(response => response.json())
+		        .then(data => {
+					if(data['status'] === 'auth') {
+						var loginUrl = "{% url 'account:login' %}";
+                        loginUrl += '?next=' + encodeURIComponent(window.location.href);
+                        window.location.href = loginUrl;
+					}
+		            else if(data['status'] === 'ok') {
+		                var previousAction = likeButton.dataset.action;
+		                var likeCount = likeButton.closest('.content-votes-wrapper').querySelector('span.vote-count');
+		                var totalLikes = parseInt(likeCount.textContent);
+		                if (previousAction === 'question_like' || previousAction === 'question_dislike') {
+		                    likeCount.textContent = previousAction === 'question_like' ? totalLikes + 1 : totalLikes - 1;
+		                } else if (previousAction === 'answer_like' || previousAction === 'answer_dislike') {
+		                    likeCount.textContent = previousAction === 'answer_like' ? totalLikes + 1 : totalLikes - 1;
+		                }
+		            } else {
+						alert(data['status']);
+					}
+		        });
+		    });
+		});
+
+	{% endblock %}
 {% endblock %}

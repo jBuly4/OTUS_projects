@@ -52,30 +52,6 @@ header a:hover {
     color:#fff;
 }
 
-/*.main {*/
-/*    display: flex;*/
-/*    justify-content: space-around;*/
-/*    align-items: flex-start;*/
-/*    flex-wrap: wrap;*/
-/*    margin: 0 auto;*/
-/*    width: 90%;*/
-/*}*/
-
-/*#content { */
-/*    !*float:left;*!*/
-/*    width:50%;*/
-/*    padding:0 0 0 30px;*/
-/*    !*margin: 0 auto;*!*/
-/*}*/
-
-/*#sidebar { */
-/*    float:right;*/
-/*    width:30%;*/
-/*    padding:10px;*/
-/*    background:#efefef; */
-/*    height:100%;*/
-/*}*/
-
 .main {
     display: flex;
     justify-content: flex-start;
@@ -289,4 +265,40 @@ input[type=submit] {
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
+}
+
+/*votes*/
+/* Content and Votes Styles */
+.content-votes-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.votes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+}
+
+.vote-count {
+    font-size: 16px;
+    color: #333;
+}
+
+.content-section {
+    flex-grow: 1;
 }

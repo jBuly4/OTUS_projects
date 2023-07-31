@@ -1,5 +1,5 @@
 """This module provides functionality for database queries to avoid that logic inside views."""
-from typing import List
+from typing import Dict, List
 
 # import django.forms
 # from django import forms
@@ -20,6 +20,52 @@ def get_questions_published(cls: models.Model) -> models.QuerySet:
     """
     items = cls.published.all()
     return items
+
+
+def check_user_likes(obj: models.QuerySet, user: User, like: bool = False) -> bool:
+    """Check user liked or disliked question or answer."""
+    if like:
+        return obj.users_like.filter(id=user.id).exists()
+    return obj.users_dislike.filter(id=user.id).exists()
+
+
+def rate(cls: models.Model, obj_id: int, user: User, like: bool = False) -> Dict:
+    """
+    Get published question/answer by its id and rate it.
+    :param cls: model object
+    :param obj_id: id of object
+    :param user: user object
+    :param like: True for increase, False for decrease rating
+    :return: status of operation
+    """
+    try:
+        object_to_be_rated = cls.published.get(id=obj_id)
+        already_liked = object_to_be_rated.users_like.filter(id=user.id).exists()
+        already_disliked = object_to_be_rated.users_dislike.filter(id=user.id).exists()
+
+        if like:
+            if already_liked:
+                return {'status': 'Already liked', 'error': True}
+
+            if already_disliked:
+                object_to_be_rated.users_dislike.remove(user)
+            object_to_be_rated.users_like.add(user)
+            object_to_be_rated.increase_rating()
+
+        else:
+            if already_disliked:
+                return {'status': 'Already disliked', 'error': True}
+
+            if already_liked:
+                object_to_be_rated.users_like.remove(user)
+            object_to_be_rated.users_dislike.add(user)
+            object_to_be_rated.decrease_rating()
+
+        object_to_be_rated.save()
+        return {'status': 'ok', 'error': False}
+
+    except cls.DoesNotExist:
+        return {'status': 'DoesNotExist', 'error': True}
 
 
 def get_similar_published_questions(cls: models.Model, tags_ids: List, question_id: int) -> models.QuerySet:

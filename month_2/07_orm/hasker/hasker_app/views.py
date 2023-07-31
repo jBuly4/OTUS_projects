@@ -1,12 +1,14 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404
 
 from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
 from .services import get_questions_published, get_similar_published_questions, increase_views, _search, \
-    get_user_question, get_user_id
+    get_user_question, get_user_id, rate
 
 
 def questions_list(request, tag_title=None):
@@ -219,6 +221,46 @@ def user_questions(request):
                 'user_questions': res,
             }
     )
+
+
+@require_POST
+def make_like(request):
+    object_id = request.POST.get('id')
+    action = request.POST.get('action')
+
+    if not request.user.is_authenticated:
+        status = {'status': 'auth'}
+        print(f'returning {status}')
+        return JsonResponse(status)
+
+    if object_id and action:
+        if action == 'question_like':
+            status = rate(
+                    cls=PostQuestion,
+                    obj_id=object_id,
+                    user=request.user,
+                    like=True
+            )
+        elif action == 'question_dislike':
+            status = rate(
+                    cls=PostQuestion,
+                    obj_id=object_id,
+                    user=request.user,
+            )
+        elif action == 'answer_like':
+            status = rate(
+                    cls=PostAnswer,
+                    obj_id=object_id,
+                    user=request.user,
+                    like=True
+            )
+        else:
+            status = rate(
+                    cls=PostAnswer,
+                    obj_id=object_id,
+                    user=request.user,
+            )
+    return JsonResponse(status)
 
 
 # TODO: non-authenticated users can see all questions and answers
