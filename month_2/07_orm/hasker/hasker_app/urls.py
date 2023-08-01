@@ -14,7 +14,8 @@ urlpatterns = [
     path('question/add/', views.add_question, name='add_question'),
     path('question/like/', views.make_like, name='question_like'),
     path('answer/like/', views.make_like, name='answer_like'),
+    path('answer/correct/', views.make_like, name='make_correct'),
     path('question/my/', views.user_questions, name='user_questions'),
-    path('<int:question_id>/tags/', views.add_answer, name='add_answer'),
+    path('<int:question_id>/add_answer/', views.add_answer, name='add_answer'),
     path('search/', views.question_search, name='question_search'),
 ]

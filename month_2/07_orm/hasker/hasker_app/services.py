@@ -68,6 +68,42 @@ def rate(cls: models.Model, obj_id: int, user: User, like: bool = False) -> Dict
         return {'status': 'DoesNotExist', 'error': True}
 
 
+def check_question_author(question_model: models.Model, answer_id: str, user_id: int) -> bool | None:
+    """Check if outer user is the author of question."""
+    author_id = question_model.published.filter(post_answer__id=answer_id)[0].author.id
+
+    return author_id == user_id
+
+
+def make_correct(cls: models.Model, obj_id: str, correct: bool = False) -> Dict:
+    """
+    Mark answer as correct by question author.
+    :param cls: model object
+    :param obj_id: id of object
+    :param correct: status for answer
+    :return: status of operation
+    """
+    status = {}
+    try:
+        answer = cls.published.get(id=obj_id)
+        if correct:
+            try:
+                current_correct_answer = cls.published.get(question_post=answer.question_post, answer_is_correct=True)
+                if current_correct_answer.id != answer.id:
+                    current_correct_answer.answer_is_correct = False
+                    current_correct_answer.save()
+                    status['old_id'] = current_correct_answer.id
+            except cls.DoesNotExist:
+                pass
+        answer.answer_is_correct = correct
+        answer.save()
+        status.update({'status': 'ok', 'error': False})
+        return status
+
+    except cls.DoesNotExist:
+        return {'status': 'DoesNotExist', 'error': True}
+
+
 def get_similar_published_questions(cls: models.Model, tags_ids: List, question_id: int) -> models.QuerySet:
     """
     Get all similar published questions.

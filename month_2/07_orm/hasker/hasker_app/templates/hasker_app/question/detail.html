@@ -37,11 +37,28 @@
 	            <button class="vote-button downvote" data-id="{{ answer.id }}" data-action="answer_dislike" title="dislike this answer">▼</button>
 	        </div>
 	        <div class="answer content-section">
+		        <span class="star-symbol" style="display: {% if answer.answer_is_correct %}inline{% else %}none{% endif %};">
+			        <p class="info">
+			            ⭐ Marked by {{ question.author.username }} as correct answer.
+			        </p>
+		        </span>
 					<p class="info">
 						Answer №{{ forloop.counter }} by {{ answer.author.username }}
 						{{ answer.created }}
 					</p>
 					{{ answer.body|linebreaks }}
+
+		            {% if request.user.id == question.author.id %}
+			            <div class="star">
+				            <button class="star-button" data-id="{{ answer.id }}" data-action="{% if answer.answer_is_correct %}un{% endif %}set_correct" title="Mark answer">
+				            {% if answer.answer_is_correct %}
+					            Unstar
+					        {% else %}
+					            Star
+				            {% endif %}
+				            </button>
+			            </div>
+		            {% endif %}
 	        </div>
 	    </div>
 	{% empty %}
@@ -55,56 +72,118 @@
 		{% empty %}
 		There are no similar questions yet!
 	{% endfor %}
-	{% if request.user.is_authenticated %}
-		{% include 'hasker_app/question/includes/add_answer_form.html' %}
-	{% endif %}
-	{% block domready %}
-		const options = {
-	    method: 'POST',
-	    headers: {'X-CSRFToken': csrftoken},
-	    mode: 'same-origin'
-	};
 
-		const buttons = document.querySelectorAll('.vote-button');
-		buttons.forEach(button => {
-		    button.addEventListener('click', function(e){
-		        e.preventDefault();
-		        var likeButton = this;
-		        var action = likeButton.dataset.action;
-		        var id = likeButton.dataset.id;
-		        var formData = new FormData();
-		        formData.append('id', id);
-		        formData.append('action', action);
-		        options['body'] = formData;
-		        var url = "";
-		        if (action === 'question_like' || action === 'question_dislike') {
-		            url = "{% url 'hasker_app:question_like' %}";
-		        } else if (action === 'answer_like' || action === 'answer_dislike') {
-		            url = "{% url 'hasker_app:answer_like' %}";
-		        }
-		        fetch(url, options)
-		        .then(response => response.json())
-		        .then(data => {
-					if(data['status'] === 'auth') {
-						var loginUrl = "{% url 'account:login' %}";
-                        loginUrl += '?next=' + encodeURIComponent(window.location.href);
-                        window.location.href = loginUrl;
-					}
-		            else if(data['status'] === 'ok') {
-		                var previousAction = likeButton.dataset.action;
-		                var likeCount = likeButton.closest('.content-votes-wrapper').querySelector('span.vote-count');
-		                var totalLikes = parseInt(likeCount.textContent);
-		                if (previousAction === 'question_like' || previousAction === 'question_dislike') {
-		                    likeCount.textContent = previousAction === 'question_like' ? totalLikes + 1 : totalLikes - 1;
-		                } else if (previousAction === 'answer_like' || previousAction === 'answer_dislike') {
-		                    likeCount.textContent = previousAction === 'answer_like' ? totalLikes + 1 : totalLikes - 1;
-		                }
-		            } else {
-						alert(data['status']);
-					}
-		        });
-		    });
-		});
+		{% if request.user.is_authenticated %}
+			{% include 'hasker_app/question/includes/add_answer_form.html' %}
+		{% endif %}
+	<div class="pagination">
+		{% include "pagination.html" with page=answers %}
+	</div>
+{% endblock %}
 
-	{% endblock %}
+{% block domready %}
+const options = {
+    method: 'POST',
+    headers: {'X-CSRFToken': csrftoken},
+    mode: 'same-origin'
+};
+
+{# Adding event listeners to vote buttons #}
+const voteButtons = document.querySelectorAll('.vote-button');
+voteButtons.forEach(button => {
+    button.addEventListener('click', rateAction);
+});
+
+{# Adding event listeners to star buttons #}
+const starButtons = document.querySelectorAll('.star-button');
+starButtons.forEach(button => {
+    button.addEventListener('click', starAction);
+});
+
+{# function to handle vote actions #}
+function rateAction(e) {
+    e.preventDefault();
+    var actionButton = this;
+    var action = actionButton.dataset.action;
+    var id = actionButton.dataset.id;
+    var formData = new FormData();
+    formData.append('id', id);
+    formData.append('action', action);
+    options['body'] = formData;
+    var url = "";
+    if (action === 'question_like' || action === 'question_dislike') {
+        url = "{% url 'hasker_app:question_like' %}";
+    } else if (action === 'answer_like' || action === 'answer_dislike') {
+        url = "{% url 'hasker_app:answer_like' %}";
+    }
+    fetch(url, options)
+    .then(response => response.json())
+    .then(data => {
+        if(data['status'] === 'auth') {
+            var loginUrl = "{% url 'account:login' %}";
+            loginUrl += '?next=' + encodeURIComponent(window.location.href);
+            window.location.href = loginUrl;
+        }
+        else if(data['status'] === 'ok') {
+            var previousAction = actionButton.dataset.action;
+            var voteCount = actionButton.closest('.content-votes-wrapper').querySelector('span.vote-count');
+            var totalVotes = parseInt(voteCount.textContent);
+            if (previousAction === 'question_like' || previousAction === 'question_dislike') {
+                voteCount.textContent = previousAction === 'question_like' ? totalVotes + 1 : totalVotes - 1;
+            } else if (previousAction === 'answer_like' || previousAction === 'answer_dislike') {
+                voteCount.textContent = previousAction === 'answer_like' ? totalVotes + 1 : totalVotes - 1;
+            }
+        } else {
+            alert(data['status']);
+        }
+    });
+}
+
+{# function to handle star actions #}
+function starAction(e) {
+    e.preventDefault();
+    var starButton = this;
+    var action = starButton.dataset.action;
+    var id = starButton.dataset.id;
+    var formData = new FormData();
+    formData.append('id', id);
+    formData.append('action', action);
+    options['body'] = formData;
+    var url = "{% url 'hasker_app:make_correct' %}";
+    fetch(url, options)
+    .then(response => response.json())
+    .then(data => {
+        if(data['status'] === 'auth') {
+            var loginUrl = "{% url 'account:login' %}";
+            loginUrl += '?next=' + encodeURIComponent(window.location.href);
+            window.location.href = loginUrl;
+        }
+        else if(data['status'] === 'ok') {
+            starButton.dataset.action = action === 'set_correct' ? 'unset_correct' : 'set_correct';
+            starButton.textContent = action === 'set_correct' ? 'Unstar' : 'Star';
+            starButton.title = action === 'set_correct' ? 'Unmark answer' : 'Mark answer';
+            var star = starButton.closest('.answer').querySelector('.star-symbol');
+
+			var star = starButton.closest('.answer').querySelector('.star-symbol');
+			if (star) {
+				star.style.display = action === 'set_correct' ? 'inline' : 'none';
+			}
+
+			if(data['old_id']){
+                var old_correct_button = document.querySelector(`.star-button[data-id="${data['old_id']}"]`);
+                if(old_correct_button){
+                    old_correct_button.dataset.action = 'set_correct';
+                    old_correct_button.textContent = 'Star';
+                    old_correct_button.title = 'Mark answer';
+                    let old_star = old_correct_button.closest('.answer').querySelector('.star-symbol');
+                    if (old_star) {
+                        old_star.style.display = 'none';
+                    }
+                }
+            }
+        } else {
+            alert('Operation ' + data['status']);
+        }
+    });
+}
 {% endblock %}

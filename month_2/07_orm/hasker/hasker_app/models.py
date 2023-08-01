@@ -125,6 +125,7 @@ class PostAnswer(models.Model):
             related_name='answers_disliked',
             blank=True
     )
+    answer_is_correct = models.BooleanField(blank=True, default=False)
     objects = models.Manager()
     published = PublishedManager()
 

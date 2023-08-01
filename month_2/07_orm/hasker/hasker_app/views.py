@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
 from .services import get_questions_published, get_similar_published_questions, increase_views, _search, \
-    get_user_question, get_user_id, rate
+    get_user_question, get_user_id, rate, make_correct, check_question_author
 
 
 def questions_list(request, tag_title=None):
@@ -54,7 +54,8 @@ def question_detail(request, year, month, day, question_slug):
     )
     question.refresh_from_db()
 
-    answers = question.post_answer.filter(status=PostAnswer.Status.PUBLISHED)
+    answers_lst = question.post_answer.filter(status=PostAnswer.Status.PUBLISHED) \
+        .order_by('-rating', '-answer_is_correct', '-publish')
     answer_form = AnswerForm()
 
     # similar questions
@@ -64,6 +65,14 @@ def question_detail(request, year, month, day, question_slug):
             question_tags_ids,
             question.id
     )
+    paginator = Paginator(answers_lst, 30)
+    page_number = request.GET.get('page', 1)
+    try:
+        answers = paginator.page(page_number)
+    except PageNotAnInteger:
+        answers = paginator.page(1)
+    except EmptyPage:
+        answers = paginator.page(paginator.num_pages)
 
     return render(
             request,
@@ -134,6 +143,7 @@ def add_answer(request, question_id):
     if answer_form.is_valid():
         answer = answer_form.save(commit=False)
         answer.question_post = question
+        answer.author = request.user
         answer.save()
 
     return render(
@@ -141,7 +151,7 @@ def add_answer(request, question_id):
             'hasker_app/question/add_answer.html',
             {
                 'question': question,
-                'tags': answer,
+                'answer': answer,
                 'answer_form': answer_form,
             }
     )
@@ -230,7 +240,6 @@ def make_like(request):
 
     if not request.user.is_authenticated:
         status = {'status': 'auth'}
-        print(f'returning {status}')
         return JsonResponse(status)
 
     if object_id and action:
@@ -254,12 +263,25 @@ def make_like(request):
                     user=request.user,
                     like=True
             )
-        else:
+        elif action == 'answer_dislike':
             status = rate(
                     cls=PostAnswer,
                     obj_id=object_id,
                     user=request.user,
             )
+        elif action == 'set_correct' and check_question_author(PostQuestion, object_id, request.user.id):
+            status = make_correct(
+                    cls=PostAnswer,
+                    obj_id=object_id,
+                    correct=True
+            )
+        elif action == 'unset_correct' and check_question_author(PostQuestion, object_id, request.user.id):
+            status = make_correct(
+                    cls=PostAnswer,
+                    obj_id=object_id
+            )
+        else:
+            status = {'status': 'unknown', 'error': True}
     return JsonResponse(status)
 
 
