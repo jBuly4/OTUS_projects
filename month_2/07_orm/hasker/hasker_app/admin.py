@@ -29,4 +29,3 @@ class TagAdmin(admin.ModelAdmin):
     list_filter = ['title']
     search_fields = ['title']
     ordering = ['title']
-

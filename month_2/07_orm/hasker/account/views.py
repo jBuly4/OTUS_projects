@@ -10,10 +10,14 @@ from .models import Profile
 
 @login_required
 def profile(request):
+    user_profile = Profile.objects.get(user=request.user)
     return render(
             request,
             'account/profile.html',
-            {'section': 'profile'}
+            {
+                'section': 'profile',
+                'user_profile': user_profile,
+            }
     )
 
 
@@ -96,8 +100,11 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
 
-    return render(request,
-                  'account/edit.html',
-                  {'user_form': user_form,
-                   'profile_form': profile_form}
+    return render(
+            request,
+            'account/edit.html',
+            {
+                'user_form': user_form,
+                'profile_form': profile_form
+            }
     )

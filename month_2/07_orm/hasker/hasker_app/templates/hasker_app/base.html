@@ -25,16 +25,19 @@
 		    <input type="text" name="query" placeholder="Search...">
 		    <input type="submit" value="Search" style="display: none">
 	    </form>
-        <div>
-            <img src="/path/to/avatar" alt="User avatar">
-	        {% if request.user.is_authenticated %}
+        <span class="user">
+			{% if request.user.is_authenticated %}
+				{% if request.user.profile.photo %}
+                <img src="{{ request.user.profile.photo.url }}" alt="Profile photo" class="profile-photo">
+                {% endif %}
+				Hello {{ request.user.first_name|default:request.user.username }},
 				<a href="{% url 'account:profile' %}">Profile</a>
 				<a href="{% url 'account:logout' %}">   Logout</a>
 			{% else %}
 				<a href="{% url 'account:login' %}">Log-in</a>
-		        <a href="{% url 'account:register' %}">   Register</a>
+				<a href="{% url 'account:register' %}">   Register</a>
 			{% endif %}
-        </div>
+		</span>
 
     </header>
 	<div class="main">

@@ -1,5 +1,4 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -32,10 +31,7 @@ def questions_list(request, tag_title=None):
     return render(
             request,
             'hasker_app/question/list.html',
-            {
-                'questions': questions,
-                'tag': tag,
-            }
+            {'questions': questions, 'tag': tag}
     )
 
 
@@ -223,7 +219,6 @@ def user_questions(request):
     except EmptyPage:
         res = paginator.page(paginator.num_pages)
 
-
     return render(
             request,
             'hasker_app/question/user_questions_list.html',
@@ -287,4 +282,3 @@ def make_like(request):
 
 # TODO: non-authenticated users can see all questions and answers
 # TODO: only authenticated users can tags and rate questions with answers
-

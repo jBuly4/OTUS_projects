@@ -1,0 +1,22 @@
+[flake8]
+exclude =
+    .git,
+    .gitignore,
+    *.pot,
+    *.py[co],
+    __pycache__,
+    venv,
+    .env,
+    hasker,
+    hasker_app/migrations,
+    hasker_app/templates,
+    hasker_app/static,
+    account/migrations,
+    account/templates,
+    account/static
+
+ignore=
+    E722,
+    E126
+
+max-line-length = 120

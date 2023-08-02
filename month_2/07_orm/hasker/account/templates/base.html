@@ -30,6 +30,9 @@
 		{% endif %}
 		<span class="user">
 			{% if request.user.is_authenticated %}
+				{% if user_profile.photo %}
+                <img src="{{ user_profile.photo.url }}" alt="Profile photo" class="profile-photo">
+                {% endif %}
 				Hello {{ request.user.first_name|default:request.user.username }},
 				<a href="{% url 'account:logout' %}">Logout</a>
 			{% else %}

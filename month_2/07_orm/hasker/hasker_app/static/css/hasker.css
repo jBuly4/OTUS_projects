@@ -309,3 +309,13 @@ input[type=submit] {
 .content-section {
     flex-grow: 1;
 }
+
+#header .user {
+    padding-top:4px;
+    color:#05a6f5;
+}
+
+.profile-photo {
+    width: 20px;
+    height: 20px;
+}
