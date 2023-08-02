@@ -11,6 +11,7 @@ urlpatterns = [
             '<int:year>/<int:month>/<int:day>/<slug:question_slug>',
             views.question_detail, name='question_detail'
     ),
+    path('questions/sort_by/<str:sort_by>/', views.questions_list, name='questions_list_sorted'),
     path('question/add/', views.add_question, name='add_question'),
     path('question/like/', views.make_like, name='question_like'),
     path('answer/like/', views.make_like, name='answer_like'),

@@ -3,7 +3,13 @@
 {% block title %} Hasker {% endblock %}
 
 {% block content %}
-	<h1>Hasker</h1>
+	<div style="display: flex; align-items: center; justify-content: center">
+    <h1>
+	    <a href="{% url 'hasker_app:questions_list_sorted' 'date' %}">New Question</a>
+        <span style="margin: 0 25px; padding: 20px">|</span>
+        <a href="{% url 'hasker_app:questions_list_sorted' 'rating' %}">Hot Questions</a>
+    </h1>
+	</div>
 	{% if tag %}
 	<h2>Questions tagged with "{{ tag.title }}"</h2>
 	{% endif %}
@@ -44,7 +50,6 @@
 			    {% endfor %}
 			</div>
 		</div>
-
 	{% endfor %}
 	{% include "pagination.html" with page=questions %}
 {% endblock %}

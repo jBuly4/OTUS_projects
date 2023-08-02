@@ -10,8 +10,15 @@ from .services import get_questions_published, get_similar_published_questions, 
     get_user_question, get_user_id, rate, make_correct, check_question_author
 
 
-def questions_list(request, tag_title=None):
+def questions_list(request, sort_by=None, tag_title=None):
     question_list = get_questions_published(PostQuestion)
+
+    if sort_by == 'date':
+        question_list = question_list.order_by('-publish')
+    elif sort_by == 'rating':
+        question_list = question_list.order_by('-rating', '-publish')
+    else:
+        pass
 
     tag = None
     if tag_title:
@@ -19,6 +26,7 @@ def questions_list(request, tag_title=None):
         question_list = question_list.filter(tags__in=[tag])
 
     question_list = question_list.annotate(answer_count=Count('post_answer'))
+
     paginator = Paginator(question_list, 20)
     page_number = request.GET.get('page', 1)
     try:
@@ -31,7 +39,10 @@ def questions_list(request, tag_title=None):
     return render(
             request,
             'hasker_app/question/list.html',
-            {'questions': questions, 'tag': tag}
+            {
+                'questions': questions,
+                'tag': tag
+            }
     )
 
 
