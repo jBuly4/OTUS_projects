@@ -23,7 +23,7 @@ def questions_list(request, sort_by=None, tag_title=None):
     tag = None
     if tag_title:
         tag = get_object_or_404(Tag, title=tag_title)
-        question_list = question_list.filter(tags__in=[tag])
+        question_list = question_list.filter(tags__in=[tag]).order_by('-rating', '-publish')
 
     question_list = question_list.annotate(answer_count=Count('post_answer'))
 

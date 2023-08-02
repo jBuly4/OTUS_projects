@@ -161,7 +161,7 @@ def _search(cls: models.Model, input_query: str, tag_search: bool = False) -> mo
         results = cls.published.annotate(
                 search=search_vector,
                 rank=SearchRank(search_vector, search_query)
-        ).filter(rank__gte=0.3).order_by('-rank')
+        ).filter(rank__gte=0.1).order_by('-rank')
 
     return results.order_by('-rating', '-publish')
 

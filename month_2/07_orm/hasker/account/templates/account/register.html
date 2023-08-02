@@ -12,4 +12,5 @@
 		{% csrf_token %}
 		<p><input type="submit" value="Create account"></p>
 	</form>
+	<p>You can edit your profile <a href="{% url 'account:edit' %}">here</a>. Don't forget to add your photo.</p>
 {% endblock %}

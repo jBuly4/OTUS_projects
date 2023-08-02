@@ -67,13 +67,13 @@ header a:hover {
 }
 
 #content {
-    width:70%;
+    width:80%;
     padding:0 0 0 30px;
 }
 
 #sidebar {
     float:right;
-    width:30%;
+    width:20%;
     padding:10px;
     background:#efefef;
     height:100%;
@@ -156,10 +156,12 @@ input[type=submit] {
 .answer:nth-child(even) {
     background:#efefef;
 }
-.answer .info {
+.answer .info .profile-photo {
     font-weight:bold;
     font-size:12px;
     color:#666;
+    width: 20px;
+    height: auto;
 }
 
 .question-summary {

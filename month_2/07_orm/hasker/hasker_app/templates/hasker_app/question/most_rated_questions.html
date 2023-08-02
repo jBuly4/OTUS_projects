@@ -2,7 +2,7 @@
 	{% for question in trending %}
 		<div class="trend-row">
 			<h3 class="trend flex--item mt0">{{ question.rating }}</h3>
-			<a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+			<a href="{{ question.get_absolute_url }}">{{ question.title | linebreaks }}</a>
 		</div>
 	{% endfor %}
 </div>

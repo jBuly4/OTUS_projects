@@ -66,12 +66,14 @@ def register(request):
             )
             new_user.save()
             Profile.objects.create(user=new_user)
+            messages.success(request, 'Register success! Your profile has been created!')
             return render(
                     request,
                     'account/register_done.html',
                     {'new_user': new_user}
             )
     else:
+        messages.info(request, 'Fill up the form to register!')
         user_form = UserRegistrationForm()
 
     return render(

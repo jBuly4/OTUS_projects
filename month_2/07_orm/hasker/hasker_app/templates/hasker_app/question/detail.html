@@ -11,8 +11,11 @@
     </div>
 	<div class="content-section">
 		<h1>{{ question.title }}</h1>
+			{% if question.author.profile.photo %}
+                <img src="{{ question.author.profile.photo.url }}" alt="Profile photo" class="profile-photo"> {{ question.author }}
+			{% endif %}
 		<p class="date">
-			Published by {{ question.author }} at {{ question.publish }}
+			Published at {{ question.publish }}
 		</p>
 		<div class="tags-wrapper">
 			{% for tag in question.tags.all %}
@@ -43,10 +46,19 @@
 			        </p>
 		        </span>
 					<p class="info">
-						Answer №{{ forloop.counter }} by {{ answer.author.username }}
-						{{ answer.created }}
+						Answer №{{ forloop.counter }}
 					</p>
+	                <p class="info">
+						{% if answer.author.profile.photo %}
+							<img src="{{ answer.author.profile.photo.url }}" alt="Profile photo" class="profile-photo">
+                        {% endif %}
+						{{ answer.author.username }}
+					</p>
+	                <p class="info">
+		                {{ answer.created }}
+	                </p>
 					{{ answer.body|linebreaks }}
+
 
 		            {% if request.user.id == question.author.id %}
 			            <div class="star">
