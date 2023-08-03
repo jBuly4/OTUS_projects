@@ -49,6 +49,9 @@ INSTALLED_APPS = [
 
     # local
     'hasker_app.apps.HaskerAppConfig',
+
+    # third-party
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -152,4 +155,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 

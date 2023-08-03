@@ -1,3 +1,5 @@
+import os
+
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Count
 from django.http import JsonResponse
@@ -8,6 +10,10 @@ from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
 from .services import get_questions_published, get_similar_published_questions, increase_views, _search, \
     get_user_question, get_user_id, rate, make_correct, check_question_author
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 def questions_list(request, sort_by=None, tag_title=None):
@@ -27,7 +33,7 @@ def questions_list(request, sort_by=None, tag_title=None):
 
     question_list = question_list.annotate(answer_count=Count('post_answer'))
 
-    paginator = Paginator(question_list, 20)
+    paginator = Paginator(question_list, int(os.getenv('PAGINATION')))
     page_number = request.GET.get('page', 1)
     try:
         questions = paginator.page(page_number)
@@ -72,7 +78,7 @@ def question_detail(request, year, month, day, question_slug):
             question_tags_ids,
             question.id
     )
-    paginator = Paginator(answers_lst, 30)
+    paginator = Paginator(answers_lst, int(os.getenv('PAGINATION_ANSWERS')))
     page_number = request.GET.get('page', 1)
     try:
         answers = paginator.page(page_number)
@@ -197,7 +203,7 @@ def question_search(request):
             else:
                 results = _search(PostQuestion, query)
 
-    paginator = Paginator(results, 20)
+    paginator = Paginator(results, int(os.getenv('PAGINATION')))
     page_number = request.GET.get('page', 1)
     try:
         res = paginator.page(page_number)
@@ -221,7 +227,7 @@ def user_questions(request):
     questions = get_user_question(PostQuestion, request.user.username)
     questions = questions.annotate(answer_count=Count('post_answer'))
 
-    paginator = Paginator(questions, 20)
+    paginator = Paginator(questions, int(os.getenv('PAGINATION')))
     page_number = request.GET.get('page', 1)
     try:
         res = paginator.page(page_number)

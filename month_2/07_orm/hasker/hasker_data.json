@@ -1,5 +1,37 @@
 [
 {
+  "model": "account.profile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "photo": ""
+  }
+},
+{
+  "model": "account.profile",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "photo": "user/2023/08/02/xiaomi-mobile-phones-computer-icons-battery-charger-brand.jpg"
+  }
+},
+{
+  "model": "account.profile",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "photo": ""
+  }
+},
+{
+  "model": "account.profile",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "photo": "user/2023/08/02/1.jpg"
+  }
+},
+{
   "model": "admin.logentry",
   "pk": 1,
   "fields": {
@@ -533,6 +565,487 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2023-07-25T20:54:55.154Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "tag3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Title\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2023-07-25T20:54:59.330Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "tag3",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2023-07-25T20:55:02.919Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "tag2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Title\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2023-07-26T19:22:19.887Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "test_user",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2023-07-26T19:28:30.906Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "test_user",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2023-07-27T19:37:18.191Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "test_user",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2023-07-27T20:05:39.689Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "3",
+    "object_repr": "test_user2",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2023-07-28T11:11:54.913Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "3",
+    "object_repr": "test_user2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2023-07-28T16:21:44.076Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2023-07-28T17:16:12.669Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "User profile of test_user",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2023-07-28T17:16:20.127Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "User profile of test_user2",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2023-07-28T17:16:23.817Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "User profile of test_reg_user1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2023-07-28T17:16:27.760Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "4",
+    "object_repr": "User profile of hasker_admin",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2023-07-31T18:43:15.398Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "test question 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2023-07-31T18:43:23.535Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2023-07-31T18:43:32.254Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "8",
+    "object_repr": "TEst quest 4",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2023-07-31T18:43:49.084Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "7",
+    "object_repr": "Test quest3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2023-07-31T18:43:55.192Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "6",
+    "object_repr": "TEst quest2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2023-07-31T18:44:00.527Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "17",
+    "object_repr": "ASK QUESTION test 1",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2023-07-31T18:44:55.772Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2023-07-31T18:44:59.980Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "Answer for test question 1 by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2023-07-31T18:45:04.223Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2023-07-31T18:45:08.804Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2023-07-31T18:45:12.498Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Answer for test question 1 by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2023-07-31T18:45:15.861Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "6",
+    "object_repr": "Answer for Question from FORM by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2023-07-31T19:00:06.655Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2023-07-31T19:00:18.850Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2023-07-31T19:02:23.343Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "What is Django?",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Users like\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 70,
+  "fields": {
+    "action_time": "2023-07-31T19:02:30.606Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Answer for What is Django? by hasker_admin",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 71,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.288Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "15",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 72,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.291Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "14",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 73,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.292Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "13",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 74,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.293Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "12",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 75,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.294Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "11",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 76,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.296Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "10",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 77,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.297Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "9",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 78,
+  "fields": {
+    "action_time": "2023-08-01T19:47:50.298Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "8",
+    "object_repr": "Answer for How to check starring answer? by hasker_admin",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -857,11 +1370,47 @@
   }
 },
 {
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add profile",
+    "content_type": 10,
+    "codename": "add_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change profile",
+    "content_type": 10,
+    "codename": "change_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete profile",
+    "content_type": 10,
+    "codename": "delete_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view profile",
+    "content_type": 10,
+    "codename": "view_profile"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$600000$Ba9WhPfizPAYWodRscc86O$Doswzf2oUJuachGYPJJczBOjOKzPA4m5FNKwQ5erZEQ=",
-    "last_login": "2023-07-15T09:57:22.919Z",
+    "last_login": "2023-08-02T18:31:52.808Z",
     "is_superuser": true,
     "username": "hasker_admin",
     "first_name": "",
@@ -870,6 +1419,60 @@
     "is_staff": true,
     "is_active": true,
     "date_joined": "2023-07-15T09:56:53.728Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$QtmsLxOpkrJ8rkRWKsSC5D$7bO7tnFkDhM8biM3enDSj9WyLc6YWh8Sn+b9UpdtPKU=",
+    "last_login": "2023-08-02T16:03:04.119Z",
+    "is_superuser": false,
+    "username": "test_user",
+    "first_name": "test name",
+    "last_name": "test surname",
+    "email": "test@test.blu",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-07-26T19:22:19Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$CFPAPgjddhHHdNKu0ZMT2Y$QF0MWqjGmo1ndxw1g+QTfyk+f8eybwS/KOfAZ7YGmFk=",
+    "last_login": "2023-08-02T11:57:51.889Z",
+    "is_superuser": false,
+    "username": "test_user2",
+    "first_name": "",
+    "last_name": "",
+    "email": "test_user2@mail.io",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-07-27T20:05:39Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$UDyGN6Z2SmDlVbCRMO86AZ$bT8udc2Lhe4jk//RugiWgq5OFGi3zGYdqlkgupd90iE=",
+    "last_login": "2023-08-02T16:01:53.317Z",
+    "is_superuser": false,
+    "username": "test_reg_user1",
+    "first_name": "reg_user1",
+    "last_name": "",
+    "email": "testreg1@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-07-28T17:01:43.261Z",
     "groups": [],
     "user_permissions": []
   }
@@ -947,11 +1550,75 @@
   }
 },
 {
-  "model": "sessions.session",
-  "pk": "l0a7n4dv7hlf2nk4xiod4f1a21a0ccyy",
+  "model": "contenttypes.contenttype",
+  "pk": 10,
   "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGlk28WdDSc8ZrN31ggPIluKkQtwdIqWA9s3Me6mE61LS2mVOU1YnZdXhdyPkh9QN5DvWW9Pc6jJPpDdF77TrS8vyPO_u30HBXr418JUCMQ0Z2A3goo8Ykaz1oxUkcYaEDEeHDiBYDxgQDZgAYyZjj-r9AftTN_M:1qKc1i:qbmrBPzM1hitdXHAm8r0zTJrHRUpfB_sJMtEN0A7bxY",
-    "expire_date": "2023-07-29T09:57:22.920Z"
+    "app_label": "account",
+    "model": "profile"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8ai40iwtl88ix3uhaodpidq0hbpj3rod",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAY6LR16d4zkJkOStVAUtqV8e7SpAvdvvf-f6tA25rCVuMSZlFnBer0y5imZ8y7kAfle9FTyesys94Tfdiqr0Xi63K0fweJamprhJE630cA24FhHkQMGiB02MeBnTWWkTzizRtijo2Aa60dxXsQVp8vuZ025g:1qP6p4:0OVxN7wVYpcnhmL2ZViVl9BswrDEkenL9ixK6Z-Jtas",
+    "expire_date": "2023-08-10T19:38:54.240Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ege5ixajt59ohimo9jsreocmgf5vjemh",
+  "fields": {
+    "session_data": "e30:1qOyMZ:E1wdFcuJSSckBigUAmco6eiZMNyBE0mPxDiYssaxD8U",
+    "expire_date": "2023-08-10T10:36:55.824Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "g9d69vdsa5hkmc75q2lx151pwsgzfter",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlk28WdDSc8ZrN31ggPIluKkQtwdIqWA9s3Me6mE61LS2mVOU1YnZdXhdyPkh9QN5DvWW9Pc6jJPpDdF77TrS8vyPO_u30HBXr418JUCMQ0Z2A3goo8Ykaz1oxUkcYaEDEeHDiBYDxgQDZgAYyZjj-r9AftTN_M:1qP5ij:V6nBTcc0fUTHItNxu9ceDFljH45SdEsdenSoPLjlClY",
+    "expire_date": "2023-08-10T18:28:17.677Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jsstxkmj4tbhtvm7qo8f1ymv72jsrjqk",
+  "fields": {
+    "session_data": ".eJxVjEkKAjEUBe-StYSMP8Gle88Qkj_YrdINPazEu2ugF7p68Kqolyp134ayr7yUkdRZOXX6_VrFB08d0L1Ot1njPG3L2HRX9EFXfZ2Jn5fD_QsMdR161kC2PosIgwdi8VF8jvgdYMgcQYJt5CoaSMnE5hzYiiEIYgoU1PsD39I33w:1qP6zr:Y8TtCXL0_7WND6SLGKlu0TPnnk7KACQ3w2ewJCNhYWU",
+    "expire_date": "2023-08-10T19:50:03.850Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "l80r4indrrzeho9nwbf6use9bz26i8bj",
+  "fields": {
+    "session_data": "e30:1qOySm:LDK7sD0CCNuK30h45qR8U2mP0XgHYRU_lMb9FydOdVU",
+    "expire_date": "2023-08-10T10:43:20.131Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "od7t4wfzzhoxj1e4b5lvsdrv8qud1rz1",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSGU8hCX7vsNZIYZpGogKe3K-O_apAvd3nPOfYkI21ri1nmJM4mL0OL0uyGkB9cd0B3qrcnU6rrMKHdFHrTLqRE_r4f7d1Cgl29tU_ZBW_I5eTwbhMyksmLCMPqkgmFNgHoYlLM5I6Fhoxwbb8G7UWnx_gAQPTiO:1qP6iQ:ExcIyzoFv1bcJLtH5f6s1ysqH4bhYopNtyhqLhRD_7A",
+    "expire_date": "2023-08-10T19:32:02.345Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "s18oidg94zg0yclp65c8k48234s8mxbi",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGllJLNtrSnrOYO3POIASKU4qxN0hUgpo38y8l8m4rTVvTZc8ijmbwZx-N0J-6LQDueN0my3P07qMZHfFHrTZ6yz6vBzu30HFVr91x0l7LbFAxwEdY2ICQaHiKfaIqMVB9A6ZBi_KcVAJFH2CoOAAzPsDK5E5ZQ:1qP6qj:RKfmghDnosb7uyQ7Vsk9VE1ZCfafeSDXejnZ4FcJcAw",
+    "expire_date": "2023-08-10T19:40:37.787Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tv0c91nbsw9kpnxk03b3zq61qnp55o1q",
+  "fields": {
+    "session_data": ".eJxVjL0OwjAMhN8lM4qc1IGGkb3PUDm2SwookfozId6dVuoAt919d_c2Pa1L7tdZp34UczWNOf1mifipZQfyoHKvlmtZpjHZvWIPOtuuir5uR_fvINOct7WL0QWUlMSL-CEQIw4YWkACRQgUmS4NqtsMnLlVDMohbWJgAG8-X-skODw:1qP7G0:ow986Y1B2Ta1q9Wat-zwciw7wjKfxvtPakJtHYOcFvw",
+    "expire_date": "2023-08-10T20:06:44.419Z"
   }
 },
 {
@@ -965,14 +1632,63 @@
   "model": "hasker_app.tag",
   "pk": 2,
   "fields": {
-    "title": " tag2"
+    "title": "tag2"
   }
 },
 {
   "model": "hasker_app.tag",
   "pk": 3,
   "fields": {
-    "title": " tag3"
+    "title": "tag3"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 5,
+  "fields": {
+    "title": "tag5"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 6,
+  "fields": {
+    "title": " tag6"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 7,
+  "fields": {
+    "title": " tag7"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 8,
+  "fields": {
+    "title": "tag9"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 9,
+  "fields": {
+    "title": "bubu"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 10,
+  "fields": {
+    "title": "baobab"
+  }
+},
+{
+  "model": "hasker_app.tag",
+  "pk": 11,
+  "fields": {
+    "title": "eshkere"
   }
 },
 {
@@ -984,13 +1700,21 @@
     "body": "Never found any info in my pocket.",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-24",
-    "rating": 2,
+    "updated": "2023-08-02",
+    "rating": 3,
     "status": "PB",
     "author": 1,
-    "views": 3,
+    "views": 123,
     "tags": [
       3
+    ],
+    "users_like": [
+      3,
+      4,
+      2
+    ],
+    "users_dislike": [
+      1
     ]
   }
 },
@@ -1003,14 +1727,16 @@
     "body": "test question 1 body\r\ntest question 1 body\r\ntest question 1 body\r\ntest question 1 body\r\ntest question 1 body",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-24",
-    "rating": 1,
+    "updated": "2023-07-31",
+    "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 3,
     "tags": [
       2
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1022,14 +1748,16 @@
     "body": "TEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 bodyTEst quest2 body",
     "publish": "2023-07-19",
     "created": "2023-07-19",
-    "updated": "2023-07-24",
-    "rating": 2,
+    "updated": "2023-07-31",
+    "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 2,
     "tags": [
       2
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1041,13 +1769,17 @@
     "body": "TEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 bodyTEst quest3 body",
     "publish": "2023-07-19",
     "created": "2023-07-19",
-    "updated": "2023-07-24",
-    "rating": 3,
+    "updated": "2023-08-02",
+    "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 1,
+    "views": 10,
     "tags": [
       1
+    ],
+    "users_like": [],
+    "users_dislike": [
+      4
     ]
   }
 },
@@ -1060,14 +1792,18 @@
     "body": "TEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 bodyTEst quest4 body",
     "publish": "2023-07-19",
     "created": "2023-07-19",
-    "updated": "2023-07-24",
-    "rating": 4,
+    "updated": "2023-07-31",
+    "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 1,
+    "views": 29,
     "tags": [
       3,
       2
+    ],
+    "users_like": [],
+    "users_dislike": [
+      1
     ]
   }
 },
@@ -1084,12 +1820,14 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 5,
     "tags": [
-      1,
       3,
-      2
-    ]
+      2,
+      1
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1108,7 +1846,9 @@
     "views": 0,
     "tags": [
       3
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1120,12 +1860,16 @@
     "body": "Checking that reverse is working with published status. Or not?",
     "publish": "2023-07-20",
     "created": "2023-07-20",
-    "updated": "2023-07-24",
+    "updated": "2023-07-31",
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 4,
     "tags": [
+      1
+    ],
+    "users_like": [],
+    "users_dislike": [
       1
     ]
   }
@@ -1139,15 +1883,20 @@
     "body": "FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4FORM test 4",
     "publish": "2023-07-20",
     "created": "2023-07-20",
-    "updated": "2023-07-24",
-    "rating": 0,
+    "updated": "2023-08-02",
+    "rating": 2,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 6,
     "tags": [
       3,
       2
-    ]
+    ],
+    "users_like": [
+      3,
+      4
+    ],
+    "users_dislike": []
   }
 },
 {
@@ -1163,11 +1912,13 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 2,
     "tags": [
-      1,
-      2
-    ]
+      2,
+      1
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1183,10 +1934,12 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 1,
     "tags": [
       2
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1202,10 +1955,12 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 2,
     "tags": [
       3
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1221,8 +1976,10 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
-    "tags": []
+    "views": 3,
+    "tags": [],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1234,14 +1991,16 @@
     "body": "ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1ASK QUESTION test 1",
     "publish": "2023-07-20",
     "created": "2023-07-20",
-    "updated": "2023-07-24",
+    "updated": "2023-07-31",
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 1,
+    "views": 4,
     "tags": [
       1
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1257,10 +2016,12 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
-    "views": 0,
+    "views": 5,
     "tags": [
       1
-    ]
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1276,12 +2037,147 @@
     "rating": 0,
     "status": "PB",
     "author": 1,
+    "views": 3,
+    "tags": [
+      3,
+      2,
+      1
+    ],
+    "users_like": [],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 20,
+  "fields": {
+    "title": "How to autosave author?",
+    "slug": "how-to-autosave-author",
+    "body": "Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?Does anybody know?",
+    "publish": "2023-07-28",
+    "created": "2023-07-28",
+    "updated": "2023-08-01",
+    "rating": -1,
+    "status": "PB",
+    "author": 3,
+    "views": 19,
+    "tags": [
+      1
+    ],
+    "users_like": [],
+    "users_dislike": [
+      3,
+      1
+    ]
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 21,
+  "fields": {
+    "title": "abrakadabra is dangerous?",
+    "slug": "abrakadabra-is-dangerous",
+    "body": "who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?who can say?vwho can say?",
+    "publish": "2023-07-28",
+    "created": "2023-07-28",
+    "updated": "2023-07-28",
+    "rating": 0,
+    "status": "PB",
+    "author": 1,
+    "views": 4,
+    "tags": [
+      5,
+      7,
+      6
+    ],
+    "users_like": [],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 22,
+  "fields": {
+    "title": "How to check starring answer?",
+    "slug": "how-to-check-starring-answer",
+    "body": "How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?How to check starring answer?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-02",
+    "rating": 1,
+    "status": "PB",
+    "author": 3,
+    "views": 154,
+    "tags": [
+      8
+    ],
+    "users_like": [
+      2
+    ],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 23,
+  "fields": {
+    "title": "BUBU?",
+    "slug": "bubu",
+    "body": "BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?BUBU?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-01",
+    "rating": 0,
+    "status": "PB",
+    "author": 3,
+    "views": 2,
+    "tags": [
+      9
+    ],
+    "users_like": [],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 24,
+  "fields": {
+    "title": "baobab?",
+    "slug": "baobab",
+    "body": "baobab?baobab?baobab?baobab?baobab?baobab?baobab?baobab?baobab?baobab?baobab?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-01",
+    "rating": 0,
+    "status": "PB",
+    "author": 3,
+    "views": 1,
+    "tags": [
+      10
+    ],
+    "users_like": [],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postquestion",
+  "pk": 25,
+  "fields": {
+    "title": "eshkere?",
+    "slug": "eshkere",
+    "body": "eshkere?eshkere?eshkere?eshkere?eshkere?eshkere?eshkere?eshkere?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-01",
+    "rating": 0,
+    "status": "PB",
+    "author": 3,
     "views": 0,
     "tags": [
-      1,
-      3,
-      2
-    ]
+      11
+    ],
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1292,10 +2188,13 @@
     "body": "test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1 test answer 1",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-20",
-    "rating": 5,
+    "updated": "2023-07-31",
+    "rating": 0,
     "status": "PB",
-    "author": 1
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1306,10 +2205,15 @@
     "body": "Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!Django is everything!",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-20",
-    "rating": 4,
+    "updated": "2023-08-02",
+    "rating": 0,
     "status": "PB",
-    "author": 1
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [],
+    "users_dislike": [
+      1
+    ]
   }
 },
 {
@@ -1320,10 +2224,13 @@
     "body": "Django is none!",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-20",
-    "rating": 1,
+    "updated": "2023-07-31",
+    "rating": 0,
     "status": "DF",
-    "author": 1
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1334,10 +2241,15 @@
     "body": "Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!Django is a framework!",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-20",
-    "rating": 3,
+    "updated": "2023-08-02",
+    "rating": -1,
     "status": "PB",
-    "author": 1
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [],
+    "users_dislike": [
+      1
+    ]
   }
 },
 {
@@ -1348,10 +2260,13 @@
     "body": "test answer for test question 1 but 2nd\r\ntest answer for test question 1 but 2nd\r\ntest answer for test question 1 but 2nd\r\ntest answer for test question 1 but 2ndtest answer for test question 1 but 2nd",
     "publish": "2023-07-15",
     "created": "2023-07-15",
-    "updated": "2023-07-20",
-    "rating": 2,
+    "updated": "2023-07-31",
+    "rating": 0,
     "status": "PB",
-    "author": 1
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [],
+    "users_dislike": []
   }
 },
 {
@@ -1362,10 +2277,72 @@
     "body": "test answer from form for this question number 1\r\ntest answer from form for this question number 1\r\ntest answer from form for this question number 1",
     "publish": "2023-07-20",
     "created": "2023-07-20",
-    "updated": "2023-07-20",
+    "updated": "2023-08-01",
     "rating": 0,
     "status": "PB",
-    "author": 1
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [],
+    "users_dislike": [
+      3
+    ]
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 16,
+  "fields": {
+    "question_post": 22,
+    "body": "TEst_answer for How to check starring answer?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-01",
+    "rating": 1,
+    "status": "PB",
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [
+      3
+    ],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 17,
+  "fields": {
+    "question_post": 22,
+    "body": "TEst_answer 222 for How to check starring answer?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-01",
+    "rating": 1,
+    "status": "PB",
+    "author": 1,
+    "answer_is_correct": false,
+    "users_like": [
+      3
+    ],
+    "users_dislike": []
+  }
+},
+{
+  "model": "hasker_app.postanswer",
+  "pk": 18,
+  "fields": {
+    "question_post": 22,
+    "body": "333 TEst_answer 333 for How to check starring answer?",
+    "publish": "2023-08-01",
+    "created": "2023-08-01",
+    "updated": "2023-08-01",
+    "rating": 1,
+    "status": "PB",
+    "author": 1,
+    "answer_is_correct": true,
+    "users_like": [
+      3
+    ],
+    "users_dislike": []
   }
 }
 ]

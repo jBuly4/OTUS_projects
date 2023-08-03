@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hasker/account/', include('account.urls', namespace='account')),
     path('hasker/', include('hasker_app.urls', namespace='hasker_app')),
+    path('hasker/api/', include('hasker_app.api.urls', namespace='api')),
 ]
 
 if settings.DEBUG:
