@@ -8,8 +8,9 @@ from django.shortcuts import render, get_object_or_404
 
 from .forms import AnswerForm, QuestionForm, SearchForm
 from .models import PostAnswer, PostQuestion, Tag
-from .services import get_questions_published, get_similar_published_questions, increase_views, _search, \
-    get_user_question, get_user_id, rate, make_correct, check_question_author
+from .services import get_questions_published, get_similar_published_questions, \
+    increase_views, _search, get_user_question, get_user_id, rate, make_correct, \
+    check_question_author
 from dotenv import load_dotenv
 
 
@@ -114,7 +115,7 @@ def add_question(request):
         if question_form.is_valid():
             question = question_form.save(commit=False)
             tags_input = question_form.cleaned_data['tags']
-            tags = [tag.rstrip() for tag in tags_input.split(',') if tag != '']
+            tags = [tag.strip() for tag in tags_input.split(',') if tag != '']
 
             if len(tags) > 3:
                 question_form.add_error('tags', 'You can add up to 3 tags only!')

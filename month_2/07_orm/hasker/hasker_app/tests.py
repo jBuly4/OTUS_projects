@@ -1,6 +1,9 @@
+import os
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase, APIClient
@@ -8,6 +11,11 @@ from rest_framework.test import APITestCase, APIClient
 from hasker_app.models import PostQuestion, PostAnswer, Tag
 from account.models import Profile
 
+
+# There are no models tests, because all their field and methods are tested in API and VIEWS
+
+
+# API tests
 
 class TestQuestionListView(APITestCase):
     def setUp(self):
@@ -230,3 +238,185 @@ class TestTagSortedQuestionsView(APITestCase):
             self.assertEqual(response.data[0]['body'], self.questions[i].body)
             self.assertEqual(response.data[0]['author'], self.questions[i].author.username)
             self.assertEqual(response.data[0]['tags'][0]['title'], self.tags[i].title)
+
+
+# VIEWS tests
+
+
+class QuestionsListViewTest(TestCase):
+    def setUp(self):
+        self.tag1 = Tag.objects.create(title='tag1')
+        self.tag2 = Tag.objects.create(title='tag2')
+        self.user = User.objects.create_user(username='test_user', password='test_pass')
+
+        self.questions = [
+            PostQuestion.objects.create(
+                    title='Question 1',
+                    body='BodyQuestion 1',
+                    author=self.user,
+                    rating=3,
+                    publish=timezone.now(),
+                    status='PB'
+            ),
+            PostQuestion.objects.create(
+                    title='Question 2',
+                    body='BodyQuestion 2',
+                    author=self.user,
+                    rating=5,
+                    publish=timezone.now() - timezone.timedelta(days=2),
+                    status='PB'
+            ),
+            PostQuestion.objects.create(
+                    title='Question 3',
+                    body='BodyQuestion 3',
+                    author=self.user,
+                    rating=2,
+                    publish=timezone.now() - timezone.timedelta(days=2),
+                    status='PB'
+            ),
+            PostQuestion.objects.create(
+                    title='Question 4',
+                    body='BodyQuestion 4',
+                    author=self.user,
+                    rating=1,
+                    publish=timezone.now() - timezone.timedelta(days=3),
+                    status='PB'
+            ),
+        ]
+        self.questions[0].tags.add(self.tag1)
+        self.questions[1].tags.add(self.tag1)
+        self.questions[2].tags.add(self.tag2)
+        for q in self.questions:
+            q.generate_slug()
+            q.save()
+
+    def tearDown(self) -> None:
+        self.user.delete()
+        for quest in self.questions:
+            quest.delete()
+        self.tag2.delete()
+        self.tag1.delete()
+
+    def test_questions_list(self):
+        url = reverse('hasker_app:questions_list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Question 1')
+        self.assertContains(response, 'Question 2')
+        self.assertContains(response, 'Question 3')
+        self.assertContains(response, 'Question 4')
+
+    def test_questions_list_sort_by_date(self):
+        url = reverse('hasker_app:questions_list_sorted', kwargs={'sort_by': 'date'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, template_name='hasker_app/question/list.html')
+        # later check order with beautiful soup
+
+    def test_questions_list_sort_by_rating(self):
+        url = reverse('hasker_app:questions_list_sorted', kwargs={'sort_by': 'rating'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, template_name='hasker_app/question/list.html')
+
+    def test_questions_list_filter_by_tag(self):
+        url = reverse('hasker_app:questions_list_by_tag', kwargs={'tag_title': 'tag1'})
+        response = self.client.get(url)
+        self.assertContains(response, 'Question 1')
+        # self.assertNotContains(response, 'Question 3')  # but it is in trendings, TODO: add bs4 parsing for this cases
+        self.assertTemplateUsed(response, template_name='hasker_app/question/list.html')
+
+
+class AddQuestionTest(TestCase):
+
+    def setUp(self):
+        self.username = 'test_user'
+        self.password = 'test_password'
+        self.user = User.objects.create_user(username=self.username, password=self.password)
+        self.client.login(username=self.username, password=self.password)
+        self.url = reverse('hasker_app:add_question')
+
+    def tearDown(self) -> None:
+        self.user.delete()
+        self.client.logout()
+
+    def test_add_question_authenticated(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'hasker_app/question/add_question.html')
+
+    def test_add_question_not_authenticated(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, 'registration/login.html')
+
+    def test_add_question_with_tags(self):
+        data = {
+            'title': 'Test question',
+            'body': 'Test body',
+            'status': 'PB',
+            'tags': 'tag1, tag2, tag3'
+        }
+        response = self.client.post(self.url, data=data)
+        question = PostQuestion.published.get(title='Test question')
+        self.assertEqual(question.title, 'Test question')
+        self.assertEqual(question.body, 'Test body')
+        self.assertEqual(question.author.username, self.username)
+
+        question_tags = [tag.title for tag in question.tags.all()]
+        self.assertEqual(question_tags, ['tag3', 'tag2', 'tag1'])  # tags are sorted from new to old
+
+    def test_add_question_with_more_than_three_tags(self):
+        data = {
+            'title': 'Test question',
+            'body': 'Test body',
+            'status': 'PB',
+            'tags': 'tag1, tag2, tag3, tag4'
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertFormError(response, 'question_form', 'tags', 'You can add up to 3 tags only!')
+
+
+class AddAnswerTest(TestCase):
+
+    def setUp(self):
+        self.username = 'test_user'
+        self.password = 'test_password'
+        self.user = User.objects.create_user(username=self.username, password=self.password)
+        self.client.login(username=self.username, password=self.password)
+        self.question = PostQuestion.objects.create(
+                title='Test question',
+                body='Test body',
+                author=self.user,
+                status=PostQuestion.Status.PUBLISHED,
+        )
+        self.question.generate_slug()
+        self.question.save()
+        self.url = reverse('hasker_app:add_answer', kwargs={'question_id': self.question.id})
+
+    def tearDown(self) -> None:
+        self.user.delete()
+        self.question.delete()
+        self.client.logout()
+
+    def test_add_answer_to_question(self):
+        data = {
+            'body': 'Test answer',
+            'status': 'PB'
+        }
+        response = self.client.post(self.url, data=data)
+        answer = PostAnswer.published.get(question_post=self.question)
+        self.assertEqual(answer.body, 'Test answer')
+        self.assertEqual(answer.author, self.user)
+
+    def test_add_answer_with_invalid_form(self):
+        data = {
+            'body': '',
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertFalse(response.context['answer_form'].is_valid())
+
+    def test_add_answer_with_invalid_question(self):
+        invalid_url = reverse('hasker_app:add_answer', kwargs={'question_id': 9999})
+        response = self.client.post(invalid_url, data={'body': 'Test answer'})
+        self.assertEqual(response.status_code, 404)
