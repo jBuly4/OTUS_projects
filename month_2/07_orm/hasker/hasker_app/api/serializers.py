@@ -31,7 +31,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PostQuestion
-        fields = ['id', 'title', 'author', 'body', 'tags', 'status']
+        fields = ['id', 'title', 'author', 'body', 'tags', 'status', 'rating']
 
 
 class AnswerSerializer(serializers.ModelSerializer):

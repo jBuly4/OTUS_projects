@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+# test
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
 
     # third-party
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -162,3 +165,6 @@ REST_FRAMEWORK = {
     ]
 }
 
+# don't forget to move to test settings
+if 'test' in sys.argv:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}

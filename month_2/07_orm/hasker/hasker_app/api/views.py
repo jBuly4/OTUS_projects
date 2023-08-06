@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication
@@ -8,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from account.models import Profile
 from hasker_app.api.serializers import AnswerSerializer, ProfileSerializer, QuestionSerializer, TagSerializer
 from hasker_app.models import PostAnswer, PostQuestion, Tag
+from hasker_app.services import get_questions_published
 from dotenv import load_dotenv
 
 
@@ -45,7 +47,7 @@ class TagSortedQuestionsView(generics.ListAPIView):
 
     def get_queryset(self):
         tag = get_object_or_404(Tag, id=self.kwargs['tag'])
-        questions = PostQuestion.published.all()
+        questions = get_questions_published(PostQuestion)
         question_filtered_by_tag = questions.filter(tags__in=[tag]).order_by('-rating', '-publish')
 
         return question_filtered_by_tag
@@ -55,12 +57,10 @@ class ProfileView(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
-    lookup_field = 'profile_username'
+    lookup_field = 'user'
 
     def get_queryset(self):
-        profile = get_object_or_404(Profile, username=self.kwargs['profile_username'])
-
-        return profile
+        return Profile.objects.all()
 
 
 class TrendingView(generics.ListAPIView):
