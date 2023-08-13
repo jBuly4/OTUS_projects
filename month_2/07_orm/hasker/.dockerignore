@@ -1,0 +1,6 @@
+venv/
+.DS_Store
+.gitignore
+.gitmodules
+.idea
+db.sqlite3
